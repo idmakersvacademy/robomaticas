@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aventura Matematica del Robot</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="screen active" id="startScreen">
+        <div class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow">EducaGames</p>
+            <h1>Parque Espacial de Sumas</h1>
+            <p class="intro">Acompana a Robo en un parque espacial donde cada compuerta se activa juntando cantidades.</p>
+            <div class="feature-row" aria-label="Caracteristicas del juego">
+              <span>1 aventura</span>
+              <span>3 vidas</span>
+              <span>Solo sumas</span>
+            </div>
+            <button class="primary-btn" id="playButton">Jugar</button>
+          </div>
+          <div class="robo-showcase" aria-hidden="true">
+            <div class="showcase-sun"></div>
+            <div class="showcase-path"></div>
+            <div class="personaje-wrap hero-robo">
+              <div class="robot-wrap happy speaking">
+                <div class="antena"></div>
+                <div class="cabeza">
+                  <div class="luz"></div>
+                  <div class="cara">
+                    <span class="ceja izq"></span>
+                    <span class="ceja der"></span>
+                    <span class="ojo izq"></span>
+                    <span class="ojo der"></span>
+                    <span class="boca"></span>
+                  </div>
+                </div>
+                <div class="cuello"></div>
+                <div class="torso"></div>
+                <div class="brazo-izq"></div>
+                <div class="brazo-der"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="conceptScreen">
+        <div class="concept-card">
+          <div class="concept-copy">
+            <p class="eyebrow">Antes de despegar</p>
+            <h2>Sumar es juntar</h2>
+            <p class="intro">Cuando sumamos, unimos dos grupos para saber cuantos hay en total.</p>
+            <div class="sum-demo" aria-label="Ejemplo de suma">
+              <div class="demo-group">
+                <span></span>
+                <span></span>
+                <strong>2</strong>
+              </div>
+              <div class="sum-symbol">+</div>
+              <div class="demo-group">
+                <span></span>
+                <span></span>
+                <span></span>
+                <strong>3</strong>
+              </div>
+              <div class="sum-symbol">=</div>
+              <div class="demo-total">
+                <span>5</span>
+              </div>
+            </div>
+            <p class="concept-note">Ejemplo: 2 estrellas + 3 estrellas = 5 estrellas.</p>
+            <button class="primary-btn" id="startAdventureButton">Iniciar aventura</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="levelScreen">
+        <header class="screen-header">
+          <div>
+            <p class="eyebrow">Selecciona una mision</p>
+            <h2>Niveles</h2>
+          </div>
+          <button class="ghost-btn" id="backStartButton">Inicio</button>
+        </header>
+        <div class="level-grid" id="levelGrid"></div>
+      </section>
+
+      <section class="screen" id="gameScreen">
+        <header class="hud">
+          <div>
+            <p class="eyebrow" id="levelLabel">Mision de sumas</p>
+            <h2 id="levelTitle">Parque Espacial</h2>
+          </div>
+          <div class="hud-stats">
+            <div class="stat">
+              <span>Puntos</span>
+              <strong id="scoreText">0</strong>
+            </div>
+            <div class="stat">
+              <span>Vidas</span>
+              <strong id="livesText">♥♥♥</strong>
+            </div>
+          </div>
+        </header>
+
+        <div class="game-layout">
+          <aside class="guide-panel">
+            <div class="mini-robo">
+              <div class="personaje-wrap mini-character">
+                <div class="robot-wrap small thinking" id="guideRobo">
+                  <div class="antena"></div>
+                  <div class="cabeza">
+                    <div class="luz"></div>
+                    <div class="cara">
+                      <span class="ceja izq"></span>
+                      <span class="ceja der"></span>
+                      <span class="ojo izq"></span>
+                      <span class="ojo der"></span>
+                      <span class="boca"></span>
+                    </div>
+                  </div>
+                  <div class="cuello"></div>
+                  <div class="torso"></div>
+                  <div class="brazo-izq"></div>
+                  <div class="brazo-der"></div>
+                </div>
+              </div>
+            </div>
+            <p class="dialog" id="roboDialog">Usa flechas, WASD o los botones para moverte.</p>
+          </aside>
+
+          <section class="world-wrap" aria-label="Mapa de aventura">
+            <div class="map-toolbar">
+              <span>Activa compuertas</span>
+              <span>Llega al portal final</span>
+            </div>
+            <div class="world" id="world"></div>
+            <div class="mobile-controls" aria-label="Controles de movimiento">
+              <button data-move="up">Arriba</button>
+              <div>
+                <button data-move="left">Izquierda</button>
+                <button data-move="down">Abajo</button>
+                <button data-move="right">Derecha</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen result-screen" id="victoryScreen">
+        <div class="confetti" id="confetti"></div>
+        <div class="result-card">
+          <p class="eyebrow">Mision completa</p>
+          <h2>¡Ganaste!</h2>
+          <div class="stars" id="victoryStars">★★★</div>
+          <p id="victoryText">Robo llego a la meta.</p>
+          <div class="result-actions">
+            <button class="primary-btn" id="nextLevelButton">Ver intro</button>
+            <button class="ghost-btn" id="victoryLevelsButton">Ver intro</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen result-screen" id="defeatScreen">
+        <div class="result-card">
+          <p class="eyebrow">Mision detenida</p>
+          <h2>Intenta otra vez</h2>
+          <p>Robo se quedo sin energia, pero puede volver a intentarlo.</p>
+          <div class="result-actions">
+            <button class="primary-btn" id="retryButton">Reintentar</button>
+            <button class="ghost-btn" id="defeatLevelsButton">Ver intro</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal hidden" id="questionModal" role="dialog" aria-modal="true" aria-labelledby="questionTitle">
+      <div class="question-box">
+        <p class="eyebrow" id="questionReason">Reto matematico</p>
+        <h2 id="questionTitle">Resuelve para avanzar</h2>
+        <div class="operation" id="operationText">2 + 3</div>
+        <div class="options" id="options"></div>
+        <p class="question-feedback" id="questionFeedback">Elige una respuesta.</p>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
