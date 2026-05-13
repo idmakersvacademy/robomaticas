@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Numeronautas de Robo</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="screen active" id="startScreen">
+        <div class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow">EducaGames</p>
+            <h1>Numeronautas de Robo</h1>
+            <p class="intro">Explora mundos de matematicas con Robo: suma, resta, multiplica, divide y combina operaciones para abrir portales.</p>
+
+            <div class="menu-actions" aria-label="Menu principal">
+              <button class="primary-btn" id="playButton">Jugar</button>
+              <button class="ghost-btn" id="levelsButton">Elegir nivel</button>
+            </div>
+          </div>
+          <div class="robo-showcase" aria-hidden="true">
+            <div class="showcase-sun"></div>
+            <div class="showcase-path"></div>
+            <div class="personaje-wrap hero-robo">
+              <div class="robot-wrap happy speaking">
+                <div class="antena"></div>
+                <div class="cabeza">
+                  <div class="luz"></div>
+                  <div class="cara">
+                    <span class="ceja izq"></span>
+                    <span class="ceja der"></span>
+                    <span class="ojo izq"></span>
+                    <span class="ojo der"></span>
+                    <span class="boca"></span>
+                  </div>
+                </div>
+                <div class="cuello"></div>
+                <div class="torso"></div>
+                <div class="brazo-izq"></div>
+                <div class="brazo-der"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="conceptScreen">
+        <div class="concept-card">
+          <div class="concept-copy">
+            <p class="eyebrow" id="conceptEyebrow">Antes de despegar</p>
+            <h2 id="conceptTitle">Sumar es juntar</h2>
+            <p class="intro" id="conceptIntro">Cuando sumamos, unimos dos grupos para saber cuantos hay en total.</p>
+            <div class="sum-demo" id="conceptDemo" aria-label="Ejemplo matematico">
+              <div class="demo-group">
+                <span></span>
+                <span></span>
+                <strong>2</strong>
+              </div>
+              <div class="sum-symbol">+</div>
+              <div class="demo-group">
+                <span></span>
+                <span></span>
+                <span></span>
+                <strong>3</strong>
+              </div>
+              <div class="sum-symbol">=</div>
+              <div class="demo-total">
+                <span>5</span>
+              </div>
+            </div>
+            <p class="concept-note" id="conceptNote">Ejemplo: 2 estrellas + 3 estrellas = 5 estrellas.</p>
+            <button class="primary-btn" id="startAdventureButton">Iniciar mision</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="levelScreen">
+        <header class="screen-header">
+          <div>
+            <p class="eyebrow">Menu de misiones</p>
+            <h2>Elige tu reto</h2>
+          </div>
+          <button class="ghost-btn" id="backStartButton">Inicio</button>
+        </header>
+        <div class="level-grid" id="levelGrid"></div>
+      </section>
+
+      <section class="screen" id="gameScreen">
+        <header class="hud">
+          <div>
+            <p class="eyebrow" id="levelLabel">Mision de sumas</p>
+            <h2 id="levelTitle">Parque Espacial</h2>
+          </div>
+          <div class="hud-stats">
+            <div class="stat">
+              <span>Puntos</span>
+              <strong id="scoreText">0</strong>
+            </div>
+            <div class="stat">
+              <span>Vidas</span>
+              <strong id="livesText">♥♥♥</strong>
+            </div>
+          </div>
+        </header>
+
+        <div class="game-layout">
+          <aside class="guide-panel">
+            <div class="mini-robo">
+              <div class="personaje-wrap mini-character">
+                <div class="robot-wrap small thinking" id="guideRobo">
+                  <div class="antena"></div>
+                  <div class="cabeza">
+                    <div class="luz"></div>
+                    <div class="cara">
+                      <span class="ceja izq"></span>
+                      <span class="ceja der"></span>
+                      <span class="ojo izq"></span>
+                      <span class="ojo der"></span>
+                      <span class="boca"></span>
+                    </div>
+                  </div>
+                  <div class="cuello"></div>
+                  <div class="torso"></div>
+                  <div class="brazo-izq"></div>
+                  <div class="brazo-der"></div>
+                </div>
+              </div>
+            </div>
+            <p class="dialog" id="roboDialog">Usa flechas, WASD o los botones para moverte.</p>
+          </aside>
+
+          <section class="world-wrap" aria-label="Mapa de aventura">
+            <div class="map-toolbar">
+              <span id="mapTaskText">Activa compuertas</span>
+              <span>Llega al portal final</span>
+            </div>
+            <div class="world" id="world"></div>
+            <div class="mobile-controls" aria-label="Controles de movimiento">
+              <button data-move="up">Arriba</button>
+              <div>
+                <button data-move="left">Izquierda</button>
+                <button data-move="down">Abajo</button>
+                <button data-move="right">Derecha</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen battle-screen" id="battleScreen">
+        <div class="battle-bg" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <header class="battle-topbar">
+          <div>
+            <p class="eyebrow">Operacion Resta</p>
+            <h2>Batalla de Restas</h2>
+          </div>
+          <div class="battle-stats">
+            <div class="tech-stat">
+              <span>Puntos</span>
+              <strong id="battleScoreText">0</strong>
+            </div>
+            <div class="tech-stat">
+              <span>Combo</span>
+              <strong id="battleComboText">x0</strong>
+            </div>
+            <div class="tech-stat">
+              <span>Enemigos</span>
+              <strong id="enemyProgressText">1/4</strong>
+            </div>
+            <button class="ghost-btn battle-exit" id="battleExitButton">Menu</button>
+          </div>
+        </header>
+
+        <div class="battle-arena" id="battleArena">
+          <section class="fighter-panel robo-panel">
+            <div class="fighter-hud">
+              <strong>Robo</strong>
+              <span id="battleLivesText">3 vidas</span>
+            </div>
+            <div class="hp-track">
+              <span id="roboHpBar"></span>
+            </div>
+            <div class="personaje-wrap battle-character" id="battleRobo" aria-label="Robo">
+              <div class="robot-wrap happy speaking">
+                <div class="antena"></div>
+                <div class="cabeza">
+                  <div class="luz"></div>
+                  <div class="cara">
+                    <span class="ceja izq"></span>
+                    <span class="ceja der"></span>
+                    <span class="ojo izq"></span>
+                    <span class="ojo der"></span>
+                    <span class="boca"></span>
+                  </div>
+                </div>
+                <div class="cuello"></div>
+                <div class="torso"></div>
+                <div class="brazo-izq"></div>
+                <div class="brazo-der"></div>
+              </div>
+            </div>
+          </section>
+
+          <div class="battle-center">
+            <div class="battle-message" id="battleMessage">Elige la resta correcta para atacar.</div>
+            <div class="enemy-countdown" id="enemyCountdownText">Faltan 4 enemigos</div>
+            <div class="laser-lane" id="laserLane"></div>
+            <div class="operation-card">
+              <p class="eyebrow" id="enemyRoundText">Ronda 1</p>
+              <div class="battle-operation" id="battleOperation">15 - 7 = ?</div>
+              <div class="battle-options" id="battleOptions"></div>
+            </div>
+          </div>
+
+          <section class="fighter-panel enemy-panel">
+            <div class="fighter-hud">
+              <strong id="enemyNameText">Virus Digital</strong>
+              <span id="enemyHpText">100%</span>
+            </div>
+            <div class="hp-track enemy-hp">
+              <span id="enemyHpBar"></span>
+            </div>
+            <div class="enemy-stage">
+              <div class="math-enemy virus" id="battleEnemy" aria-label="Enemigo matematico">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="battle-particles" id="battleParticles" aria-hidden="true"></div>
+      </section>
+
+      <section class="screen factory-screen clone-lab-screen" id="factoryScreen">
+        <div class="factory-bg" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <header class="factory-topbar">
+          <div>
+            <p class="eyebrow">Numeronautas</p>
+            <h2>Numeronautas: Laboratorio de Clones</h2>
+          </div>
+          <div class="factory-stats">
+            <div class="tech-stat">
+              <span>Energia</span>
+              <strong id="factoryScoreText">0</strong>
+            </div>
+            <div class="tech-stat">
+              <span>Combo</span>
+              <strong id="factoryComboText">x0</strong>
+            </div>
+            <div class="tech-stat">
+              <span>Sistemas</span>
+              <strong id="factoryMachineText">1/5</strong>
+            </div>
+            <button class="ghost-btn factory-exit" id="factoryExitButton">Menu</button>
+          </div>
+        </header>
+
+        <div class="factory-layout" id="factoryLayout">
+          <section class="factory-robo-panel">
+            <div class="fighter-hud">
+              <strong>Robo</strong>
+              <span id="factoryMoodText">Listo</span>
+            </div>
+            <div class="personaje-wrap factory-character" id="factoryRobo" aria-label="Robo">
+              <div class="robot-wrap happy speaking">
+                <div class="antena"></div>
+                <div class="cabeza">
+                  <div class="luz"></div>
+                  <div class="cara">
+                    <span class="ceja izq"></span>
+                    <span class="ceja der"></span>
+                    <span class="ojo izq"></span>
+                    <span class="ojo der"></span>
+                    <span class="boca"></span>
+                  </div>
+                </div>
+                <div class="cuello"></div>
+                <div class="torso"></div>
+                <div class="brazo-izq"></div>
+                <div class="brazo-der"></div>
+              </div>
+            </div>
+            <div class="medal-rack" id="factoryMedals" aria-label="Medallas">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </section>
+
+          <section class="factory-floor clone-lab-floor">
+            <div class="factory-depth" aria-hidden="true">
+              <div class="energy-pipe pipe-one"></div>
+              <div class="energy-pipe pipe-two"></div>
+              <div class="soft-smoke smoke-one"></div>
+              <div class="soft-smoke smoke-two"></div>
+              <div class="floating-clone clone-one"></div>
+              <div class="floating-clone clone-two"></div>
+              <div class="scanner-drone"></div>
+            </div>
+
+            <div class="machine-stage" id="machineStage">
+              <div class="machine-card active" data-machine="0">
+                <span class="machine-light"></span>
+                <div class="clone-chamber-mini"></div>
+                <strong>Camara de clonacion</strong>
+              </div>
+              <div class="machine-card" data-machine="1">
+                <span class="machine-light"></span>
+                <div class="clone-reactor-mini"></div>
+                <strong>Reactor multiplicador</strong>
+              </div>
+              <div class="machine-card" data-machine="2">
+                <span class="machine-light"></span>
+                <div class="dna-mini"></div>
+                <strong>ADN digital</strong>
+              </div>
+              <div class="machine-card" data-machine="3">
+                <span class="machine-light"></span>
+                <div class="glitch-clone-mini"></div>
+                <strong>Clones defectuosos</strong>
+              </div>
+              <div class="machine-card" data-machine="4">
+                <span class="machine-light"></span>
+                <div class="lab-door-mini"></div>
+                <strong>Puerta tecnologica</strong>
+              </div>
+            </div>
+
+            <div class="main-kitchen-scene clone-lab-scene" aria-hidden="true">
+              <div class="space-window">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="clone-round-brief" id="cloneRoundBrief">Activa las capsulas de clonacion.</div>
+              <div class="clone-equation" id="cloneEquation">2 x 3 = ?</div>
+              <div class="clone-groups" id="cloneGroups"></div>
+              <div class="clone-chamber">
+                <span class="scan-beam"></span>
+                <span class="clone-pod-glass"></span>
+                <span class="clone-bot"></span>
+              </div>
+              <div class="lab-console">
+                <span class="dna-orb cyan"></span>
+                <span class="dna-orb green"></span>
+                <span class="dna-orb purple"></span>
+                <span class="holo-clone"></span>
+              </div>
+              <div class="clone-line">
+                <span class="mini-clone"></span>
+                <span class="mini-clone second"></span>
+                <span class="mini-clone third"></span>
+              </div>
+            </div>
+
+            <div class="conveyor-wrap">
+              <div class="conveyor-belt" id="conveyorBelt">
+                <div class="factory-box" id="factoryBox">
+                  <span></span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="factory-control">
+            <div class="factory-message" id="factoryMessage">Objetivo actual</div>
+            <div class="factory-progress">
+              <span id="factoryProgressBar"></span>
+            </div>
+            <div class="factory-options" id="factoryOptions"></div>
+            <button class="ghost-btn lab-help-btn" id="labHelpButton">Ayuda visual</button>
+            <button class="primary-btn" id="factoryStartButton">Iniciar Laboratorio</button>
+          </section>
+        </div>
+
+        <div class="factory-particles" id="factoryParticles" aria-hidden="true"></div>
+      </section>
+
+      <section class="screen result-screen" id="victoryScreen">
+        <div class="confetti" id="confetti"></div>
+        <div class="result-card">
+          <p class="eyebrow">Mision completa</p>
+          <h2>¡Ganaste!</h2>
+          <div class="stars" id="victoryStars">★★★</div>
+          <p id="victoryText">Robo llego a la meta.</p>
+          <div class="result-actions">
+            <button class="primary-btn" id="nextLevelButton">Siguiente nivel</button>
+            <button class="ghost-btn" id="victoryLevelsButton">Menu de niveles</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen result-screen" id="defeatScreen">
+        <div class="result-card">
+          <p class="eyebrow">Mision detenida</p>
+          <h2>Intenta otra vez</h2>
+          <p>Robo se quedo sin energia, pero puede volver a intentarlo.</p>
+          <div class="result-actions">
+            <button class="primary-btn" id="retryButton">Reintentar</button>
+            <button class="ghost-btn" id="defeatLevelsButton">Menu de niveles</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal hidden" id="questionModal" role="dialog" aria-modal="true" aria-labelledby="questionTitle">
+      <div class="question-box">
+        <p class="eyebrow" id="questionReason">Reto matematico</p>
+        <h2 id="questionTitle">Resuelve para avanzar</h2>
+        <div class="operation" id="operationText">2 + 3</div>
+        <div class="options" id="options"></div>
+        <p class="question-feedback" id="questionFeedback">Elige una respuesta.</p>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
