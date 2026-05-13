@@ -1,0 +1,848 @@
+/* Operacion Resta: arcade battle mode */
+.battle-screen {
+  position: relative;
+  min-height: min(900px, calc(100vh - 56px));
+  overflow: hidden;
+  padding: clamp(12px, 2vw, 22px);
+  border-radius: 24px;
+  color: #f5fbff;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(32, 216, 238, 0.22) 0 16%, transparent 17%),
+    radial-gradient(circle at 78% 10%, rgba(255, 207, 69, 0.2) 0 10%, transparent 11%),
+    linear-gradient(135deg, #070b22 0%, #10164d 48%, #241156 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(119, 235, 255, 0.16),
+    0 28px 80px rgba(7, 11, 34, 0.34);
+  animation: battleEnter 520ms ease-out both;
+}
+
+.battle-bg,
+.battle-bg span {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.battle-bg {
+  background:
+    linear-gradient(rgba(32, 216, 238, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(32, 216, 238, 0.08) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(180deg, transparent, #000 14%, #000 86%, transparent);
+  animation: gridDrift 8s linear infinite, battleHue 9s ease-in-out infinite;
+}
+
+.battle-bg span {
+  opacity: 0.9;
+}
+
+.battle-bg span:nth-child(1) {
+  background: linear-gradient(90deg, transparent, rgba(32, 216, 238, 0.42), transparent);
+  height: 2px;
+  top: 18%;
+  animation: scanLine 4.5s ease-in-out infinite;
+}
+
+.battle-bg span:nth-child(2) {
+  left: 8%;
+  top: 16%;
+  width: 160px;
+  height: 160px;
+  border: 2px solid rgba(255, 207, 69, 0.2);
+  border-radius: 28px;
+  transform: rotate(16deg);
+  animation: holoFloat 5s ease-in-out infinite;
+}
+
+.battle-bg span:nth-child(3) {
+  left: auto;
+  right: 6%;
+  top: 18%;
+  width: 210px;
+  height: 210px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(142, 117, 221, 0.2), transparent 66%);
+  animation: pulseGlow 3.8s ease-in-out infinite;
+}
+
+.battle-bg span:nth-child(4) {
+  inset: auto -10% 0;
+  height: 26%;
+  background:
+    linear-gradient(135deg, transparent 0 38%, rgba(32, 216, 238, 0.13) 39% 41%, transparent 42%),
+    linear-gradient(180deg, rgba(13, 21, 67, 0), rgba(5, 9, 31, 0.82));
+}
+
+.battle-screen::before,
+.battle-screen::after {
+  content: "";
+  position: absolute;
+  inset: 12% auto auto -80px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(32, 216, 238, 0.22), transparent 66%);
+  filter: blur(2px);
+  animation: energyOrb 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.battle-screen::after {
+  inset: auto -90px 12% auto;
+  background: radial-gradient(circle, rgba(255, 223, 85, 0.22), transparent 66%);
+  animation-delay: -2.5s;
+}
+
+.battle-topbar,
+.battle-arena {
+  position: relative;
+  z-index: 1;
+}
+
+.battle-topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 18px;
+  padding: 16px;
+  border: 1px solid rgba(119, 235, 255, 0.18);
+  border-radius: 18px;
+  background: rgba(5, 12, 38, 0.62);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 18px 46px rgba(2, 6, 22, 0.2);
+  backdrop-filter: blur(14px);
+}
+
+.battle-topbar h2 {
+  color: #ffffff;
+  font-size: clamp(1.9rem, 4vw, 3.4rem);
+  text-shadow: 0 0 22px rgba(32, 216, 238, 0.36);
+}
+
+.battle-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  align-items: center;
+}
+
+.tech-stat {
+  min-width: 118px;
+  padding: 10px 14px;
+  border: 1px solid rgba(119, 235, 255, 0.22);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(24, 39, 104, 0.78), rgba(7, 16, 52, 0.72));
+  box-shadow: inset 0 0 18px rgba(32, 216, 238, 0.08);
+}
+
+.tech-stat span,
+.fighter-hud span {
+  display: block;
+  color: rgba(245, 251, 255, 0.72);
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.tech-stat strong {
+  display: block;
+  margin-top: 3px;
+  color: #ffdf55;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.battle-exit {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 2px rgba(119, 235, 255, 0.18);
+}
+
+.battle-arena {
+  min-height: 650px;
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) minmax(300px, 1.2fr) minmax(220px, 0.9fr);
+  gap: clamp(12px, 2vw, 22px);
+  align-items: stretch;
+}
+
+.fighter-panel,
+.battle-center {
+  position: relative;
+  border: 1px solid rgba(119, 235, 255, 0.18);
+  border-radius: 22px;
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.1), transparent 30%),
+    rgba(4, 12, 39, 0.68);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 34px rgba(32, 216, 238, 0.06),
+    0 24px 58px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(12px);
+  animation: panelRise 620ms ease-out both;
+}
+
+.battle-center {
+  animation-delay: 80ms;
+}
+
+.enemy-panel {
+  animation-delay: 140ms;
+}
+
+.fighter-panel {
+  min-height: 560px;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  padding: 16px;
+}
+
+.fighter-hud {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.fighter-hud strong {
+  color: #ffffff;
+  font-size: 1.15rem;
+  text-shadow: 0 0 18px rgba(32, 216, 238, 0.32);
+}
+
+.hp-track {
+  height: 13px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(2, 5, 19, 0.7);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.hp-track span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 300ms ease;
+}
+
+#roboHpBar {
+  background: linear-gradient(90deg, #36f0ff, #4cff9a);
+  box-shadow: 0 0 18px rgba(54, 240, 255, 0.52);
+  animation: hpGlow 2s ease-in-out infinite;
+}
+
+.enemy-hp span {
+  background: linear-gradient(90deg, #ff4f61, #ffdf55);
+  box-shadow: 0 0 18px rgba(255, 79, 97, 0.5);
+  animation: hpGlow 1.8s ease-in-out infinite;
+}
+
+.math-enemy *,
+.math-enemy::before,
+.math-enemy::after {
+  position: absolute;
+  content: "";
+}
+
+.battle-center {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 16px;
+  padding: 16px;
+}
+
+.battle-character {
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.battle-character .robot-wrap .brazo-der {
+  animation: roboBattleArm 1.8s ease-in-out infinite;
+}
+
+.battle-character .robot-wrap .luz::before {
+  animation: roboBattleLight 1.15s ease-in-out infinite;
+}
+
+.battle-character.attacking {
+  animation: roboAttack 520ms ease-out;
+  filter: drop-shadow(0 0 34px rgba(255, 223, 85, 0.5));
+}
+
+.battle-character.attacking .robot-wrap .brazo-der {
+  animation: roboArmShoot 520ms ease-out;
+}
+
+.battle-character.attacking .robot-wrap .cara {
+  box-shadow:
+    inset 0 4px 10px rgba(255, 255, 255, 0.18),
+    inset 0 -10px 14px rgba(0, 21, 92, 0.18),
+    0 0 26px rgba(255, 223, 85, 0.54);
+}
+
+.battle-message {
+  min-height: 58px;
+  display: grid;
+  place-items: center;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 223, 85, 0.2);
+  border-radius: 16px;
+  color: #ffffff;
+  background: linear-gradient(90deg, rgba(255, 223, 85, 0.12), rgba(32, 216, 238, 0.12));
+  font-weight: 900;
+  text-align: center;
+  box-shadow: inset 0 0 24px rgba(255, 223, 85, 0.06);
+  animation: messageIdle 2.8s ease-in-out infinite;
+}
+
+.battle-message.pulse {
+  animation: messagePulse 420ms ease;
+}
+
+.enemy-countdown {
+  display: grid;
+  place-items: center;
+  min-height: 38px;
+  border: 1px solid rgba(32, 216, 238, 0.22);
+  border-radius: 999px;
+  color: #ffdf55;
+  background: rgba(32, 216, 238, 0.08);
+  font-size: 0.95rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  box-shadow: inset 0 0 18px rgba(32, 216, 238, 0.08), 0 0 22px rgba(255, 223, 85, 0.08);
+  animation: countdownPulse 2s ease-in-out infinite;
+}
+
+.laser-lane {
+  position: relative;
+  min-height: 120px;
+  overflow: hidden;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 14% 52%, rgba(32, 216, 238, 0.22), transparent 18%),
+    radial-gradient(circle at 82% 48%, rgba(255, 79, 97, 0.2), transparent 18%),
+    linear-gradient(90deg, rgba(32, 216, 238, 0.08), rgba(255, 223, 85, 0.06), rgba(255, 79, 97, 0.08));
+}
+
+.laser-lane::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(119, 235, 255, 0.42), transparent);
+  animation: lanePulse 1.6s ease-in-out infinite;
+}
+
+.laser-shot {
+  position: absolute;
+  left: 8%;
+  top: calc(50% - 8px);
+  width: 80px;
+  height: 16px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffffff, #20d8ee, #ffdf55);
+  box-shadow: 0 0 24px rgba(32, 216, 238, 0.88), 0 0 44px rgba(255, 223, 85, 0.45);
+  animation: laserFly 480ms ease-out forwards;
+}
+
+.operation-card {
+  display: grid;
+  gap: 14px;
+  padding: clamp(14px, 2vw, 22px);
+  border: 1px solid rgba(119, 235, 255, 0.2);
+  border-radius: 20px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.12), transparent 32%),
+    rgba(5, 13, 45, 0.72);
+  animation: holoCard 3.4s ease-in-out infinite;
+}
+
+.battle-operation {
+  display: grid;
+  place-items: center;
+  min-height: 96px;
+  border-radius: 18px;
+  color: #071034;
+  background:
+    radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.92) 0 12%, transparent 13%),
+    linear-gradient(145deg, #ffef7a, #20d8ee 55%, #7667ff);
+  font-size: clamp(2.5rem, 7vw, 5.2rem);
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 0 3px 0 rgba(255, 255, 255, 0.28);
+  box-shadow: 0 14px 0 rgba(7, 16, 52, 0.2), 0 0 34px rgba(32, 216, 238, 0.28);
+  animation: operationPulse 2.6s ease-in-out infinite;
+}
+
+.battle-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.battle-option {
+  min-height: 76px;
+  border: 0;
+  border-radius: 18px;
+  color: #ffffff;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.22), transparent 34%),
+    linear-gradient(145deg, #2036b7, #13c8e8);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.28),
+    0 10px 0 rgba(8, 14, 55, 0.34),
+    0 0 22px rgba(32, 216, 238, 0.2);
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease;
+  animation: optionFloat 2.8s ease-in-out infinite;
+}
+
+.battle-option:nth-child(2) {
+  animation-delay: -0.35s;
+}
+
+.battle-option:nth-child(3) {
+  animation-delay: -0.7s;
+}
+
+.battle-option:nth-child(4) {
+  animation-delay: -1.05s;
+}
+
+.battle-option:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.36),
+    0 14px 0 rgba(8, 14, 55, 0.32),
+    0 0 32px rgba(32, 216, 238, 0.34);
+}
+
+.battle-option.correct {
+  background: linear-gradient(145deg, #4cff9a, #20d8ee);
+  color: #071034;
+  animation: correctPop 440ms ease;
+}
+
+.battle-option.wrong {
+  background: linear-gradient(145deg, #ff7d88, #ff3552);
+  animation: wrongBuzz 360ms ease;
+}
+
+.enemy-stage {
+  display: grid;
+  place-items: center;
+  min-height: 360px;
+}
+
+.math-enemy {
+  position: relative;
+  width: 190px;
+  height: 190px;
+  filter: drop-shadow(0 0 28px rgba(255, 79, 97, 0.36));
+  animation: enemyFloat 2.4s ease-in-out infinite, enemyGlow 2s ease-in-out infinite;
+}
+
+.math-enemy.hit {
+  animation: enemyHit 520ms ease;
+}
+
+.math-enemy.spawn {
+  animation: enemySpawn 520ms ease-out;
+}
+
+.math-enemy.attacking {
+  animation: enemyAttack 520ms ease-out;
+}
+
+.math-enemy.virus {
+  border-radius: 42% 58% 48% 52%;
+  background:
+    radial-gradient(circle at 34% 38%, #ffffff 0 7%, #10164d 8% 13%, transparent 14%),
+    radial-gradient(circle at 66% 38%, #ffffff 0 7%, #10164d 8% 13%, transparent 14%),
+    radial-gradient(circle at 50% 64%, #071034 0 12%, transparent 13%),
+    linear-gradient(145deg, #ff7d88, #8d75dd);
+}
+
+.math-enemy.virus span {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ffdf55;
+  box-shadow: 0 0 16px rgba(255, 223, 85, 0.75);
+  animation: enemyNodePulse 1.2s ease-in-out infinite;
+}
+
+.math-enemy.virus span:nth-child(1) {
+  left: -12px;
+  top: 34px;
+}
+
+.math-enemy.virus span:nth-child(2) {
+  right: -12px;
+  top: 68px;
+}
+
+.math-enemy.virus span:nth-child(3) {
+  left: 80px;
+  bottom: -14px;
+}
+
+.math-enemy.slime {
+  border-radius: 48% 52% 34% 34%;
+  background:
+    radial-gradient(circle at 32% 36%, #ffffff 0 8%, #071034 9% 15%, transparent 16%),
+    radial-gradient(circle at 65% 36%, #ffffff 0 8%, #071034 9% 15%, transparent 16%),
+    linear-gradient(145deg, #20d8ee, #4cff9a 54%, #7667ff);
+}
+
+.math-enemy.slime::before {
+  left: 28px;
+  right: 28px;
+  bottom: 44px;
+  height: 14px;
+  border-radius: 0 0 999px 999px;
+  background: #071034;
+}
+
+.math-enemy.drone {
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at 35% 45%, #ffffff 0 9%, #ffdf55 10% 16%, transparent 17%),
+    radial-gradient(circle at 65% 45%, #ffffff 0 9%, #ffdf55 10% 16%, transparent 17%),
+    linear-gradient(145deg, #c9d6ff, #7667ff 52%, #1c276f);
+  transform: rotate(45deg);
+}
+
+.math-enemy.drone span {
+  display: none;
+}
+
+.math-enemy.drone::before,
+.math-enemy.drone::after {
+  top: 74px;
+  width: 70px;
+  height: 28px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #20d8ee, #ffffff);
+  box-shadow: 0 0 18px rgba(32, 216, 238, 0.6);
+}
+
+.math-enemy.drone::before {
+  left: -58px;
+}
+
+.math-enemy.drone::after {
+  right: -58px;
+}
+
+.math-enemy.cube {
+  border-radius: 28px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.28), transparent 28%),
+    linear-gradient(145deg, #ffdf55, #ff7d88 42%, #7667ff);
+  box-shadow:
+    inset -18px -18px 0 rgba(7, 16, 52, 0.16),
+    0 0 30px rgba(255, 223, 85, 0.32);
+}
+
+.math-enemy.cube::before {
+  left: 43px;
+  top: 52px;
+  width: 104px;
+  height: 64px;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 30% 45%, #071034 0 11%, transparent 12%),
+    radial-gradient(circle at 70% 45%, #071034 0 11%, transparent 12%),
+    linear-gradient(rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.08));
+  animation: cubeFace 1.8s ease-in-out infinite;
+}
+
+.battle-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.battle-particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #20d8ee;
+  box-shadow: 0 0 16px currentColor;
+  animation: particlePop 760ms ease-out forwards;
+}
+
+.battle-particle.hit {
+  color: #ffdf55;
+  background: #ffdf55;
+}
+
+.battle-particle.damage {
+  color: #ff4f61;
+  background: #ff4f61;
+}
+
+.battle-particle.burst {
+  color: #4cff9a;
+  background: #4cff9a;
+}
+
+.battle-arena.shake {
+  animation: screenShake 420ms ease;
+}
+
+@keyframes gridDrift {
+  to { background-position: 44px 44px; }
+}
+
+@keyframes battleEnter {
+  from { transform: translateY(18px) scale(0.98); opacity: 0; filter: saturate(0.7); }
+  to { transform: translateY(0) scale(1); opacity: 1; filter: saturate(1); }
+}
+
+@keyframes battleHue {
+  50% { filter: hue-rotate(14deg) brightness(1.08); }
+}
+
+@keyframes energyOrb {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.62; }
+  50% { transform: translate(38px, 22px) scale(1.18); opacity: 0.92; }
+}
+
+@keyframes panelRise {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes hpGlow {
+  50% { filter: brightness(1.24); }
+}
+
+@keyframes scanLine {
+  0%, 100% { transform: translateY(0); opacity: 0.25; }
+  50% { transform: translateY(350px); opacity: 0.85; }
+}
+
+@keyframes holoFloat {
+  50% { transform: translateY(18px) rotate(24deg); }
+}
+
+@keyframes pulseGlow {
+  50% { filter: brightness(1.22); transform: scale(1.04); }
+}
+
+@keyframes roboBattleArm {
+  0%, 100% { transform: rotate(-12deg); }
+  50% { transform: rotate(-24deg) translateY(-2px); }
+}
+
+@keyframes roboBattleLight {
+  0%, 100% { filter: brightness(1); transform: scale(1); }
+  50% { filter: brightness(1.35); transform: scale(1.12); }
+}
+
+@keyframes roboCelebrate {
+  0%, 100% { transform: scale(var(--robo-scale)) rotate(0deg); }
+  25% { transform: scale(calc(var(--robo-scale) + 0.04)) rotate(-4deg); }
+  75% { transform: scale(calc(var(--robo-scale) + 0.04)) rotate(4deg); }
+}
+
+@keyframes roboAttack {
+  0% { transform: translateX(0) scale(1); }
+  38% { transform: translateX(18px) scale(1.04); }
+  100% { transform: translateX(0) scale(1); }
+}
+
+@keyframes roboArmShoot {
+  0% { transform: rotate(-12deg); }
+  38% { transform: rotate(-58deg) translate(14px, -8px); }
+  100% { transform: rotate(-12deg); }
+}
+
+@keyframes roboDamage {
+  0%, 100% { transform: translateX(0); filter: drop-shadow(0 0 22px rgba(32, 216, 238, 0.35)); }
+  25% { transform: translateX(-10px); filter: drop-shadow(0 0 30px rgba(255, 79, 97, 0.8)); }
+  50% { transform: translateX(10px); }
+  75% { transform: translateX(-7px); }
+}
+
+@keyframes enemyFloat {
+  50% { transform: translateY(-14px) rotate(-2deg); }
+}
+
+@keyframes enemyGlow {
+  50% { filter: drop-shadow(0 0 38px rgba(255, 223, 85, 0.42)); }
+}
+
+@keyframes enemyHit {
+  0% { transform: translateX(0) scale(1); filter: brightness(1); }
+  35% { transform: translateX(18px) scale(1.12); filter: brightness(1.9) saturate(1.4); }
+  70% { transform: translateX(-8px) scale(0.96); }
+  100% { transform: translateX(0) scale(1); }
+}
+
+@keyframes enemyAttack {
+  0% { transform: translateX(0) scale(1); }
+  42% { transform: translateX(-26px) scale(1.08) rotate(-4deg); }
+  100% { transform: translateX(0) scale(1); }
+}
+
+@keyframes enemySpawn {
+  from { transform: translateY(40px) scale(0.35); opacity: 0; filter: blur(8px); }
+  to { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
+}
+
+@keyframes enemyNodePulse {
+  50% { transform: scale(1.25); filter: brightness(1.25); }
+}
+
+@keyframes cubeFace {
+  50% { transform: translateY(-3px); filter: brightness(1.2); }
+}
+
+@keyframes messageIdle {
+  50% { border-color: rgba(32, 216, 238, 0.28); }
+}
+
+@keyframes messagePulse {
+  50% { transform: scale(1.025); box-shadow: 0 0 28px rgba(255, 223, 85, 0.18); }
+}
+
+@keyframes countdownPulse {
+  50% { transform: translateY(-2px); border-color: rgba(255, 223, 85, 0.34); }
+}
+
+@keyframes lanePulse {
+  50% { opacity: 0.4; transform: scaleX(0.88); }
+}
+
+@keyframes holoCard {
+  50% { box-shadow: inset 0 0 28px rgba(32, 216, 238, 0.1), 0 0 28px rgba(118, 103, 255, 0.08); }
+}
+
+@keyframes operationPulse {
+  50% { transform: translateY(-3px); box-shadow: 0 17px 0 rgba(7, 16, 52, 0.18), 0 0 42px rgba(255, 223, 85, 0.24); }
+}
+
+@keyframes laserFly {
+  0% { left: 8%; transform: scaleX(0.65); opacity: 0; }
+  18% { opacity: 1; }
+  100% { left: 78%; transform: scaleX(1.45); opacity: 0; }
+}
+
+@keyframes optionFloat {
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes correctPop {
+  50% { transform: translateY(-6px) scale(1.06); filter: brightness(1.2); }
+}
+
+@keyframes wrongBuzz {
+  20%, 60% { transform: translateX(-7px); }
+  40%, 80% { transform: translateX(7px); }
+}
+
+@keyframes particlePop {
+  to {
+    transform: translate(var(--dx), var(--dy)) scale(0.15);
+    opacity: 0;
+  }
+}
+
+@keyframes screenShake {
+  20%, 60% { transform: translateX(-7px); }
+  40%, 80% { transform: translateX(7px); }
+}
+
+@media (max-width: 980px) {
+  .battle-screen {
+    min-height: auto;
+  }
+
+  .battle-topbar,
+  .battle-stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+  }
+
+  .battle-arena {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .fighter-panel {
+    min-height: 390px;
+  }
+
+  .enemy-stage {
+    min-height: 280px;
+  }
+
+  .battle-character {
+    width: 210px;
+    min-width: 210px;
+    height: 268px;
+  }
+
+  .battle-character .robot-wrap {
+    --robo-scale: 0.9;
+  }
+}
+
+@media (max-width: 560px) {
+  .battle-screen {
+    padding: 8px;
+    border-radius: 16px;
+  }
+
+  .battle-topbar,
+  .fighter-panel,
+  .battle-center {
+    border-radius: 16px;
+  }
+
+  .tech-stat {
+    min-width: 0;
+  }
+
+  .battle-operation {
+    min-height: 82px;
+  }
+
+  .battle-options {
+    gap: 9px;
+  }
+
+  .battle-option {
+    min-height: 64px;
+    border-radius: 14px;
+  }
+
+  .battle-character {
+    width: 188px;
+    min-width: 188px;
+    height: 232px;
+  }
+
+  .battle-character .robot-wrap {
+    --robo-scale: 0.74;
+  }
+
+  .math-enemy {
+    width: 158px;
+    height: 158px;
+  }
+}

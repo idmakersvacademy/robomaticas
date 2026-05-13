@@ -82,9 +82,71 @@
             <p class="eyebrow">Menu de misiones</p>
             <h2>Elige tu reto</h2>
           </div>
-          <button class="ghost-btn" id="backStartButton">Inicio</button>
+          <div class="screen-actions">
+            <button class="ghost-btn" id="backStartButton">Inicio</button>
+          </div>
         </header>
         <div class="level-grid" id="levelGrid"></div>
+      </section>
+
+      <section class="screen galactic-tables-screen" id="tablesScreen">
+        <div class="tables-stars" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <header class="tables-topbar">
+          <div>
+            <p class="eyebrow">Zona de practica</p>
+            <h2>TABLAS GALACTICAS</h2>
+            <p>Explora cada tabla con grupos, criaturas y portales.</p>
+          </div>
+          <button class="ghost-btn" id="tablesBackButton">Regresar</button>
+        </header>
+
+        <section class="tables-progress-panel" aria-label="Progreso de tablas">
+          <div>
+            <strong id="tablesProgressText">0/9</strong>
+            <span>tablas completadas</span>
+          </div>
+          <div class="tables-progress-track"><span id="tablesProgressBar"></span></div>
+          <div class="tables-total-stars" id="tablesTotalStars">☆☆☆</div>
+        </section>
+
+        <section class="tables-select-view" id="tablesSelectView">
+          <div class="tables-choice-header">
+            <p class="eyebrow">Elige tu tabla</p>
+            <h3>¿Que tabla quieres practicar?</h3>
+          </div>
+          <div class="tables-grid" id="tablesGrid"></div>
+        </section>
+
+        <section class="table-detail-view hidden" id="tableDetailView">
+          <header class="table-detail-header">
+            <button class="ghost-btn" id="tableBackButton">Todas las tablas</button>
+            <div>
+              <p class="eyebrow" id="tableDetailEyebrow">Tabla del 1</p>
+              <h3 id="tableDetailTitle">Portal del 1</h3>
+            </div>
+            <button class="primary-btn" id="tableCompleteButton" disabled>Progreso 0/9</button>
+          </header>
+          <div class="table-detail-layout">
+            <aside class="table-orbit-card" id="tableOrbitCard" aria-hidden="true">
+              <div class="table-orbit-planet"></div>
+              <div class="table-orbit-creature"></div>
+            </aside>
+            <section class="table-play-card" aria-label="Practica de tabla">
+              <div class="table-play-progress">
+                <span id="tableRoundText">Reto 1 de 9</span>
+                <div><span id="tableRoundBar"></span></div>
+              </div>
+              <div class="table-operations" id="tableOperations"></div>
+              <div class="table-answer-options" id="tableAnswerOptions"></div>
+              <p class="table-practice-feedback" id="tablePracticeFeedback">Elige la respuesta correcta.</p>
+            </section>
+          </div>
+        </section>
       </section>
 
       <section class="screen" id="gameScreen">
@@ -255,11 +317,11 @@
           </div>
           <div class="factory-stats">
             <div class="tech-stat">
-              <span>Energia</span>
+              <span>Estrellas</span>
               <strong id="factoryScoreText">0</strong>
             </div>
             <div class="tech-stat">
-              <span>Combo</span>
+              <span>Vidas</span>
               <strong id="factoryComboText">x0</strong>
             </div>
             <div class="tech-stat">
@@ -295,6 +357,7 @@
                 <div class="brazo-der"></div>
               </div>
             </div>
+            <div class="clone-round-brief" id="cloneRoundBrief">El sistema espera tu ayuda!</div>
             <div class="medal-rack" id="factoryMedals" aria-label="Medallas">
               <span></span>
               <span></span>
@@ -347,7 +410,6 @@
                 <span></span>
                 <span></span>
               </div>
-              <div class="clone-round-brief" id="cloneRoundBrief">El sistema espera tu ayuda!</div>
               <div class="clone-equation" id="cloneEquation">2 x 3 = ?</div>
               <div class="clone-groups" id="cloneGroups"></div>
             </div>
@@ -361,6 +423,7 @@
             </div>
             <div class="factory-options" id="factoryOptions"></div>
             <button class="ghost-btn lab-help-btn" id="labHelpButton">Ayuda visual</button>
+            <button class="ghost-btn factory-tables-btn" id="factoryTablesButton">Tablas Galacticas</button>
             <button class="primary-btn" id="factoryStartButton">Iniciar Laboratorio</button>
           </section>
         </div>
@@ -405,6 +468,15 @@
       </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="js/datos/niveles.js"></script>
+    <script src="js/nucleo/estado.js"></script>
+    <script src="js/nucleo/aventura.js"></script>
+    <script src="js/niveles/resta.js"></script>
+    <script src="js/niveles/laboratorio.js"></script>
+    <script src="js/niveles/suma.js"></script>
+    <script src="js/niveles/multiplicacion.js"></script>
+    <script src="js/niveles/tablas-galacticas.js"></script>
+    <script src="js/nucleo/compartido.js"></script>
+    <script src="js/inicio.js"></script>
   </body>
 </html>

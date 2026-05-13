@@ -1,0 +1,2299 @@
+/* Numeronautas: Laboratorio de Clones */
+.factory-screen {
+  position: relative;
+  min-height: min(920px, calc(100vh - 56px));
+  overflow: hidden;
+  padding: clamp(12px, 2vw, 22px);
+  border-radius: 24px;
+  color: #f7fbff;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(255, 194, 60, 0.22) 0 14%, transparent 15%),
+    radial-gradient(circle at 82% 18%, rgba(32, 216, 238, 0.18) 0 18%, transparent 19%),
+    linear-gradient(135deg, #07101f 0%, #14213a 46%, #2a2633 100%);
+  box-shadow: inset 0 0 0 2px rgba(255, 199, 74, 0.13), 0 28px 80px rgba(7, 12, 24, 0.34);
+  animation: battleEnter 520ms ease-out both;
+}
+
+.clone-lab-screen {
+  background:
+    radial-gradient(circle at 20% 15%, rgba(32, 216, 238, 0.24) 0 14%, transparent 15%),
+    radial-gradient(circle at 82% 18%, rgba(118, 103, 255, 0.22) 0 18%, transparent 19%),
+    radial-gradient(circle at 50% 95%, rgba(76, 255, 154, 0.14) 0 20%, transparent 21%),
+    linear-gradient(135deg, #050a1d 0%, #10164d 48%, #1f1148 100%);
+}
+
+.factory-bg,
+.factory-bg span {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.factory-bg {
+  background:
+    linear-gradient(rgba(255, 199, 74, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(32, 216, 238, 0.07) 1px, transparent 1px);
+  background-size: 52px 52px;
+  animation: factoryGrid 10s linear infinite;
+}
+
+.factory-bg span:nth-child(1) {
+  top: 13%;
+  height: 8px;
+  background: linear-gradient(90deg, transparent, rgba(255, 199, 74, 0.5), transparent);
+  animation: factoryScan 4s ease-in-out infinite;
+}
+
+.factory-bg span:nth-child(2) {
+  left: 8%;
+  top: 20%;
+  width: 260px;
+  height: 260px;
+  border: 2px dashed rgba(32, 216, 238, 0.22);
+  border-radius: 50%;
+  animation: spin 16s linear infinite;
+}
+
+.factory-bg span:nth-child(3) {
+  inset: auto -8% 0;
+  height: 32%;
+  background:
+    linear-gradient(135deg, transparent 0 42%, rgba(255, 199, 74, 0.12) 43% 46%, transparent 47%),
+    linear-gradient(180deg, transparent, rgba(5, 9, 18, 0.84));
+}
+
+.factory-topbar,
+.factory-layout {
+  position: relative;
+  z-index: 1;
+}
+
+.factory-topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 199, 74, 0.18);
+  border-radius: 18px;
+  background: rgba(8, 16, 31, 0.72);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 18px 46px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(14px);
+}
+
+.factory-topbar h2 {
+  color: #ffffff;
+  font-size: clamp(1.35rem, 3vw, 2.35rem);
+  text-shadow: 0 0 24px rgba(255, 184, 45, 0.32);
+}
+
+.clone-lab-screen .factory-topbar h2 {
+  text-shadow: 0 0 24px rgba(32, 216, 238, 0.46), 0 0 34px rgba(118, 103, 255, 0.26);
+}
+
+.factory-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  align-items: center;
+}
+
+.factory-exit {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 2px rgba(255, 199, 74, 0.18);
+}
+
+.factory-layout {
+  min-height: 690px;
+  display: grid;
+  grid-template-columns: minmax(150px, 0.52fr) minmax(480px, 1.75fr) minmax(250px, 0.72fr);
+  gap: clamp(10px, 1.4vw, 16px);
+  align-items: stretch;
+}
+
+.factory-robo-panel,
+.factory-floor,
+.factory-control {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 199, 74, 0.18);
+  border-radius: 22px;
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.1), transparent 28%),
+    rgba(6, 14, 27, 0.76);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 0 34px rgba(255, 199, 74, 0.05), 0 24px 58px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(12px);
+  animation: panelRise 620ms ease-out both;
+}
+
+.factory-floor {
+  min-height: 640px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 12px;
+  padding: 14px;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(32, 216, 238, 0.16), transparent 22%),
+    linear-gradient(180deg, rgba(13, 24, 48, 0.86), rgba(9, 14, 24, 0.82));
+}
+
+.clone-lab-floor {
+  background:
+    radial-gradient(circle at 18% 18%, rgba(76, 255, 154, 0.16), transparent 20%),
+    radial-gradient(circle at 78% 22%, rgba(32, 216, 238, 0.18), transparent 18%),
+    linear-gradient(180deg, rgba(9, 18, 52, 0.9), rgba(5, 9, 31, 0.88));
+}
+
+.factory-control,
+.factory-robo-panel {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+
+.factory-robo-panel {
+  grid-template-rows: auto 1fr auto;
+}
+
+.factory-character {
+  align-self: center;
+  justify-self: center;
+  width: 168px;
+  min-width: 168px;
+  height: 224px;
+  filter: drop-shadow(0 0 24px rgba(32, 216, 238, 0.24));
+}
+
+.factory-character .robot-wrap {
+  --robo-scale: 0.72;
+}
+
+.factory-character .robot-wrap.celebrating {
+  animation: roboCelebrate 720ms ease-in-out infinite;
+}
+
+.factory-layout.machine-on .factory-character .robot-wrap .luz::before {
+  background: linear-gradient(145deg, #ffffff, #ffdf55 44%, #20f316);
+  box-shadow: 0 0 24px rgba(255, 223, 85, 0.7);
+}
+
+.factory-layout.factory-error .factory-character .robot-wrap .luz::before {
+  background: linear-gradient(145deg, #ffb0b0, #ff4f61);
+  box-shadow: 0 0 18px rgba(255, 79, 97, 0.65);
+}
+
+.medal-rack {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.medal-rack span {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #39445c, #172033);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.08);
+}
+
+.medal-rack span.earned {
+  background: radial-gradient(circle at 35% 28%, #ffffff 0 10%, transparent 11%), linear-gradient(145deg, #fff06d, #ff9f2f);
+  box-shadow: 0 0 18px rgba(255, 199, 74, 0.55);
+  animation: correctPop 520ms ease;
+}
+
+.factory-depth {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.energy-pipe {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  height: 16px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(32, 216, 238, 0.12), rgba(255, 199, 74, 0.7), rgba(32, 216, 238, 0.12));
+  box-shadow: 0 0 22px rgba(255, 199, 74, 0.28);
+  animation: pipeFlow 2s linear infinite;
+}
+
+.clone-lab-screen .energy-pipe {
+  background: linear-gradient(90deg, rgba(118, 103, 255, 0.12), rgba(32, 216, 238, 0.72), rgba(76, 255, 154, 0.72), rgba(118, 103, 255, 0.12));
+  box-shadow: 0 0 24px rgba(32, 216, 238, 0.34);
+}
+
+.pipe-one { top: 16%; }
+.pipe-two { bottom: 28%; animation-delay: -0.8s; }
+
+.soft-smoke {
+  position: absolute;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.18), transparent 64%);
+  filter: blur(4px);
+  animation: smokeFloat 5s ease-in-out infinite;
+}
+
+.clone-lab-screen .soft-smoke {
+  background: radial-gradient(circle, rgba(168, 255, 242, 0.2), transparent 64%);
+}
+
+.smoke-one { left: 12%; bottom: 24%; }
+.smoke-two { right: 14%; top: 22%; animation-delay: -2s; }
+
+.floating-clone {
+  position: absolute;
+  width: 58px;
+  height: 72px;
+  border-radius: 28px 28px 20px 20px;
+  background:
+    radial-gradient(circle at 36% 36%, #ffffff 0 8%, #071034 9% 14%, transparent 15%),
+    radial-gradient(circle at 64% 36%, #ffffff 0 8%, #071034 9% 14%, transparent 15%),
+    linear-gradient(145deg, #f8fdff, #20d8ee 54%, #7667ff);
+  box-shadow: 0 0 24px rgba(32, 216, 238, 0.4);
+  animation: cloneFloat 3.8s ease-in-out infinite;
+}
+
+.clone-one {
+  left: 9%;
+  top: 32%;
+}
+
+.clone-two {
+  right: 9%;
+  bottom: 26%;
+  width: 48px;
+  height: 62px;
+  animation-delay: -1.5s;
+}
+
+.scanner-drone {
+  position: absolute;
+  right: 15%;
+  top: 12%;
+  width: 88px;
+  height: 34px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 22% 50%, #ffffff 0 9%, transparent 10%),
+    radial-gradient(circle at 78% 50%, #ffffff 0 9%, transparent 10%),
+    linear-gradient(145deg, #20d8ee, #7667ff);
+  box-shadow: 0 0 24px rgba(32, 216, 238, 0.42);
+  animation: droneDeliver 5s ease-in-out infinite;
+}
+
+.scanner-drone::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 100%;
+  height: 70px;
+  clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
+  background: linear-gradient(180deg, rgba(32, 216, 238, 0.36), transparent);
+  animation: scanFade 1.5s ease-in-out infinite;
+}
+
+.main-kitchen-scene {
+  position: relative;
+  z-index: 2;
+  min-height: 350px;
+  display: grid;
+  grid-template-columns: 1fr minmax(220px, 0.9fr);
+  gap: 18px;
+  align-items: end;
+  padding: 18px;
+  overflow: hidden;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 22% 20%, rgba(255, 211, 71, 0.16), transparent 20%),
+    radial-gradient(circle at 76% 18%, rgba(32, 216, 238, 0.18), transparent 18%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(7, 11, 34, 0.18));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 0 36px rgba(255, 79, 97, 0.06);
+}
+
+.space-window {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 18px;
+  height: 126px;
+  overflow: hidden;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 18% 34%, #ffffff 0 1.5%, transparent 2%),
+    radial-gradient(circle at 48% 20%, #ffffff 0 1.2%, transparent 1.7%),
+    radial-gradient(circle at 78% 52%, #ffffff 0 1.4%, transparent 1.9%),
+    linear-gradient(135deg, #070b22, #1d1654 58%, #351449);
+  box-shadow: inset 0 0 0 3px rgba(32, 216, 238, 0.16), 0 18px 28px rgba(0, 0, 0, 0.16);
+}
+
+.space-window span {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.space-window span:nth-child(1) {
+  right: 10%;
+  top: 20%;
+  width: 54px;
+  height: 54px;
+  background: radial-gradient(circle at 30% 25%, #fff7ad, #ff9f2f);
+  box-shadow: 0 0 28px rgba(255, 159, 47, 0.5);
+}
+
+.space-window span:nth-child(2) {
+  left: 15%;
+  bottom: 16%;
+  width: 90px;
+  height: 24px;
+  background: linear-gradient(90deg, transparent, rgba(32, 216, 238, 0.62), transparent);
+  animation: cometSlide 4.8s ease-in-out infinite;
+}
+
+.space-window span:nth-child(3) {
+  left: 44%;
+  top: 44%;
+  width: 14px;
+  height: 14px;
+  background: #20d8ee;
+  box-shadow: 0 0 18px rgba(32, 216, 238, 0.8);
+  animation: starBlink 1.8s ease-in-out infinite;
+}
+
+.alien-line {
+  position: absolute;
+  z-index: 5;
+  right: 22px;
+  bottom: 22px;
+  display: flex;
+  gap: 14px;
+}
+
+.alien-mini {
+  width: 54px;
+  height: 64px;
+  border-radius: 50% 50% 34% 34%;
+  background:
+    radial-gradient(circle at 35% 38%, #ffffff 0 8%, #10192b 9% 15%, transparent 16%),
+    radial-gradient(circle at 65% 38%, #ffffff 0 8%, #10192b 9% 15%, transparent 16%),
+    linear-gradient(145deg, #62c96f, #20d8ee 56%, #7667ff);
+  box-shadow: 0 0 18px rgba(32, 216, 238, 0.28);
+  animation: alienWiggle 2s ease-in-out infinite;
+}
+
+.alien-mini.second {
+  background:
+    radial-gradient(circle at 35% 38%, #ffffff 0 8%, #10192b 9% 15%, transparent 16%),
+    radial-gradient(circle at 65% 38%, #ffffff 0 8%, #10192b 9% 15%, transparent 16%),
+    linear-gradient(145deg, #ffdf55, #ff4f61 58%, #7667ff);
+  animation-delay: -0.6s;
+}
+
+.machine-stage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(92px, 1fr));
+  gap: 8px;
+  align-content: center;
+}
+
+.machine-card {
+  position: relative;
+  min-height: 124px;
+  display: grid;
+  place-items: center;
+  gap: 5px;
+  padding: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 199, 74, 0.16);
+  border-radius: 18px;
+  color: rgba(247, 251, 255, 0.72);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 30%), linear-gradient(145deg, rgba(29, 39, 58, 0.88), rgba(7, 13, 25, 0.9));
+  box-shadow: inset 0 0 20px rgba(32, 216, 238, 0.04);
+  transition: transform 200ms ease, filter 200ms ease, box-shadow 200ms ease;
+}
+
+.machine-card.active {
+  color: #ffffff;
+  transform: translateY(-6px);
+  box-shadow: inset 0 0 22px rgba(255, 199, 74, 0.08), 0 0 28px rgba(255, 199, 74, 0.16);
+}
+
+.machine-card.powered,
+.machine-card.complete {
+  border-color: rgba(255, 199, 74, 0.5);
+  color: #ffffff;
+  background: radial-gradient(circle at 50% 22%, rgba(255, 199, 74, 0.24), transparent 30%), linear-gradient(145deg, rgba(40, 54, 82, 0.92), rgba(12, 25, 42, 0.92));
+}
+
+.machine-card.locked {
+  filter: grayscale(0.6) brightness(0.72);
+}
+
+.machine-card strong {
+  position: relative;
+  z-index: 2;
+  font-size: 0.74rem;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.machine-light {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #3f4c5f;
+}
+
+.machine-card .power-core,
+.machine-card .worker-bot,
+.machine-card .factory-door-mini,
+.machine-card .mega-engine {
+  width: 58px;
+  height: 58px;
+}
+
+.machine-card.powered .machine-light,
+.machine-card.complete .machine-light,
+.machine-card.active .machine-light {
+  background: #ffdf55;
+  box-shadow: 0 0 18px rgba(255, 223, 85, 0.75);
+  animation: hpGlow 1.2s ease-in-out infinite;
+}
+
+.gear {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #10192b 0 26%, transparent 27%), conic-gradient(from 0deg, #ffca45 0 10%, #6d7788 10% 20%, #ffca45 20% 30%, #6d7788 30% 40%, #ffca45 40% 50%, #6d7788 50% 60%, #ffca45 60% 70%, #6d7788 70% 80%, #ffca45 80% 90%, #6d7788 90%);
+  animation: spin 4s linear infinite;
+}
+
+.gear.small {
+  width: 48px;
+  height: 48px;
+  margin-top: -28px;
+  animation-direction: reverse;
+  animation-duration: 2.8s;
+}
+
+.power-core,
+.worker-bot,
+.factory-door-mini,
+.mega-engine {
+  width: 84px;
+  height: 84px;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #22314d, #0c1425);
+  box-shadow: inset 0 0 0 4px rgba(32, 216, 238, 0.12);
+}
+
+.clone-chamber-mini,
+.clone-reactor-mini,
+.dna-mini,
+.glitch-clone-mini,
+.lab-door-mini {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #17223f, #070d21);
+  box-shadow: inset 0 0 0 4px rgba(32, 216, 238, 0.12), 0 0 18px rgba(32, 216, 238, 0.14);
+}
+
+.clone-chamber-mini {
+  border-radius: 24px 24px 14px 14px;
+  background:
+    radial-gradient(circle at 50% 58%, #ffffff 0 10%, #20d8ee 11% 26%, transparent 27%),
+    linear-gradient(180deg, rgba(168, 255, 242, 0.34), rgba(32, 216, 238, 0.08)),
+    linear-gradient(145deg, #263653, #10192b);
+  animation: chamberPulse 1.8s ease-in-out infinite;
+}
+
+.clone-reactor-mini {
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #ffffff 0 10%, #4cff9a 11% 28%, #20d8ee 29% 52%, #10192b 53%);
+  animation: pulseGlow 1.4s ease-in-out infinite;
+}
+
+.dna-mini {
+  background:
+    radial-gradient(circle at 35% 28%, #4cff9a 0 8%, transparent 9%),
+    radial-gradient(circle at 65% 72%, #20d8ee 0 8%, transparent 9%),
+    linear-gradient(135deg, transparent 0 42%, rgba(255, 255, 255, 0.5) 43% 48%, transparent 49%),
+    linear-gradient(145deg, #17223f, #070d21);
+  animation: dnaTwist 2s ease-in-out infinite;
+}
+
+.glitch-clone-mini {
+  border-radius: 28px 28px 20px 20px;
+  background:
+    radial-gradient(circle at 34% 38%, #ffffff 0 8%, #071034 9% 14%, transparent 15%),
+    radial-gradient(circle at 66% 38%, #ffffff 0 8%, #071034 9% 14%, transparent 15%),
+    linear-gradient(145deg, #ff7d88, #20d8ee 52%, #7667ff);
+  animation: glitchMini 1.3s steps(2, end) infinite;
+}
+
+.lab-door-mini {
+  border-radius: 10px;
+  background:
+    linear-gradient(90deg, transparent 0 43%, rgba(76, 255, 154, 0.9) 44% 56%, transparent 57%),
+    linear-gradient(145deg, #516080, #10192b);
+}
+
+.clone-lab-scene {
+  background:
+    radial-gradient(circle at 22% 20%, rgba(76, 255, 154, 0.14), transparent 20%),
+    radial-gradient(circle at 76% 18%, rgba(32, 216, 238, 0.2), transparent 18%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(7, 11, 34, 0.2));
+  grid-template-columns: minmax(250px, 0.95fr) minmax(260px, 1.05fr);
+  grid-template-rows: auto auto 1fr;
+  align-items: stretch;
+}
+
+.clone-round-brief,
+.clone-equation,
+.clone-groups {
+  position: relative;
+  z-index: 8;
+}
+
+.clone-round-brief {
+  grid-column: 1 / -1;
+  min-height: 42px;
+  display: grid;
+  place-items: center;
+  padding: 8px 14px;
+  border: 1px solid rgba(76, 255, 154, 0.24);
+  border-radius: 999px;
+  color: #f7fbff;
+  background: linear-gradient(90deg, rgba(32, 216, 238, 0.16), rgba(118, 103, 255, 0.12));
+  font-size: clamp(0.86rem, 1.7vw, 1rem);
+  font-weight: 900;
+  text-align: center;
+  box-shadow: inset 0 0 18px rgba(32, 216, 238, 0.08);
+}
+
+.clone-equation {
+  grid-column: 1 / -1;
+  justify-self: center;
+  min-width: min(100%, 280px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  padding: 8px 18px;
+  border-radius: 18px;
+  color: #071034;
+  background: linear-gradient(145deg, #ffffff, #4cff9a 42%, #20d8ee);
+  font-size: clamp(1.4rem, 4vw, 2.6rem);
+  font-weight: 900;
+  box-shadow: 0 10px 0 rgba(7, 16, 52, 0.18), 0 0 28px rgba(32, 216, 238, 0.28);
+  animation: operationPulse 2.4s ease-in-out infinite;
+}
+
+.addition-clone-set {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14px, 1fr));
+  gap: 4px;
+  width: min(130px, 34vw);
+  justify-items: center;
+  padding: 6px 8px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: inset 0 0 0 1px rgba(7, 16, 52, 0.08);
+}
+
+.addition-clone-set .clone-dot {
+  width: 16px;
+  height: 20px;
+}
+
+.fusion-active .addition-clone-set .fusion-clone {
+  animation: cloneFuse 620ms ease-in forwards;
+  animation-delay: var(--fusion-delay);
+}
+
+.fusion-active .addition-clone-set:first-child .fusion-clone {
+  --fusion-x: 92px;
+}
+
+.fusion-active .addition-clone-set:nth-of-type(2) .fusion-clone {
+  --fusion-x: -92px;
+}
+
+.addition-symbol,
+.addition-question {
+  color: #071034;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.addition-question {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: linear-gradient(145deg, #ff7d88, #ff4f61);
+  box-shadow: 0 0 18px rgba(255, 79, 97, 0.34);
+}
+
+.addition-question.revealing,
+.addition-question.revealed {
+  animation: resultReveal 520ms ease both;
+}
+
+.clone-equation.wrong-shake {
+  animation: wrongBuzz 360ms ease;
+  background: linear-gradient(145deg, #ffffff, #ff7d88 48%, #ff3552);
+}
+
+.clone-groups {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+  gap: 10px;
+  align-content: center;
+  min-height: 168px;
+}
+
+.clone-groups.hidden {
+  display: none;
+}
+
+.clone-group-pod {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 8px;
+  min-height: 132px;
+  padding: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(32, 216, 238, 0.26);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(32, 216, 238, 0.08)),
+    rgba(6, 16, 42, 0.72);
+  box-shadow: inset 0 0 22px rgba(32, 216, 238, 0.08), 0 10px 20px rgba(0, 0, 0, 0.14);
+  animation: podAppear 420ms ease both;
+}
+
+.clone-group-pod::before {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 28px;
+  bottom: 12px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(32, 216, 238, 0.18), rgba(76, 255, 154, 0.08));
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.08);
+}
+
+.clone-group-pod strong {
+  position: relative;
+  z-index: 1;
+  color: rgba(247, 251, 255, 0.84);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.clone-mini-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18px, 1fr));
+  gap: 6px;
+  align-content: center;
+  justify-items: center;
+  padding: 4px 8px 8px;
+}
+
+.clone-dot {
+  width: 18px;
+  height: 22px;
+  border-radius: 10px 10px 7px 7px;
+  background:
+    radial-gradient(circle at 35% 38%, #ffffff 0 12%, transparent 13%),
+    radial-gradient(circle at 65% 38%, #ffffff 0 12%, transparent 13%),
+    linear-gradient(145deg, #4cff9a, #20d8ee 58%, #7667ff);
+  box-shadow: 0 0 12px rgba(32, 216, 238, 0.42);
+  animation: cloneDotPulse 1.4s ease-in-out infinite;
+}
+
+.clone-groups.help .clone-dot {
+  outline: 2px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 2px;
+}
+
+.clone-groups.success .clone-group-pod {
+  border-color: rgba(76, 255, 154, 0.72);
+  animation: podSuccess 620ms ease;
+}
+
+.clone-groups.success .clone-dot {
+  animation: cloneLaunch 620ms ease forwards;
+}
+
+.clone-groups.glitch .clone-group-pod {
+  border-color: rgba(255, 79, 97, 0.72);
+  animation: podGlitch 360ms steps(2, end) infinite;
+}
+
+.clone-groups.glitch .clone-dot {
+  background:
+    radial-gradient(circle at 35% 38%, #ffffff 0 12%, transparent 13%),
+    radial-gradient(circle at 65% 38%, #ffffff 0 12%, transparent 13%),
+    linear-gradient(145deg, #ff7d88, #20d8ee 58%, #ff3552);
+}
+
+.power-core {
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0 12%, #ffdf55 13% 34%, #20d8ee 35% 58%, #10192b 59%);
+  animation: pulseGlow 1.5s ease-in-out infinite;
+}
+
+.worker-bot {
+  border-radius: 28px 28px 18px 18px;
+  background: radial-gradient(circle at 35% 40%, #ffffff 0 8%, transparent 9%), radial-gradient(circle at 65% 40%, #ffffff 0 8%, transparent 9%), linear-gradient(145deg, #ffffff, #28a9ff 55%, #1746bf);
+  animation: workerBuild 2s ease-in-out infinite;
+}
+
+.factory-door-mini {
+  border-radius: 14px 14px 6px 6px;
+  background: linear-gradient(90deg, transparent 0 44%, rgba(255, 199, 74, 0.8) 45% 55%, transparent 56%), linear-gradient(145deg, #667385, #1b2536);
+}
+
+.mega-engine {
+  border-radius: 50% 50% 26px 26px;
+  background: radial-gradient(circle at 50% 44%, #ffffff 0 11%, #20d8ee 12% 28%, transparent 29%), linear-gradient(145deg, #ff9f2f, #ffdf55 44%, #1d2f52 45%);
+  animation: engineThump 1.8s ease-in-out infinite;
+}
+
+.factory-control {
+  align-content: start;
+  grid-template-rows: auto auto 1fr auto;
+}
+
+.factory-message {
+  min-height: 48px;
+  display: grid;
+  place-items: center;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 199, 74, 0.2);
+  border-radius: 16px;
+  color: #ffffff;
+  background: linear-gradient(90deg, rgba(255, 199, 74, 0.12), rgba(32, 216, 238, 0.1));
+  font-size: 0.9rem;
+  font-weight: 900;
+  text-align: center;
+}
+
+.factory-message.pulse {
+  animation: messagePulse 420ms ease;
+}
+
+.factory-progress {
+  height: 16px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(2, 5, 19, 0.7);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.factory-progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #20d8ee, #ffdf55, #ff9f2f);
+  box-shadow: 0 0 20px rgba(255, 199, 74, 0.48);
+  transition: width 280ms ease;
+}
+
+.factory-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  align-self: start;
+}
+
+.factory-option {
+  width: 100%;
+  min-height: 54px;
+  border: 0;
+  border-radius: 18px;
+  color: #ffffff;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.22), transparent 34%), linear-gradient(145deg, #ff4f61, #ff9f2f 48%, #1f91ee);
+  box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.26), 0 10px 0 rgba(8, 14, 55, 0.34), 0 0 22px rgba(255, 199, 74, 0.16);
+  font-size: clamp(1.2rem, 3vw, 1.85rem);
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease;
+  animation: optionFloat 2.8s ease-in-out infinite;
+}
+
+.lab-help-btn {
+  min-height: 44px;
+  color: #ffffff;
+  background: rgba(32, 216, 238, 0.1);
+  box-shadow: inset 0 0 0 2px rgba(32, 216, 238, 0.2);
+}
+
+.factory-option:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.36), 0 14px 0 rgba(8, 14, 55, 0.32), 0 0 32px rgba(255, 199, 74, 0.28);
+}
+
+.factory-option.correct {
+  background: linear-gradient(145deg, #4cff9a, #ffdf55);
+  color: #10192b;
+  animation: correctPop 440ms ease;
+}
+
+.factory-option.wrong {
+  background: linear-gradient(145deg, #ff7d88, #ff3552);
+  animation: wrongBuzz 360ms ease;
+}
+
+.factory-layout.machine-on .machine-card.active {
+  animation: machineActivate 620ms ease;
+}
+
+.factory-layout.factory-error {
+  animation: screenShake 420ms ease;
+}
+
+.factory-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.factory-particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  color: #ffdf55;
+  background: currentColor;
+  box-shadow: 0 0 16px currentColor;
+  animation: particlePop 760ms ease-out forwards;
+}
+
+.factory-particle.error { color: #ff4f61; }
+.factory-particle.burst { color: #20d8ee; }
+
+.released-clone {
+  position: absolute;
+  z-index: 6;
+  width: 24px;
+  height: 30px;
+  border-radius: 13px 13px 9px 9px;
+  background:
+    radial-gradient(circle at 35% 38%, #ffffff 0 10%, transparent 11%),
+    radial-gradient(circle at 65% 38%, #ffffff 0 10%, transparent 11%),
+    linear-gradient(145deg, #ffffff, #20d8ee 54%, #7667ff);
+  box-shadow: 0 0 16px rgba(32, 216, 238, 0.56);
+  animation: releasedClone 900ms ease-out forwards;
+}
+
+.released-clone.defective {
+  background:
+    radial-gradient(circle at 35% 38%, #ffffff 0 10%, transparent 11%),
+    radial-gradient(circle at 65% 38%, #ffffff 0 10%, transparent 11%),
+    linear-gradient(145deg, #ff7d88, #20d8ee 54%, #ff3552);
+  animation: defectiveClone 760ms steps(2, end) forwards;
+}
+
+@keyframes factoryGrid { to { background-position: 52px 52px; } }
+@keyframes factoryScan { 0%, 100% { transform: translateY(0); opacity: 0.25; } 50% { transform: translateY(420px); opacity: 0.85; } }
+@keyframes pipeFlow { to { filter: hue-rotate(28deg) brightness(1.2); } }
+@keyframes smokeFloat { 0%, 100% { transform: translateY(0) scale(1); opacity: 0.35; } 50% { transform: translateY(-34px) scale(1.25); opacity: 0.7; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes workerBuild { 50% { transform: translateY(-7px) rotate(-3deg); } }
+@keyframes engineThump { 50% { transform: scale(1.08); filter: brightness(1.22); } }
+@keyframes machineActivate { 0% { transform: translateY(-6px) scale(1); } 50% { transform: translateY(-12px) scale(1.04); filter: brightness(1.35); } 100% { transform: translateY(-6px) scale(1); } }
+@keyframes droneDeliver { 0%, 100% { transform: translateX(0) translateY(0); } 50% { transform: translateX(-26px) translateY(8px); } }
+@keyframes alienWiggle { 0%, 100% { transform: rotate(0deg) translateY(0); } 35% { transform: rotate(-5deg) translateY(-5px); } 70% { transform: rotate(5deg) translateY(-2px); } }
+@keyframes cometSlide { 0%, 100% { transform: translateX(-30px); opacity: 0.35; } 50% { transform: translateX(90px); opacity: 0.9; } }
+@keyframes starBlink { 50% { transform: scale(1.5); opacity: 0.45; } }
+@keyframes labPanelPulse { 50% { filter: brightness(1.35); transform: scaleX(0.92); } }
+@keyframes ingredientDance { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-28px) rotate(120deg); } }
+@keyframes cloneFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-18px) rotate(7deg); } }
+@keyframes scanFade { 50% { opacity: 0.35; transform: scaleY(0.82); } }
+@keyframes chamberPulse { 50% { filter: brightness(1.28); box-shadow: inset 0 0 0 4px rgba(32, 216, 238, 0.22), 0 0 24px rgba(32, 216, 238, 0.26); } }
+@keyframes dnaTwist { 50% { transform: rotate(12deg) scale(1.08); filter: brightness(1.2); } }
+@keyframes glitchMini { 50% { transform: translateX(3px); filter: hue-rotate(90deg); } }
+@keyframes scanBeam { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.35); transform: scaleY(1.03); } }
+@keyframes cloneGrow { 0%, 100% { transform: translateX(-50%) scale(0.9); opacity: 0.72; } 50% { transform: translateX(-50%) scale(1.08); opacity: 1; } }
+@keyframes holoFlicker { 0%, 100% { opacity: 0.72; transform: translateX(-50%) translateY(0); } 50% { opacity: 1; transform: translateX(-50%) translateY(-6px); } }
+@keyframes podAppear { from { transform: translateY(12px) scale(0.96); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+@keyframes cloneDotPulse { 50% { transform: translateY(-3px); filter: brightness(1.25); } }
+@keyframes podSuccess { 50% { transform: translateY(-8px) scale(1.03); filter: brightness(1.28); } }
+@keyframes cloneLaunch { to { transform: translateY(-22px) scale(0.75); opacity: 0.35; } }
+@keyframes podGlitch { 50% { transform: translateX(4px); filter: hue-rotate(110deg); } }
+@keyframes releasedClone { to { transform: translate(var(--dx), var(--dy)) scale(0.55); opacity: 0; } }
+@keyframes defectiveClone { to { transform: translate(var(--dx), var(--dy)) rotate(18deg) scale(0.5); opacity: 0; } }
+@keyframes cloneFuse { to { transform: translateX(var(--fusion-x)) scale(0.2); opacity: 0; filter: brightness(1.8); } }
+@keyframes resultReveal { 0% { transform: scale(0.52); filter: brightness(1.8); } 70% { transform: scale(1.18); } 100% { transform: scale(1); } }
+
+@media (max-width: 1040px) {
+  .factory-topbar,
+  .factory-stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+  }
+
+  .factory-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .factory-floor {
+    min-height: 520px;
+  }
+
+  .clone-lab-scene {
+    grid-template-columns: 1fr;
+  }
+
+  .machine-stage {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .factory-screen {
+    padding: 8px;
+    border-radius: 16px;
+  }
+
+  .factory-topbar,
+  .factory-robo-panel,
+  .factory-floor,
+  .factory-control {
+    border-radius: 16px;
+  }
+
+  .factory-character {
+    width: 188px;
+    min-width: 188px;
+    height: 232px;
+  }
+
+  .factory-character .robot-wrap {
+    --robo-scale: 0.74;
+  }
+
+  .machine-stage {
+    grid-template-columns: 1fr;
+  }
+
+  .machine-card {
+    min-height: 148px;
+  }
+
+  .clone-groups {
+    grid-template-columns: repeat(auto-fit, minmax(86px, 1fr));
+  }
+
+  .clone-group-pod {
+    min-height: 112px;
+  }
+
+  .clone-round-brief {
+    border-radius: 16px;
+  }
+
+  .factory-options {
+    gap: 9px;
+  }
+
+  .factory-option {
+    min-height: 62px;
+    border-radius: 14px;
+  }
+}
+
+/* Multiplicaciones: fabrica premium de mini robots */
+.multiply-factory-screen {
+  min-height: min(900px, calc(100vh - 18px));
+  width: min(100%, 1180px);
+  margin: 0 auto;
+  padding: clamp(18px, 2.3vw, 30px);
+  overflow: hidden;
+  border-radius: 26px;
+  color: #f8fcff;
+  background:
+    radial-gradient(circle at 12% 14%, rgba(35, 231, 255, 0.2), transparent 20%),
+    radial-gradient(circle at 86% 16%, rgba(128, 91, 255, 0.22), transparent 24%),
+    radial-gradient(circle at 50% 100%, rgba(76, 255, 196, 0.12), transparent 32%),
+    linear-gradient(rgba(35, 231, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(128, 91, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(180deg, #061039 0%, #081451 52%, #060821 100%);
+  background-size: auto, auto, auto, 68px 68px, 68px 68px, auto;
+  box-shadow:
+    inset 0 0 0 2px rgba(35, 231, 255, 0.12),
+    0 28px 70px rgba(2, 7, 23, 0.34);
+}
+
+.multiply-factory-screen .factory-bg {
+  background:
+    linear-gradient(120deg, transparent 0 18%, rgba(35, 231, 255, 0.14) 18.2% 18.6%, transparent 18.8% 100%),
+    linear-gradient(60deg, transparent 0 76%, rgba(128, 91, 255, 0.16) 76.2% 76.8%, transparent 77% 100%);
+  opacity: 0.75;
+  animation: none;
+}
+
+.multiply-factory-screen .factory-bg span:nth-child(1) {
+  top: 16%;
+  height: 6px;
+  background: linear-gradient(90deg, transparent, rgba(35, 231, 255, 0.75), rgba(128, 91, 255, 0.6), transparent);
+}
+
+.multiply-factory-screen .factory-bg span:nth-child(2) {
+  left: auto;
+  right: 7%;
+  top: 14%;
+  width: 170px;
+  height: 170px;
+  border-color: rgba(35, 231, 255, 0.14);
+  opacity: 0.7;
+}
+
+.multiply-factory-screen .factory-bg span:nth-child(3) {
+  inset: auto -5% 0;
+  height: 24%;
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(35, 231, 255, 0.18), transparent 54%),
+    linear-gradient(180deg, transparent, rgba(2, 7, 23, 0.72));
+}
+
+.multiply-factory-screen .factory-topbar {
+  min-height: 70px;
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  margin: 0 0 clamp(16px, 2vh, 24px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.multiply-factory-screen .factory-topbar > div:first-child {
+  width: fit-content;
+  max-width: 100%;
+  padding: 10px 18px;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(35, 231, 255, 0.22), transparent 28%),
+    rgba(5, 18, 64, 0.82);
+  box-shadow:
+    inset 0 0 0 2px rgba(35, 231, 255, 0.2),
+    0 0 22px rgba(35, 231, 255, 0.12);
+}
+
+.multiply-factory-screen .factory-topbar .eyebrow {
+  margin: 0 0 4px;
+  color: #67f5ff;
+  font-size: 0.75rem;
+}
+
+.multiply-factory-screen .factory-topbar h2 {
+  color: #ffffff;
+  font-size: clamp(1.25rem, 2.4vw, 2rem);
+  text-shadow: 0 0 18px rgba(35, 231, 255, 0.32);
+}
+
+.multiply-factory-screen .factory-stats {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.multiply-factory-screen .tech-stat {
+  min-height: 48px;
+  min-width: 112px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(10, 28, 86, 0.92), rgba(5, 12, 48, 0.88));
+  box-shadow:
+    inset 0 0 0 2px rgba(128, 91, 255, 0.26),
+    0 8px 18px rgba(2, 7, 23, 0.2);
+}
+
+.multiply-factory-screen .tech-stat span {
+  display: none;
+}
+
+.multiply-factory-screen .tech-stat strong {
+  color: #ffffff;
+  font-size: 1.25rem;
+}
+
+.multiply-factory-screen .factory-exit {
+  min-height: 48px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 2px rgba(35, 231, 255, 0.18);
+}
+
+.multiply-factory-screen .factory-layout {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(210px, 280px) minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "guide floor"
+    "control floor";
+  gap: clamp(18px, 2.4vw, 28px);
+  align-items: stretch;
+}
+
+.multiply-factory-screen .factory-robo-panel,
+.multiply-factory-screen .factory-floor,
+.multiply-factory-screen .factory-control {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.multiply-factory-screen .factory-robo-panel {
+  grid-area: guide;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 12px;
+  align-content: start;
+  padding: 0;
+}
+
+.multiply-factory-screen .fighter-hud {
+  min-height: 44px;
+  display: grid;
+  align-content: center;
+  padding: 8px 12px;
+  border-radius: 18px;
+  background: rgba(7, 22, 70, 0.76);
+  box-shadow: inset 0 0 0 2px rgba(35, 231, 255, 0.16);
+}
+
+.multiply-factory-screen .fighter-hud strong {
+  color: #68f7ff;
+}
+
+.multiply-factory-screen .factory-character {
+  width: clamp(170px, 19vw, 230px);
+  min-width: clamp(170px, 19vw, 230px);
+  height: clamp(212px, 24vw, 286px);
+  align-self: center;
+  filter:
+    drop-shadow(0 0 16px rgba(35, 231, 255, 0.42))
+    drop-shadow(0 18px 22px rgba(2, 7, 23, 0.32));
+  animation: holoGuideFloat 3s ease-in-out infinite;
+}
+
+.multiply-factory-screen .factory-character .robot-wrap {
+  --robo-scale: clamp(0.68, 0.08vw + 0.62, 0.88);
+}
+
+.multiply-factory-screen .clone-round-brief {
+  position: relative;
+  width: 100%;
+  min-height: 96px;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  border: 0;
+  border-radius: 24px;
+  color: #ffffff;
+  background:
+    linear-gradient(180deg, rgba(10, 28, 86, 0.94), rgba(5, 12, 48, 0.92));
+  box-shadow:
+    inset 0 0 0 3px rgba(35, 231, 255, 0.42),
+    0 0 20px rgba(35, 231, 255, 0.2);
+  font-size: clamp(1rem, 1.7vw, 1.32rem);
+  line-height: 1.25;
+  text-align: center;
+}
+
+.multiply-factory-screen .clone-round-brief::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -13px;
+  width: 28px;
+  height: 24px;
+  transform: translateX(-50%) rotate(90deg);
+  background: rgba(10, 28, 86, 0.94);
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+.multiply-factory-screen .medal-rack span {
+  width: 26px;
+  height: 26px;
+}
+
+.multiply-factory-screen .factory-floor {
+  grid-area: floor;
+  min-height: 640px;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 18px;
+  padding: clamp(18px, 2.2vw, 26px);
+  overflow: hidden;
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at 50% 8%, rgba(35, 231, 255, 0.16), transparent 24%),
+    linear-gradient(180deg, rgba(8, 22, 70, 0.84), rgba(5, 10, 38, 0.9));
+  box-shadow:
+    inset 0 0 0 2px rgba(35, 231, 255, 0.16),
+    0 22px 44px rgba(2, 7, 23, 0.26);
+}
+
+.multiply-factory-screen .factory-depth {
+  opacity: 0.75;
+}
+
+.multiply-factory-screen .machine-stage {
+  display: none;
+}
+
+.multiply-factory-screen .clone-lab-scene {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.multiply-factory-screen .space-window {
+  display: none;
+}
+
+.multiply-factory-screen .clone-equation {
+  width: min(100%, 560px);
+  min-height: 96px;
+  justify-self: center;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 28px;
+  color: #ffffff;
+  background:
+    linear-gradient(180deg, rgba(10, 32, 92, 0.86), rgba(4, 11, 42, 0.9));
+  box-shadow:
+    inset 0 0 0 2px rgba(35, 231, 255, 0.22),
+    0 0 22px rgba(35, 231, 255, 0.12);
+  font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+  font-weight: 900;
+}
+
+.multiply-factory-screen .multiply-factor,
+.multiply-factory-screen .multiply-result {
+  display: grid;
+  place-items: center;
+  min-height: 64px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.22), transparent 30%),
+    linear-gradient(145deg, rgba(35, 231, 255, 0.32), rgba(128, 91, 255, 0.2));
+  box-shadow: inset 0 0 0 2px rgba(35, 231, 255, 0.22);
+}
+
+.multiply-factory-screen .multiply-result {
+  color: #35efff;
+  text-shadow: 0 0 16px rgba(35, 231, 255, 0.7);
+}
+
+.multiply-factory-screen .multiply-symbol {
+  color: #b38cff;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  text-shadow: 0 0 14px rgba(179, 140, 255, 0.64);
+}
+
+.multiply-factory-screen .clone-groups {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(138px, 1fr));
+  gap: clamp(12px, 1.6vw, 18px);
+  align-content: start;
+  padding: 0;
+  overflow: visible;
+}
+
+.multiply-factory-screen .clone-group-pod {
+  min-height: 168px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 10px;
+  padding: 14px;
+  border: 0;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 50% 104%, rgba(35, 231, 255, 0.22), transparent 32%),
+    linear-gradient(180deg, rgba(9, 31, 90, 0.9), rgba(5, 14, 54, 0.9));
+  box-shadow:
+    inset 0 0 0 2px rgba(35, 231, 255, 0.28),
+    inset 0 -8px 24px rgba(35, 231, 255, 0.08),
+    0 14px 24px rgba(2, 7, 23, 0.2);
+  animation: podAppear 380ms ease both, capsuleHover 3.2s ease-in-out infinite;
+}
+
+.multiply-factory-screen .clone-group-pod::before {
+  left: 18px;
+  right: 18px;
+  top: 10px;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(35, 231, 255, 0.86), transparent);
+}
+
+.multiply-factory-screen .clone-group-pod strong {
+  justify-self: center;
+  min-width: 52px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: #071034;
+  background: linear-gradient(145deg, #ffffff, #67f5ff);
+  font-size: 0.9rem;
+  box-shadow: 0 0 16px rgba(35, 231, 255, 0.32);
+}
+
+.multiply-factory-screen .clone-mini-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+}
+
+.multiply-factory-screen .clone-dot,
+.multiply-factory-screen .released-clone {
+  border-radius: 14px 14px 10px 10px;
+  background:
+    radial-gradient(circle at 35% 38%, #ffffff 0 9%, #061034 10% 15%, transparent 16%),
+    radial-gradient(circle at 65% 38%, #ffffff 0 9%, #061034 10% 15%, transparent 16%),
+    linear-gradient(145deg, #ffffff 0 22%, #36f0ff 23% 62%, #805bff 100%);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.44),
+    0 0 13px rgba(35, 231, 255, 0.42);
+}
+
+.multiply-factory-screen .clone-dot {
+  width: 28px;
+  height: 34px;
+  animation: miniRobotWave 1.8s ease-in-out infinite;
+}
+
+.multiply-factory-screen .clone-groups.success .clone-dot {
+  animation: robotCelebratePop 620ms ease forwards;
+}
+
+.multiply-factory-screen .factory-control {
+  grid-area: control;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  align-content: start;
+  gap: 14px;
+  padding: 0;
+}
+
+.multiply-factory-screen .factory-message {
+  min-height: 54px;
+  display: grid;
+  place-items: center;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 22px;
+  color: #ffffff;
+  background:
+    linear-gradient(180deg, rgba(9, 31, 90, 0.86), rgba(5, 14, 54, 0.88));
+  box-shadow: inset 0 0 0 2px rgba(35, 231, 255, 0.18);
+  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+}
+
+.multiply-factory-screen .factory-progress {
+  height: 10px;
+  background: rgba(3, 10, 34, 0.72);
+}
+
+.multiply-factory-screen .factory-progress span {
+  background: linear-gradient(90deg, #35efff, #805bff, #4cffc4);
+  box-shadow: 0 0 16px rgba(35, 231, 255, 0.42);
+}
+
+.multiply-factory-screen .factory-options {
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.multiply-factory-screen .factory-option {
+  min-height: 64px;
+  border-radius: 24px;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 22% 20%, rgba(255, 255, 255, 0.22), transparent 26%),
+    linear-gradient(145deg, rgba(35, 231, 255, 0.95), rgba(128, 91, 255, 0.9));
+  box-shadow:
+    inset 0 5px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -8px 0 rgba(3, 9, 42, 0.16),
+    0 10px 0 rgba(2, 7, 26, 0.24),
+    0 0 22px rgba(35, 231, 255, 0.2);
+  animation: optionFloat 3s ease-in-out infinite;
+}
+
+.multiply-factory-screen .factory-option:nth-child(2) {
+  background:
+    radial-gradient(circle at 22% 20%, rgba(255, 255, 255, 0.22), transparent 26%),
+    linear-gradient(145deg, rgba(128, 91, 255, 0.96), rgba(76, 255, 196, 0.72));
+}
+
+.multiply-factory-screen .factory-option.correct {
+  color: #071034;
+  background: linear-gradient(145deg, #4cffc4, #fff06d);
+}
+
+.multiply-factory-screen .factory-option.wrong {
+  background: linear-gradient(145deg, #ff7d88, #ff3552);
+}
+
+.multiply-factory-screen #factoryStartButton {
+  min-height: 60px;
+  border-radius: 999px;
+  color: #071034;
+  background: linear-gradient(145deg, #4cffc4, #35efff);
+  box-shadow:
+    inset 0 5px 0 rgba(255, 255, 255, 0.34),
+    0 10px 0 rgba(2, 7, 26, 0.22),
+    0 0 22px rgba(35, 231, 255, 0.26);
+}
+
+.multiply-factory-screen .lab-help-btn {
+  display: none;
+}
+
+@keyframes holoGuideFloat {
+  50% {
+    transform: translateY(-8px);
+    filter:
+      drop-shadow(0 0 22px rgba(35, 231, 255, 0.58))
+      drop-shadow(0 18px 22px rgba(2, 7, 23, 0.3));
+  }
+}
+
+@keyframes capsuleHover {
+  50% {
+    transform: translateY(-5px);
+    filter: brightness(1.08);
+  }
+}
+
+@keyframes miniRobotWave {
+  50% {
+    transform: translateY(-5px) rotate(4deg);
+    filter: brightness(1.16);
+  }
+}
+
+@keyframes robotCelebratePop {
+  45% {
+    transform: translateY(-18px) scale(1.12) rotate(8deg);
+    filter: brightness(1.4);
+  }
+
+  100% {
+    transform: translateY(-8px) scale(0.86);
+    opacity: 0.42;
+  }
+}
+
+@media (max-width: 1040px) {
+  .multiply-factory-screen {
+    width: 100%;
+    min-height: auto;
+  }
+
+  .multiply-factory-screen .factory-topbar {
+    grid-template-columns: 1fr;
+  }
+
+  .multiply-factory-screen .factory-stats {
+    justify-content: start;
+    flex-wrap: wrap;
+  }
+
+  .multiply-factory-screen .factory-layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "guide"
+      "floor"
+      "control";
+  }
+
+  .multiply-factory-screen .factory-robo-panel {
+    grid-template-columns: minmax(160px, 220px) minmax(260px, 1fr);
+    grid-template-rows: auto;
+    align-items: center;
+  }
+
+  .multiply-factory-screen .medal-rack {
+    display: none;
+  }
+
+  .multiply-factory-screen .factory-control {
+    width: min(100%, 760px);
+    justify-self: center;
+  }
+
+  .multiply-factory-screen .factory-options {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 740px) {
+  .multiply-factory-screen {
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  .multiply-factory-screen .factory-topbar > div:first-child {
+    width: 100%;
+  }
+
+  .multiply-factory-screen .tech-stat {
+    min-width: 92px;
+  }
+
+  .multiply-factory-screen .factory-robo-panel {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .multiply-factory-screen .factory-character {
+    width: 142px;
+    min-width: 142px;
+    height: 176px;
+  }
+
+  .multiply-factory-screen .factory-character .robot-wrap {
+    --robo-scale: 0.56;
+  }
+
+  .multiply-factory-screen .clone-round-brief {
+    min-height: 76px;
+    font-size: 1rem;
+  }
+
+  .multiply-factory-screen .factory-floor {
+    min-height: 0;
+    padding: 14px;
+    border-radius: 22px;
+  }
+
+  .multiply-factory-screen .clone-equation {
+    grid-template-columns: 1fr;
+    width: 100%;
+    min-height: 0;
+  }
+
+  .multiply-factory-screen .multiply-factor,
+  .multiply-factory-screen .multiply-result {
+    min-height: 54px;
+  }
+
+  .multiply-factory-screen .clone-groups {
+    grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  }
+
+  .multiply-factory-screen .clone-group-pod {
+    min-height: 138px;
+    border-radius: 22px;
+  }
+
+  .multiply-factory-screen .clone-dot {
+    width: 24px;
+    height: 30px;
+  }
+
+  .multiply-factory-screen .factory-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* PLANETA CLONIX: multiplicaciones como grupos repetidos vivos */
+.planet-clonix-screen {
+  min-height: min(900px, calc(100vh - 18px));
+  width: min(100%, 1180px);
+  margin: 0 auto;
+  padding: clamp(18px, 2.3vw, 30px);
+  overflow: hidden;
+  border-radius: 28px;
+  color: #f8fcff;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(51, 238, 255, 0.22), transparent 21%),
+    radial-gradient(circle at 80% 12%, rgba(143, 104, 255, 0.24), transparent 22%),
+    radial-gradient(circle at 50% 106%, rgba(68, 255, 197, 0.14), transparent 34%),
+    linear-gradient(rgba(85, 210, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(143, 104, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(180deg, #050930 0%, #071250 52%, #070720 100%);
+  background-size: auto, auto, auto, 72px 72px, 72px 72px, auto;
+  box-shadow: inset 0 0 0 2px rgba(75, 238, 255, 0.12), 0 30px 76px rgba(2, 7, 23, 0.34);
+}
+
+.planet-clonix-screen .factory-bg {
+  background:
+    radial-gradient(circle at 12% 26%, rgba(255, 255, 255, 0.8) 0 2px, transparent 3px),
+    radial-gradient(circle at 74% 18%, rgba(76, 255, 196, 0.9) 0 2px, transparent 3px),
+    radial-gradient(circle at 88% 62%, rgba(143, 104, 255, 0.95) 0 2px, transparent 3px),
+    radial-gradient(circle at 34% 74%, rgba(51, 238, 255, 0.9) 0 2px, transparent 3px);
+  animation: clonixStars 8s ease-in-out infinite;
+}
+
+.planet-clonix-screen .factory-bg span:nth-child(1) {
+  top: 18%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(51, 238, 255, 0.78), transparent);
+}
+
+.planet-clonix-screen .factory-bg span:nth-child(2) {
+  right: 6%;
+  left: auto;
+  top: 12%;
+  width: clamp(120px, 14vw, 190px);
+  height: clamp(120px, 14vw, 190px);
+  border: 2px solid rgba(143, 104, 255, 0.16);
+  border-radius: 50%;
+  box-shadow: inset 0 0 34px rgba(51, 238, 255, 0.08);
+}
+
+.planet-clonix-screen .factory-bg span:nth-child(3) {
+  inset: auto -8% 0;
+  height: 28%;
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(51, 238, 255, 0.2), transparent 58%),
+    linear-gradient(180deg, transparent, rgba(2, 7, 23, 0.78));
+}
+
+.planet-clonix-screen .factory-topbar {
+  min-height: 70px;
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  margin: 0 0 clamp(14px, 2vh, 22px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.planet-clonix-screen .factory-topbar > div:first-child {
+  width: fit-content;
+  max-width: 100%;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(6, 19, 68, 0.78);
+  box-shadow: inset 0 0 0 2px rgba(51, 238, 255, 0.22), 0 0 24px rgba(51, 238, 255, 0.12);
+}
+
+.planet-clonix-screen .factory-topbar .eyebrow {
+  margin: 0 0 3px;
+  color: #7efff0;
+  font-size: 0.74rem;
+}
+
+.planet-clonix-screen .factory-topbar h2 {
+  color: #ffffff;
+  font-size: clamp(1.45rem, 2.7vw, 2.35rem);
+  text-shadow: 0 0 20px rgba(51, 238, 255, 0.44);
+}
+
+.planet-clonix-screen .factory-stats {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.planet-clonix-screen .tech-stat {
+  min-width: 108px;
+  min-height: 48px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(5, 15, 56, 0.82);
+  box-shadow: inset 0 0 0 2px rgba(143, 104, 255, 0.24), 0 8px 18px rgba(2, 7, 23, 0.18);
+}
+
+.planet-clonix-screen .tech-stat span {
+  display: none;
+}
+
+.planet-clonix-screen .tech-stat strong {
+  color: #ffffff;
+  font-size: 1.25rem;
+}
+
+.planet-clonix-screen .factory-exit {
+  min-height: 48px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 2px rgba(51, 238, 255, 0.18);
+}
+
+.planet-clonix-screen .factory-layout {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "guide world"
+    "control world";
+  gap: clamp(18px, 2.5vw, 30px);
+}
+
+.planet-clonix-screen .factory-robo-panel,
+.planet-clonix-screen .factory-floor,
+.planet-clonix-screen .factory-control {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.planet-clonix-screen .factory-robo-panel {
+  grid-area: guide;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 12px;
+  padding: 0;
+}
+
+.planet-clonix-screen .fighter-hud {
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: 18px;
+  background: rgba(5, 18, 64, 0.74);
+  box-shadow: inset 0 0 0 2px rgba(51, 238, 255, 0.16);
+}
+
+.planet-clonix-screen .fighter-hud strong {
+  color: #7efff0;
+}
+
+.planet-clonix-screen .factory-character {
+  width: clamp(168px, 19vw, 228px);
+  min-width: clamp(168px, 19vw, 228px);
+  height: clamp(210px, 24vw, 286px);
+  align-self: center;
+  filter: drop-shadow(0 0 18px rgba(51, 238, 255, 0.42)) drop-shadow(0 18px 22px rgba(2, 7, 23, 0.28));
+  animation: clonixGuideFloat 3s ease-in-out infinite;
+}
+
+.planet-clonix-screen .factory-character .robot-wrap {
+  --robo-scale: clamp(0.68, 0.08vw + 0.62, 0.88);
+}
+
+.planet-clonix-screen .clone-round-brief {
+  position: relative;
+  min-height: 96px;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  border: 0;
+  border-radius: 24px;
+  color: #ffffff;
+  background: linear-gradient(180deg, rgba(9, 30, 88, 0.94), rgba(5, 13, 50, 0.92));
+  box-shadow: inset 0 0 0 3px rgba(51, 238, 255, 0.38), 0 0 22px rgba(51, 238, 255, 0.18);
+  font-size: clamp(1rem, 1.7vw, 1.3rem);
+  line-height: 1.25;
+  text-align: center;
+}
+
+.planet-clonix-screen .clone-round-brief::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -13px;
+  width: 28px;
+  height: 24px;
+  transform: translateX(-50%) rotate(90deg);
+  background: rgba(9, 30, 88, 0.94);
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+.planet-clonix-screen .medal-rack span {
+  width: 26px;
+  height: 26px;
+}
+
+.planet-clonix-screen .factory-floor {
+  grid-area: world;
+  position: relative;
+  min-height: 650px;
+  display: grid;
+  grid-template-rows: auto minmax(310px, 1fr);
+  gap: 18px;
+  padding: clamp(18px, 2.4vw, 28px);
+  overflow: hidden;
+  border-radius: 36px;
+  background:
+    radial-gradient(circle at 50% 56%, rgba(51, 238, 255, 0.18), transparent 36%),
+    linear-gradient(180deg, rgba(8, 22, 70, 0.72), rgba(5, 10, 38, 0.86));
+  box-shadow: inset 0 0 0 2px rgba(51, 238, 255, 0.16), 0 24px 48px rgba(2, 7, 23, 0.26);
+}
+
+.planet-clonix-screen .factory-floor::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: clamp(250px, 34vw, 430px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  transform: translate(-50%, -36%);
+  background:
+    radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.34), transparent 11%),
+    radial-gradient(circle at 58% 35%, rgba(126, 255, 240, 0.34), transparent 9%),
+    radial-gradient(circle at 42% 70%, rgba(143, 104, 255, 0.32), transparent 12%),
+    linear-gradient(145deg, #26dfff 0%, #4664ff 48%, #8c68ff 100%);
+  box-shadow:
+    inset -28px -32px 54px rgba(4, 12, 48, 0.32),
+    inset 20px 18px 36px rgba(255, 255, 255, 0.14),
+    0 0 52px rgba(51, 238, 255, 0.32);
+  animation: clonixPlanetPulse 4s ease-in-out infinite;
+}
+
+.planet-clonix-screen .factory-floor::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: clamp(310px, 42vw, 520px);
+  height: clamp(80px, 11vw, 126px);
+  border: 3px solid rgba(126, 255, 240, 0.28);
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-radius: 50%;
+  transform: translate(-50%, -28%) rotate(-8deg);
+  box-shadow: 0 0 28px rgba(51, 238, 255, 0.18);
+  pointer-events: none;
+}
+
+.planet-clonix-screen[data-planet-stage="1"] .factory-floor::before {
+  background:
+    radial-gradient(circle at 34% 26%, rgba(255, 255, 255, 0.34), transparent 10%),
+    radial-gradient(circle at 28% 62%, rgba(103, 255, 145, 0.55), transparent 9%),
+    radial-gradient(circle at 62% 56%, rgba(103, 255, 145, 0.5), transparent 11%),
+    linear-gradient(145deg, #26dfff 0%, #3d7dff 44%, #7f68ff 100%);
+}
+
+.planet-clonix-screen[data-planet-stage="2"] .factory-floor::before,
+.planet-clonix-screen[data-planet-stage="3"] .factory-floor::before,
+.planet-clonix-screen[data-planet-stage="4"] .factory-floor::before {
+  background:
+    linear-gradient(90deg, transparent 0 44%, rgba(255, 255, 255, 0.9) 45% 46%, transparent 47% 100%),
+    linear-gradient(0deg, transparent 0 54%, rgba(255, 241, 92, 0.65) 55% 57%, transparent 58% 100%),
+    radial-gradient(circle at 28% 62%, rgba(103, 255, 145, 0.58), transparent 9%),
+    radial-gradient(circle at 62% 56%, rgba(103, 255, 145, 0.54), transparent 11%),
+    radial-gradient(circle at 60% 30%, rgba(255, 241, 92, 0.42), transparent 9%),
+    linear-gradient(145deg, #26dfff 0%, #3d7dff 44%, #8c68ff 100%);
+}
+
+.planet-clonix-screen .factory-depth,
+.planet-clonix-screen .machine-stage,
+.planet-clonix-screen .space-window {
+  display: none;
+}
+
+.planet-clonix-screen .clone-lab-scene {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 18px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.planet-clonix-screen .clone-equation {
+  width: min(100%, 620px);
+  min-height: 86px;
+  justify-self: center;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 28px;
+  background: rgba(5, 17, 60, 0.78);
+  box-shadow: inset 0 0 0 2px rgba(51, 238, 255, 0.22), 0 0 24px rgba(51, 238, 255, 0.12);
+  font-size: clamp(1.45rem, 2.8vw, 2.25rem);
+  font-weight: 900;
+}
+
+.planet-clonix-screen .multiply-factor,
+.planet-clonix-screen .multiply-result {
+  min-height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(51, 238, 255, 0.28), rgba(143, 104, 255, 0.18));
+  box-shadow: inset 0 0 0 2px rgba(51, 238, 255, 0.18);
+}
+
+.planet-clonix-screen .multiply-symbol {
+  color: #b899ff;
+  font-size: clamp(1.8rem, 3vw, 2.7rem);
+  text-shadow: 0 0 14px rgba(184, 153, 255, 0.64);
+}
+
+.planet-clonix-screen .multiply-result {
+  color: #54f6ff;
+  text-shadow: 0 0 16px rgba(84, 246, 255, 0.7);
+}
+
+.planet-clonix-screen .clone-groups {
+  position: relative;
+  z-index: 3;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: clamp(12px, 1.6vw, 18px);
+  align-content: end;
+  padding-top: clamp(170px, 24vw, 300px);
+}
+
+.planet-clonix-screen .clone-group-pod {
+  min-height: 150px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 8px;
+  padding: 12px;
+  border: 0;
+  border-radius: 999px 999px 28px 28px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(126, 255, 240, 0.34), transparent 42%),
+    linear-gradient(180deg, rgba(12, 31, 94, 0.9), rgba(6, 14, 54, 0.88));
+  box-shadow: inset 0 0 0 2px rgba(84, 246, 255, 0.3), 0 0 22px rgba(84, 246, 255, 0.16);
+  animation: clonixPortalFloat 3s ease-in-out infinite;
+}
+
+.planet-clonix-screen .clone-group-pod::before {
+  left: 50%;
+  top: -12px;
+  width: 68px;
+  height: 18px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(126, 255, 240, 0.95), rgba(143, 104, 255, 0.2) 64%, transparent 70%);
+}
+
+.planet-clonix-screen .clone-group-pod strong {
+  justify-self: center;
+  min-width: 52px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: #061034;
+  background: linear-gradient(145deg, #ffffff, #7efff0);
+  font-size: 0.88rem;
+}
+
+.planet-clonix-screen .clone-mini-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+}
+
+.planet-clonix-screen .clone-dot,
+.planet-clonix-screen .released-clone {
+  border-radius: 50% 50% 44% 44%;
+  background:
+    radial-gradient(circle at 36% 36%, #ffffff 0 8%, #071034 9% 14%, transparent 15%),
+    radial-gradient(circle at 64% 36%, #ffffff 0 8%, #071034 9% 14%, transparent 15%),
+    linear-gradient(145deg, #ffffff 0 20%, #7efff0 21% 56%, #8f68ff 100%);
+  box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.46), 0 0 14px rgba(126, 255, 240, 0.46);
+}
+
+.planet-clonix-screen .clone-dot {
+  width: 28px;
+  height: 34px;
+  animation: clonixCreatureBounce 1.8s ease-in-out infinite;
+}
+
+.planet-clonix-screen .clone-groups.success .clone-dot {
+  animation: clonixCreatureCelebrate 620ms ease forwards;
+}
+
+.planet-clonix-screen .factory-control {
+  grid-area: control;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  gap: 14px;
+  padding: 0;
+}
+
+.planet-clonix-screen .factory-message {
+  min-height: 52px;
+  display: grid;
+  place-items: center;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 22px;
+  color: #ffffff;
+  background: rgba(5, 18, 64, 0.78);
+  box-shadow: inset 0 0 0 2px rgba(51, 238, 255, 0.18);
+  font-size: clamp(0.94rem, 1.7vw, 1.08rem);
+}
+
+.planet-clonix-screen .factory-progress {
+  height: 10px;
+  background: rgba(3, 10, 34, 0.72);
+}
+
+.planet-clonix-screen .factory-progress span {
+  background: linear-gradient(90deg, #54f6ff, #8f68ff, #7efff0);
+  box-shadow: 0 0 16px rgba(84, 246, 255, 0.42);
+}
+
+.planet-clonix-screen .factory-options {
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.planet-clonix-screen .factory-option {
+  min-height: 64px;
+  border-radius: 24px;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 22% 20%, rgba(255, 255, 255, 0.22), transparent 26%),
+    linear-gradient(145deg, rgba(84, 246, 255, 0.92), rgba(143, 104, 255, 0.88));
+  box-shadow: inset 0 5px 0 rgba(255, 255, 255, 0.2), inset 0 -8px 0 rgba(3, 9, 42, 0.16), 0 10px 0 rgba(2, 7, 26, 0.24), 0 0 22px rgba(84, 246, 255, 0.2);
+}
+
+.planet-clonix-screen .factory-option.correct {
+  color: #071034;
+  background: linear-gradient(145deg, #7efff0, #fff06d);
+}
+
+.planet-clonix-screen .factory-option.wrong {
+  background: linear-gradient(145deg, #ff7d88, #ff3552);
+}
+
+.planet-clonix-screen #factoryStartButton {
+  min-height: 60px;
+  border-radius: 999px;
+  color: #071034;
+  background: linear-gradient(145deg, #7efff0, #54f6ff);
+}
+
+.planet-clonix-screen .lab-help-btn {
+  display: none;
+}
+
+@keyframes clonixStars {
+  50% {
+    opacity: 0.55;
+    filter: brightness(1.35);
+  }
+}
+
+@keyframes clonixGuideFloat {
+  50% {
+    transform: translateY(-8px);
+    filter: drop-shadow(0 0 24px rgba(84, 246, 255, 0.56)) drop-shadow(0 18px 22px rgba(2, 7, 23, 0.28));
+  }
+}
+
+@keyframes clonixPlanetPulse {
+  50% {
+    transform: translate(-50%, -38%) scale(1.035);
+    filter: brightness(1.12);
+  }
+}
+
+@keyframes clonixPortalFloat {
+  50% {
+    transform: translateY(-6px);
+    filter: brightness(1.1);
+  }
+}
+
+@keyframes clonixCreatureBounce {
+  50% {
+    transform: translateY(-5px) rotate(5deg);
+    filter: brightness(1.16);
+  }
+}
+
+@keyframes clonixCreatureCelebrate {
+  45% {
+    transform: translateY(-18px) scale(1.14) rotate(10deg);
+  }
+
+  100% {
+    transform: translateY(-8px) scale(0.9);
+    opacity: 0.48;
+  }
+}
+
+@media (max-width: 1040px) {
+  .planet-clonix-screen {
+    width: 100%;
+    min-height: auto;
+  }
+
+  .planet-clonix-screen .factory-topbar {
+    grid-template-columns: 1fr;
+  }
+
+  .planet-clonix-screen .factory-stats {
+    justify-content: start;
+    flex-wrap: wrap;
+  }
+
+  .planet-clonix-screen .factory-layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "guide"
+      "world"
+      "control";
+  }
+
+  .planet-clonix-screen .factory-robo-panel {
+    grid-template-columns: minmax(160px, 220px) minmax(260px, 1fr);
+    align-items: center;
+  }
+
+  .planet-clonix-screen .medal-rack {
+    display: none;
+  }
+
+  .planet-clonix-screen .factory-control {
+    width: min(100%, 760px);
+    justify-self: center;
+  }
+
+  .planet-clonix-screen .factory-options {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 740px) {
+  .planet-clonix-screen {
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  .planet-clonix-screen .factory-topbar > div:first-child {
+    width: 100%;
+  }
+
+  .planet-clonix-screen .tech-stat {
+    min-width: 92px;
+  }
+
+  .planet-clonix-screen .factory-robo-panel {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .planet-clonix-screen .factory-character {
+    width: 142px;
+    min-width: 142px;
+    height: 176px;
+  }
+
+  .planet-clonix-screen .factory-character .robot-wrap {
+    --robo-scale: 0.56;
+  }
+
+  .planet-clonix-screen .clone-round-brief {
+    min-height: 74px;
+    font-size: 1rem;
+  }
+
+  .planet-clonix-screen .factory-floor {
+    min-height: 0;
+    grid-template-rows: auto minmax(280px, auto);
+    padding: 14px;
+    border-radius: 22px;
+  }
+
+  .planet-clonix-screen .factory-floor::before {
+    top: 42%;
+    width: clamp(210px, 66vw, 310px);
+  }
+
+  .planet-clonix-screen .factory-floor::after {
+    top: 42%;
+    width: clamp(250px, 78vw, 360px);
+  }
+
+  .planet-clonix-screen .clone-equation {
+    grid-template-columns: 1fr;
+    width: 100%;
+    min-height: 0;
+  }
+
+  .planet-clonix-screen .multiply-factor,
+  .planet-clonix-screen .multiply-result {
+    min-height: 52px;
+  }
+
+  .planet-clonix-screen .clone-groups {
+    grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+    padding-top: 190px;
+  }
+
+  .planet-clonix-screen .clone-group-pod {
+    min-height: 130px;
+    border-radius: 28px;
+  }
+
+  .planet-clonix-screen .clone-dot {
+    width: 24px;
+    height: 30px;
+  }
+
+  .planet-clonix-screen .factory-options {
+    grid-template-columns: 1fr;
+  }
+}
