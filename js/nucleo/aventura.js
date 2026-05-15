@@ -1,4 +1,5 @@
 function showScreen(name) {
+  if (name === "start") updateHomeProgress();
   state.screen = name;
   els.screens.forEach((screen) => {
     const isActive = screen.id === `${name}Screen`;
@@ -8,19 +9,31 @@ function showScreen(name) {
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 }
 
+function updateHomeProgress() {
+  const unlocked = Math.min(state.storage.unlocked, levels.length);
+  const stars = Object.values(state.storage.stars).reduce((total, value) => total + value, 0);
+  const nextLevel = levels[Math.max(0, Math.min(unlocked - 1, levels.length - 1))];
+  if (els.homeMissionCount) els.homeMissionCount.textContent = `${unlocked}/${levels.length}`;
+  if (els.homeStarCount) els.homeStarCount.textContent = stars;
+  if (els.homeNextMission) els.homeNextMission.textContent = `Nivel ${nextLevel.id}`;
+}
+
 function renderLevels() {
   els.levelGrid.innerHTML = "";
   levels.forEach((level, index) => {
     const unlocked = level.id <= state.storage.unlocked;
     const stars = state.storage.stars[level.id] || 0;
+    const operations = level.pool || [level.type];
     const card = document.createElement("article");
-    card.className = `level-card ${unlocked ? "" : "locked"}`;
+    card.className = `level-card level-${level.type} ${level.pool ? "combo-level" : ""} ${unlocked ? "" : "locked"}`;
     card.innerHTML = `
       <div class="level-icon">${unlocked ? level.icon : "Bloq"}</div>
       <div>
         <p class="eyebrow">Nivel ${level.id}</p>
         <h3>${level.title}</h3>
         <p class="level-type">${level.label}</p>
+        ${level.pool ? '<span class="combo-badge">Combo</span>' : ""}
+        <div class="level-ops">${operations.map((operation) => `<span>${operationSymbol(operation)}</span>`).join("")}</div>
       </div>
       <div class="stars">${"\u2605".repeat(stars)}${"\u2606".repeat(3 - stars)}</div>
       <button class="${unlocked ? "primary-btn" : "ghost-btn"}" ${unlocked ? "" : "disabled"}>
@@ -36,10 +49,20 @@ function renderLevels() {
   });
 }
 
+function operationSymbol(operation) {
+  return {
+    add: "+",
+    subtract: "-",
+    multiply: "x",
+    divide: "/",
+    mixed: "mix",
+  }[operation] || "?";
+}
+
 function showConcept(index) {
   state.levelIndex = index;
   const level = levels[index];
-  const concept = conceptByType[level.type] || conceptByType.mixed;
+  const concept = level.concept || conceptByType[level.type] || conceptByType.mixed;
   els.conceptEyebrow.textContent = `Nivel ${level.id}: ${level.title}`;
   els.conceptTitle.textContent = concept.title;
   els.conceptIntro.textContent = concept.intro;
@@ -84,6 +107,11 @@ function startLevel(index) {
 
   if (["add", "multiply"].includes(levels[index].type)) {
     startFactoryLevel(index);
+    return;
+  }
+
+  if (levels[index].type === "divide") {
+    startDeliveryLevel(index);
     return;
   }
 

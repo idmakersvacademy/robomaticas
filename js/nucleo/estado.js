@@ -1,8 +1,8 @@
 function loadProgress() {
-  const fallback = { unlocked: 3, stars: {} };
+  const fallback = { unlocked: 4, stars: {} };
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    return saved?.unlocked ? { ...saved, unlocked: Math.max(saved.unlocked, 3) } : fallback;
+    return saved?.unlocked ? { ...saved, unlocked: Math.max(saved.unlocked, 4) } : fallback;
   } catch {
     return fallback;
   }
@@ -74,10 +74,27 @@ const factory = {
   lives: 3,
 };
 
+const delivery = {
+  active: false,
+  round: 1,
+  score: 0,
+  stars: 0,
+  lives: 3,
+  energy: 100,
+  combo: 0,
+  progress: 0,
+  traffic: false,
+  locked: false,
+  question: null,
+};
+
 const els = {
   screens: document.querySelectorAll(".screen"),
   playButton: document.querySelector("#playButton"),
   levelsButton: document.querySelector("#levelsButton"),
+  homeMissionCount: document.querySelector("#homeMissionCount"),
+  homeStarCount: document.querySelector("#homeStarCount"),
+  homeNextMission: document.querySelector("#homeNextMission"),
   startAdventureButton: document.querySelector("#startAdventureButton"),
   backStartButton: document.querySelector("#backStartButton"),
   levelGrid: document.querySelector("#levelGrid"),
@@ -147,4 +164,25 @@ const els = {
   labHelpButton: document.querySelector("#labHelpButton"),
   factoryExitButton: document.querySelector("#factoryExitButton"),
   factoryParticles: document.querySelector("#factoryParticles"),
+  deliveryScreen: document.querySelector("#deliveryScreen"),
+  deliveryLayout: document.querySelector("#deliveryLayout"),
+  deliveryStarsText: document.querySelector("#deliveryStarsText"),
+  deliveryLivesText: document.querySelector("#deliveryLivesText"),
+  deliveryEnergyText: document.querySelector("#deliveryEnergyText"),
+  deliveryComboText: document.querySelector("#deliveryComboText"),
+  deliveryExitButton: document.querySelector("#deliveryExitButton"),
+  deliveryRobo: document.querySelector("#deliveryRobo"),
+  deliveryMessage: document.querySelector("#deliveryMessage"),
+  trafficModeButton: document.querySelector("#trafficModeButton"),
+  deliveryProgressBar: document.querySelector("#deliveryProgressBar"),
+  deliveryPackageCount: document.querySelector("#deliveryPackageCount"),
+  deliveryDroneCount: document.querySelector("#deliveryDroneCount"),
+  deliveryPackagesLabel: document.querySelector("#deliveryPackagesLabel"),
+  deliveryDronesLabel: document.querySelector("#deliveryDronesLabel"),
+  deliveryEachLabel: document.querySelector("#deliveryEachLabel"),
+  deliveryEqualLine: document.querySelector("#deliveryEqualLine"),
+  deliveryPackages: document.querySelector("#deliveryPackages"),
+  deliveryDrones: document.querySelector("#deliveryDrones"),
+  deliveryOptions: document.querySelector("#deliveryOptions"),
+  deliveryParticles: document.querySelector("#deliveryParticles"),
 };

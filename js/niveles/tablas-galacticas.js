@@ -54,6 +54,7 @@ function renderGalacticTables() {
     card.style.setProperty("--table-color", theme.color);
     card.style.setProperty("--table-accent", theme.accent);
     card.innerHTML = `
+      <span class="table-planet-number">${table}</span>
       <span class="table-creature ${theme.icon}" aria-hidden="true"></span>
       <span class="table-number">Tabla del ${table}</span>
       <span class="table-mini-products">${table}x1 · ${table}x5 · ${table}x9</span>

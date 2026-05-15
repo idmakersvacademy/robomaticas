@@ -674,3 +674,324 @@
     min-width: 48px;
   }
 }
+
+/* Pulido visual: Tablas Galacticas como modalidad principal de Planeta Clonix. */
+.galactic-tables-screen {
+  max-width: 1180px;
+  margin-inline: auto;
+  padding: clamp(18px, 2.8vw, 34px);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(85, 246, 255, 0.2), transparent 20%),
+    radial-gradient(circle at 82% 18%, rgba(143, 104, 255, 0.26), transparent 22%),
+    radial-gradient(circle at 50% 110%, rgba(76, 255, 196, 0.16), transparent 34%),
+    linear-gradient(rgba(85, 246, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(143, 104, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(155deg, #06194f 0%, #080e3c 46%, #05071f 100%);
+  background-size: auto, auto, auto, 84px 84px, 84px 84px, auto;
+  box-shadow:
+    inset 0 0 0 2px rgba(126, 255, 240, 0.18),
+    inset 0 0 70px rgba(85, 246, 255, 0.05),
+    0 28px 70px rgba(2, 8, 32, 0.34);
+}
+
+.tables-topbar {
+  min-height: 92px;
+  padding: 12px 14px 12px 20px;
+  border-radius: 26px;
+  background: rgba(4, 14, 52, 0.48);
+  box-shadow: inset 0 0 0 1px rgba(126, 255, 240, 0.13);
+}
+
+.tables-topbar h2 {
+  font-size: clamp(2rem, 4.4vw, 4rem);
+  line-height: 0.95;
+}
+
+.tables-topbar p:not(.eyebrow) {
+  max-width: 520px;
+}
+
+.tables-progress-panel {
+  max-width: 720px;
+  margin-inline: auto;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 12% 22%, rgba(255, 255, 255, 0.12), transparent 26%),
+    rgba(3, 12, 44, 0.7);
+}
+
+.tables-choice-header {
+  text-align: center;
+}
+
+.tables-choice-header h3 {
+  font-size: clamp(1.6rem, 3.2vw, 2.45rem);
+}
+
+.tables-grid {
+  grid-template-columns: repeat(3, minmax(170px, 1fr));
+  gap: clamp(16px, 2vw, 24px);
+  max-width: 940px;
+  margin-inline: auto;
+}
+
+.table-module {
+  min-height: clamp(178px, 18vw, 218px);
+  align-content: center;
+  justify-items: center;
+  padding: 20px 16px 18px;
+  border-radius: 34px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 22%, rgba(255, 255, 255, 0.2), transparent 23%),
+    radial-gradient(circle at 50% 48%, color-mix(in srgb, var(--table-color) 34%, transparent), transparent 38%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.02)),
+    linear-gradient(145deg, color-mix(in srgb, var(--table-accent) 62%, #071034), color-mix(in srgb, var(--table-color) 60%, #061034));
+  box-shadow:
+    inset 0 6px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -12px 0 rgba(2, 7, 26, 0.18),
+    0 12px 0 rgba(2, 7, 26, 0.18),
+    0 18px 34px rgba(2, 7, 23, 0.24),
+    0 0 24px color-mix(in srgb, var(--table-color) 24%, transparent);
+}
+
+.table-module:hover {
+  transform: translateY(-8px) scale(1.025);
+}
+
+.table-planet-number {
+  position: relative;
+  z-index: 2;
+  width: clamp(68px, 7.4vw, 92px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.46), transparent 18%),
+    linear-gradient(145deg, var(--table-color), var(--table-accent));
+  box-shadow:
+    inset 0 -9px 0 rgba(2, 7, 26, 0.16),
+    0 0 20px color-mix(in srgb, var(--table-color) 46%, transparent);
+  font-size: clamp(2.25rem, 4.8vw, 3.6rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.table-creature {
+  right: 18px;
+  top: auto;
+  bottom: 18px;
+  width: 46px;
+  height: 52px;
+  opacity: 0.86;
+}
+
+.table-number {
+  font-size: clamp(1.12rem, 2.1vw, 1.48rem);
+}
+
+.table-mini-products {
+  font-size: 0.78rem;
+}
+
+.table-stars {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(2, 8, 32, 0.32);
+}
+
+.table-module.completed::after {
+  right: 50%;
+  top: 12px;
+  transform: translateX(50%);
+}
+
+.table-detail-header {
+  padding: 10px;
+  border-radius: 26px;
+  background: rgba(4, 14, 52, 0.46);
+  box-shadow: inset 0 0 0 1px rgba(126, 255, 240, 0.12);
+}
+
+.table-detail-header h3 {
+  font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+}
+
+.table-detail-layout {
+  grid-template-columns: minmax(190px, 260px) minmax(0, 1fr);
+  gap: clamp(14px, 2vw, 22px);
+  align-items: stretch;
+}
+
+.table-orbit-card {
+  min-height: 330px;
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--table-color) 26%, transparent), transparent 38%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    rgba(4, 14, 52, 0.58);
+}
+
+.table-orbit-planet {
+  width: min(190px, 72%);
+}
+
+.table-orbit-creature {
+  right: 14%;
+  top: 20%;
+}
+
+.table-play-card {
+  gap: 14px;
+}
+
+.table-play-progress {
+  background:
+    radial-gradient(circle at 10% 30%, rgba(255, 255, 255, 0.12), transparent 24%),
+    rgba(3, 12, 44, 0.72);
+}
+
+.table-operation-card,
+.table-operation-card.active-challenge {
+  min-height: 0;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  padding: clamp(18px, 2.4vw, 26px);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 18% 12%, color-mix(in srgb, var(--table-color) 18%, transparent), transparent 26%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025)),
+    rgba(3, 12, 44, 0.74);
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--table-color) 24%, transparent),
+    0 18px 36px rgba(2, 7, 23, 0.2);
+}
+
+.table-equation {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 14px;
+  min-height: 78px;
+  padding: 12px 18px;
+  border-radius: 24px;
+  background: rgba(2, 8, 32, 0.42);
+}
+
+.table-equation strong {
+  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+  line-height: 1;
+}
+
+.table-equation span {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+}
+
+.visual-groups {
+  min-height: clamp(170px, 22vw, 260px);
+  justify-content: center;
+  align-content: center;
+  padding: clamp(12px, 2vw, 20px);
+  border-radius: 28px;
+  background:
+    radial-gradient(ellipse at 50% 100%, color-mix(in srgb, var(--table-color) 18%, transparent), transparent 58%),
+    rgba(2, 8, 32, 0.36);
+  box-shadow: inset 0 0 0 1px rgba(126, 255, 240, 0.11);
+}
+
+.visual-group {
+  min-width: clamp(66px, 8.5vw, 106px);
+  min-height: clamp(58px, 7.8vw, 88px);
+  padding: clamp(8px, 1.2vw, 12px);
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 50% 8%, color-mix(in srgb, var(--table-color) 36%, transparent), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.04));
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--table-color) 22%, transparent),
+    0 8px 18px rgba(2, 7, 23, 0.18);
+}
+
+.tiny-creature {
+  width: clamp(19px, 2.1vw, 27px);
+  height: clamp(23px, 2.6vw, 34px);
+}
+
+.table-answer-options {
+  gap: clamp(14px, 2vw, 20px);
+}
+
+.table-answer-btn {
+  min-height: clamp(88px, 10vw, 118px);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 24% 18%, rgba(255, 255, 255, 0.3), transparent 24%),
+    radial-gradient(circle at 50% 72%, color-mix(in srgb, var(--table-color) 44%, transparent), transparent 30%),
+    linear-gradient(145deg, var(--table-color), var(--table-accent));
+  box-shadow:
+    inset 0 8px 0 rgba(255, 255, 255, 0.24),
+    inset 0 -12px 0 rgba(2, 7, 26, 0.18),
+    0 12px 0 rgba(2, 7, 26, 0.23),
+    0 0 28px color-mix(in srgb, var(--table-color) 32%, transparent);
+  text-shadow: 0 3px 0 rgba(2, 7, 26, 0.18);
+}
+
+.table-practice-feedback {
+  max-width: 520px;
+  margin-inline: auto;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(223, 251, 255, 0.95));
+  color: #071034;
+}
+
+@media (max-width: 920px) {
+  .tables-grid {
+    grid-template-columns: repeat(2, minmax(150px, 1fr));
+  }
+
+  .table-detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .table-orbit-card {
+    min-height: 220px;
+  }
+
+  .table-orbit-planet {
+    width: min(170px, 42%);
+  }
+}
+
+@media (max-width: 640px) {
+  .tables-topbar {
+    padding: 14px;
+  }
+
+  .tables-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .table-module {
+    min-height: 160px;
+  }
+
+  .table-detail-header {
+    gap: 10px;
+  }
+
+  .table-equation {
+    min-height: 66px;
+  }
+
+  .visual-groups {
+    min-height: 150px;
+  }
+
+  .table-answer-options {
+    grid-template-columns: 1fr;
+  }
+}

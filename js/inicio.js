@@ -41,6 +41,12 @@ els.factoryExitButton.addEventListener("click", () => {
   renderLevels();
   showScreen("level");
 });
+els.deliveryExitButton.addEventListener("click", () => {
+  delivery.active = false;
+  renderLevels();
+  showScreen("level");
+});
+els.trafficModeButton.addEventListener("click", toggleTrafficMode);
 
 els.startAdventureButton.addEventListener("click", () => startLevel(state.levelIndex));
 els.backStartButton.addEventListener("click", () => showScreen("start"));
@@ -69,4 +75,5 @@ els.mobileControls.forEach((button) => {
 });
 
 document.addEventListener("keydown", handleKey);
+updateHomeProgress();
 renderLevels();
