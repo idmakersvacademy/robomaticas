@@ -100,6 +100,11 @@ function energyBatteryMarkup(count, className = "energy-battery") {
 }
 
 function startLevel(index) {
+  if (levels[index].mode === "energyLab") {
+    startEnergyLabLevel(index);
+    return;
+  }
+
   if (levels[index].type === "subtract") {
     startBattleLevel(index);
     return;
@@ -240,7 +245,9 @@ function openQuestion(tile) {
 
 function createQuestion() {
   const level = levels[state.levelIndex];
-  const type = level.type === "mixed" ? randomFrom(level.pool || ["add", "subtract", "multiply", "divide"]) : level.type;
+  if (level.type === "mixed") return createMixedQuestion(level);
+
+  const type = level.type;
   const max = Math.min(20, 5 + level.id * 2);
   let a = rand(1, max);
   let b = rand(1, max);
@@ -274,6 +281,63 @@ function createQuestion() {
 
   return {
     text: `${a} ${symbol} ${b}`,
+    answer,
+    options: makeOptions(answer),
+  };
+}
+
+function createMixedQuestion(level) {
+  const pool = level.pool || ["add", "subtract", "multiply", "divide"];
+  const max = Math.min(18, 6 + level.id * 2);
+
+  if (pool.length === 2 && pool.includes("add") && pool.includes("subtract")) {
+    const a = rand(3, max);
+    const b = rand(2, max);
+    const c = rand(1, Math.min(a + b - 1, max));
+    const answer = a + b - c;
+    return {
+      text: `${a} + ${b} - ${c}`,
+      answer,
+      options: makeOptions(answer),
+    };
+  }
+
+  if (pool.length === 2 && pool.includes("multiply") && pool.includes("divide")) {
+    const divisor = rand(2, 4);
+    const multiplier = rand(1, 3);
+    const items = rand(2, 8);
+    const groups = divisor * multiplier;
+    const answer = multiplier * items;
+    return {
+      text: `(${groups} x ${items}) / ${divisor}`,
+      answer,
+      options: makeOptions(answer),
+    };
+  }
+
+  if (pool.length === 3) {
+    const groups = rand(2, 7);
+    const items = rand(2, 6);
+    const add = rand(2, 9);
+    const subtract = rand(1, Math.min(add + groups - 1, 8));
+    const answer = groups * items + add - subtract;
+    return {
+      text: `(${groups} x ${items}) + ${add} - ${subtract}`,
+      answer,
+      options: makeOptions(answer),
+    };
+  }
+
+  const divisor = rand(2, 4);
+  const multiplier = rand(1, 3);
+  const items = rand(2, 7);
+  const groups = divisor * multiplier;
+  const divided = multiplier * items;
+  const add = rand(2, 8);
+  const subtract = rand(1, add);
+  const answer = divided + add - subtract;
+  return {
+    text: `(${groups} x ${items}) / ${divisor} + ${add} - ${subtract}`,
     answer,
     options: makeOptions(answer),
   };

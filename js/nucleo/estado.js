@@ -2,7 +2,9 @@ function loadProgress() {
   const fallback = { unlocked: 4, stars: {} };
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    return saved?.unlocked ? { ...saved, unlocked: Math.max(saved.unlocked, 4) } : fallback;
+    return saved?.unlocked
+      ? { ...saved, unlocked: Math.min(levels.length, Math.max(saved.unlocked, 4)) }
+      : fallback;
   } catch {
     return fallback;
   }

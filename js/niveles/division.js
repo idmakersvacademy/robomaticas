@@ -1,11 +1,4 @@
-const deliveryRoutes = [
-  { packages: 12, drones: 6 },
-  { packages: 18, drones: 6 },
-  { packages: 24, drones: 6 },
-  { packages: 30, drones: 6 },
-  { packages: 36, drones: 6 },
-  { packages: 42, drones: 6 },
-];
+const deliveryDroneCounts = [2, 3, 4, 5, 6];
 
 function startDeliveryLevel(index) {
   state.levelIndex = index;
@@ -30,10 +23,21 @@ function startDeliveryLevel(index) {
 
 function nextDeliveryRoute() {
   delivery.locked = false;
-  const route = deliveryRoutes[(delivery.round - 1) % deliveryRoutes.length];
-  delivery.question = { ...route, answer: route.packages / route.drones };
+  delivery.question = createDeliveryQuestion();
   renderDeliveryQuestion();
   setDeliveryMessage(delivery.traffic ? "Trafico Robotico: entrega rapido!" : "Reparte todos los paquetes por igual.", "thinking");
+}
+
+function createDeliveryQuestion() {
+  const level = levels[state.levelIndex];
+  const maxEach = Math.min(10, 3 + level.id);
+  const drones = randomFrom(deliveryDroneCounts);
+  const answer = rand(2, maxEach);
+  return {
+    packages: drones * answer,
+    drones,
+    answer,
+  };
 }
 
 function renderDeliveryQuestion() {

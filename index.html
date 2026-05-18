@@ -18,22 +18,6 @@
     <main class="app">
       <section class="screen active" id="startScreen">
         <div class="hero">
-          <div class="home-player-card" aria-hidden="true">
-            <span class="player-avatar"></span>
-            <strong>Explorador</strong>
-            <small>Nivel 7</small>
-          </div>
-          <nav class="home-side-nav" aria-label="Accesos rapidos">
-            <button type="button">Misiones</button>
-            <button type="button">Logros</button>
-            <button type="button">Tienda</button>
-          </nav>
-          <aside class="home-reward-card" aria-label="Racha diaria">
-            <span>Racha diaria</span>
-            <strong>5</strong>
-            <small>Siguiente recompensa</small>
-            <div class="reward-chest" aria-hidden="true"></div>
-          </aside>
           <div class="hero-world-map" aria-hidden="true">
             <span class="world-node node-suma">+</span>
             <span class="world-node node-resta">-</span>
@@ -43,7 +27,12 @@
           <div class="hero-copy">
             <p class="eyebrow">EducaGames</p>
             <h1>Numeronautas de Robo</h1>
-            <p class="intro">Aprende. Juega. Explora.</p>
+
+            <div class="home-quick-stats" aria-label="Estado de aventura">
+              <span><strong id="homeMissionCount">3/12</strong> misiones</span>
+              <span><strong id="homeStarCount">0</strong> estrellas</span>
+              <span><strong id="homeNextMission">Nivel 3</strong> sigue</span>
+            </div>
 
             <div class="feature-row hero-mission-pills" aria-label="Modos del juego">
               <span>Misiones visuales</span>
@@ -51,26 +40,9 @@
               <span>Tablas Galacticas</span>
             </div>
 
-            <div class="hero-progress-panel" aria-label="Progreso de aventura">
-              <div>
-                <strong id="homeMissionCount">3/12</strong>
-                <span>misiones abiertas</span>
-              </div>
-              <div>
-                <strong id="homeStarCount">0</strong>
-                <span>estrellas ganadas</span>
-              </div>
-              <div>
-                <strong id="homeNextMission">Nivel 3</strong>
-                <span>siguiente reto</span>
-              </div>
-            </div>
-
             <div class="menu-actions" aria-label="Menu principal">
               <button class="primary-btn" id="playButton">Jugar</button>
-              <button class="ghost-btn" id="levelsButton">Retos</button>
-              <button class="ghost-btn home-extra-btn" type="button">Perfil</button>
-              <button class="ghost-btn home-extra-btn" type="button">Tienda</button>
+              <button class="ghost-btn" id="levelsButton">Misiones</button>
             </div>
           </div>
           <div class="robo-showcase" aria-hidden="true">
@@ -573,6 +545,90 @@
         <div class="delivery-particles" id="deliveryParticles" aria-hidden="true"></div>
       </section>
 
+      <section class="screen energy-lab-screen" id="energyLabScreen">
+        <div class="energy-lab-bg" aria-hidden="true">
+          <span class="lab-grid"></span>
+          <span class="lab-orbit orbit-a"></span>
+          <span class="lab-orbit orbit-b"></span>
+          <span class="lab-spark spark-a"></span>
+          <span class="lab-spark spark-b"></span>
+          <span class="lab-spark spark-c"></span>
+        </div>
+
+        <header class="energy-lab-hud">
+          <div>
+            <p class="eyebrow">Nivel 5</p>
+            <h2>Centro de Control Energetico</h2>
+          </div>
+          <div class="energy-lab-stats">
+            <div><span>Estrellas</span><strong id="energyLabStars">0/3</strong></div>
+            <div><span>Vidas</span><strong id="energyLabLives">3</strong></div>
+            <div><span>Progreso</span><strong id="energyLabProgressText">0%</strong></div>
+            <button class="ghost-btn" id="energyLabExitButton">Regresar</button>
+          </div>
+        </header>
+
+        <div class="energy-lab-layout" id="energyLabLayout">
+          <section class="energy-lab-robo-panel">
+            <div class="personaje-wrap energy-lab-robo" id="energyLabRobo" aria-label="Robo">
+              <div class="robot-wrap happy speaking">
+                <div class="antena"></div>
+                <div class="cabeza">
+                  <div class="luz"></div>
+                  <div class="cara">
+                    <span class="ceja izq"></span>
+                    <span class="ceja der"></span>
+                    <span class="ojo izq"></span>
+                    <span class="ojo der"></span>
+                    <span class="boca"></span>
+                  </div>
+                </div>
+                <div class="cuello"></div>
+                <div class="torso"></div>
+                <div class="brazo-izq"></div>
+                <div class="brazo-der"></div>
+              </div>
+            </div>
+            <p class="energy-lab-dialog" id="energyLabMessage">Estabiliza el centro paso a paso.</p>
+            <div class="helper-bots" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </section>
+
+          <section class="reactor-stage" aria-label="Centro de control energetico">
+            <div class="lab-turbine turbine-left" aria-hidden="true"></div>
+            <div class="lab-turbine turbine-right" aria-hidden="true"></div>
+            <div class="energy-pipe-lab pipe-top" aria-hidden="true"><span></span></div>
+            <div class="energy-pipe-lab pipe-bottom" aria-hidden="true"><span></span></div>
+            <div class="holo-panel panel-left" aria-hidden="true">GAIN</div>
+            <div class="holo-panel panel-right" aria-hidden="true">FLOW</div>
+            <div class="reactor-core" id="energyReactor" aria-hidden="true">
+              <span class="reactor-ring ring-one"></span>
+              <span class="reactor-ring ring-two"></span>
+              <span class="reactor-glass"></span>
+              <span class="reactor-energy" id="reactorEnergyFill"></span>
+              <strong id="reactorChargeText">0%</strong>
+            </div>
+            <div class="mission-machine" id="energyMissionMachine" aria-hidden="true"></div>
+            <div class="energy-lab-particles" id="energyLabParticles" aria-hidden="true"></div>
+          </section>
+
+          <section class="energy-lab-console" aria-label="Panel de operaciones combinadas">
+            <div class="energy-lab-progress"><span id="energyLabProgressBar"></span></div>
+            <div class="energy-lab-operation" id="energyLabOperation">5 + 3 - 2</div>
+            <div class="energy-lab-steps">
+              <span id="energyStepOne">1 Sube energia</span>
+              <span id="energyStepTwo">2 Libera energia</span>
+            </div>
+            <p class="energy-lab-prompt" id="energyLabPrompt">Primero sube la energia del sistema.</p>
+            <div class="energy-lab-options" id="energyLabOptions"></div>
+            <button class="primary-btn" id="energyLabStartButton">Encender centro</button>
+          </section>
+        </div>
+      </section>
+
       <section class="screen result-screen" id="victoryScreen">
         <div class="confetti" id="confetti"></div>
         <div class="result-card">
@@ -618,6 +674,7 @@
     <script src="js/niveles/suma.js"></script>
     <script src="js/niveles/multiplicacion.js"></script>
     <script src="js/niveles/division.js"></script>
+    <script src="js/niveles/laboratorio-energia.js"></script>
     <script src="js/niveles/tablas-galacticas.js"></script>
     <script src="js/nucleo/compartido.js"></script>
     <script src="js/nucleo/efectos.js"></script>
