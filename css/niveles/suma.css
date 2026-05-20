@@ -2838,3 +2838,439 @@
     min-height: 96px;
   }
 }
+
+/* Bahia Galactica: usa mejor la pantalla y convierte la suma en una bahia espacial */
+.sum-arcade-screen {
+  width: min(100%, 1180px);
+  min-height: calc(100vh - 18px);
+  margin: 0 auto;
+  padding: clamp(14px, 2vw, 24px);
+  gap: clamp(12px, 1.8vh, 18px);
+  overflow: hidden;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(35, 231, 255, 0.28), transparent 22%),
+    radial-gradient(circle at 82% 20%, rgba(142, 95, 255, 0.24), transparent 22%),
+    radial-gradient(ellipse at 50% 102%, rgba(30, 213, 174, 0.24), transparent 32%),
+    linear-gradient(180deg, #0b1d62 0%, #081247 52%, #050820 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(35, 231, 255, 0.16),
+    inset 0 0 80px rgba(35, 231, 255, 0.08),
+    0 28px 64px rgba(2, 7, 23, 0.34);
+}
+
+.sum-arcade-screen::before {
+  content: "";
+  position: absolute;
+  inset: 76px 18px auto;
+  height: 55%;
+  pointer-events: none;
+  border-radius: 44px;
+  background:
+    radial-gradient(circle at 12% 24%, rgba(255, 255, 255, 0.7) 0 1px, transparent 2px),
+    radial-gradient(circle at 32% 18%, rgba(255, 255, 255, 0.45) 0 1px, transparent 2px),
+    radial-gradient(circle at 70% 28%, rgba(35, 231, 255, 0.6) 0 1px, transparent 2px),
+    linear-gradient(180deg, rgba(35, 231, 255, 0.06), transparent);
+  background-size: 180px 130px, 230px 160px, 170px 120px, auto;
+  opacity: 0.75;
+}
+
+.sum-arcade-screen::after {
+  content: "";
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: -15%;
+  height: 34%;
+  pointer-events: none;
+  border-radius: 50% 50% 0 0;
+  background:
+    linear-gradient(90deg, transparent, rgba(35, 231, 255, 0.32), transparent) top / 100% 3px no-repeat,
+    radial-gradient(ellipse at 50% 0, rgba(35, 231, 255, 0.22), transparent 56%),
+    linear-gradient(180deg, rgba(33, 123, 184, 0.2), rgba(10, 38, 88, 0.68));
+}
+
+.sum-arcade-screen .factory-bg {
+  opacity: 1;
+  background:
+    linear-gradient(rgba(35, 231, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(142, 95, 255, 0.055) 1px, transparent 1px),
+    radial-gradient(circle at 10% 72%, rgba(35, 231, 255, 0.18), transparent 20%),
+    radial-gradient(circle at 90% 18%, rgba(126, 255, 167, 0.13), transparent 22%);
+  background-size: 64px 64px, 64px 64px, auto, auto;
+}
+
+.sum-arcade-screen .factory-topbar {
+  z-index: 5;
+  width: min(100%, 1060px);
+  margin: 0 auto;
+  grid-template-columns: 64px minmax(0, 1fr) 64px;
+}
+
+.sum-arcade-screen .factory-topbar > div:first-child,
+.sum-arcade-screen .factory-exit {
+  width: 58px;
+  height: 58px;
+  border-radius: 20px;
+}
+
+.sum-arcade-screen .factory-stats {
+  width: min(100%, 760px);
+  justify-self: center;
+  display: grid;
+  grid-template-columns: minmax(150px, 1.2fr) minmax(110px, 0.72fr) minmax(150px, 1fr);
+  gap: clamp(10px, 2vw, 28px);
+}
+
+.sum-arcade-screen .factory-stats .tech-stat {
+  min-height: 48px;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 20% 16%, rgba(255, 255, 255, 0.16), transparent 30%),
+    rgba(5, 18, 66, 0.76);
+}
+
+.sum-arcade-screen .factory-stats .tech-stat:nth-child(3) {
+  display: flex;
+}
+
+.sum-arcade-screen .factory-layout {
+  z-index: 2;
+  width: min(100%, 1080px);
+  min-height: 0;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  gap: clamp(10px, 1.4vh, 14px);
+  align-content: start;
+}
+
+.sum-arcade-screen .factory-robo-panel {
+  width: min(100%, 840px);
+  min-height: 126px;
+  display: grid;
+  grid-template-columns: 190px minmax(280px, 470px);
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 3vw, 34px);
+}
+
+.sum-arcade-screen .factory-character {
+  width: 142px;
+  min-width: 142px;
+  height: 150px;
+  justify-self: end;
+}
+
+.sum-arcade-screen .factory-character .robot-wrap {
+  --robo-scale: 0.56;
+}
+
+.sum-arcade-screen .clone-round-brief {
+  width: min(100%, 450px);
+  min-height: 76px;
+  padding: 14px 22px;
+  border-radius: 20px;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255, 255, 255, 0.1), transparent 28%),
+    rgba(8, 19, 70, 0.86);
+  box-shadow:
+    inset 0 0 0 3px rgba(35, 231, 255, 0.76),
+    0 0 26px rgba(35, 231, 255, 0.32);
+  font-size: clamp(1.45rem, 2.8vw, 2rem);
+  text-align: center;
+  text-shadow: 0 4px 0 rgba(2, 7, 23, 0.28);
+}
+
+.sum-arcade-screen .clone-round-brief::after {
+  left: -16px;
+  top: 50%;
+  width: 32px;
+  height: 28px;
+  transform: translateY(-50%);
+  background: rgba(35, 231, 255, 0.92);
+}
+
+.sum-arcade-screen .factory-floor {
+  width: min(100%, 940px);
+}
+
+.sum-arcade-screen .clone-lab-scene {
+  padding: clamp(14px, 1.8vw, 20px);
+  border-radius: 26px;
+  background:
+    linear-gradient(90deg, rgba(35, 231, 255, 0.42), rgba(142, 95, 255, 0.34)) top / 100% 4px no-repeat,
+    radial-gradient(circle at 16% 12%, rgba(255, 255, 255, 0.11), transparent 20%),
+    linear-gradient(180deg, rgba(10, 25, 80, 0.86), rgba(6, 12, 46, 0.9));
+  box-shadow:
+    inset 0 0 0 2px rgba(35, 231, 255, 0.22),
+    0 0 30px rgba(35, 231, 255, 0.2);
+}
+
+.sum-arcade-screen .clone-equation {
+  grid-template-columns: minmax(160px, 1fr) auto minmax(160px, 1fr) auto minmax(116px, 0.55fr);
+  gap: clamp(12px, 2vw, 24px);
+}
+
+.sum-arcade-screen .addition-clone-set,
+.sum-arcade-screen .addition-question {
+  min-height: clamp(106px, 15vh, 138px);
+  border-radius: 22px;
+}
+
+.sum-arcade-screen .addition-clone-set {
+  background:
+    radial-gradient(circle at 28% 18%, rgba(255, 255, 255, 0.12), transparent 26%),
+    rgba(255, 255, 255, 0.07);
+  box-shadow:
+    inset 0 0 0 2px rgba(35, 231, 255, 0.18),
+    0 0 16px rgba(35, 231, 255, 0.1);
+}
+
+.sum-arcade-screen .energy-battery {
+  width: clamp(32px, 3.6vw, 44px);
+  height: clamp(54px, 5.4vh, 70px);
+}
+
+.sum-arcade-screen .addition-symbol {
+  min-width: 38px;
+  color: #ad78ff;
+}
+
+.sum-arcade-screen .addition-question {
+  font-size: clamp(3.8rem, 7vw, 5.4rem);
+}
+
+.sum-arcade-screen .factory-control {
+  width: min(100%, 900px);
+  gap: clamp(10px, 1.4vh, 14px);
+}
+
+.sum-arcade-screen .factory-message {
+  width: min(420px, 100%);
+  min-height: 44px;
+  font-size: 1rem;
+}
+
+.sum-arcade-screen .factory-options {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 3vw, 34px);
+}
+
+.sum-arcade-screen .factory-option.sum-answer-card {
+  min-height: clamp(92px, 12vh, 118px);
+  border-radius: 24px;
+}
+
+.sum-arcade-screen .answer-number {
+  font-size: clamp(3rem, 5vw, 4.35rem);
+}
+
+.sum-arcade-screen .factory-particles {
+  z-index: 8;
+}
+
+@media (max-height: 760px) and (min-width: 860px) {
+  .sum-arcade-screen {
+    min-height: calc(100vh - 10px);
+    padding: 10px 18px;
+    gap: 8px;
+  }
+
+  .sum-arcade-screen .factory-topbar {
+    min-height: 46px;
+  }
+
+  .sum-arcade-screen .factory-topbar > div:first-child,
+  .sum-arcade-screen .factory-exit {
+    width: 48px;
+    height: 48px;
+  }
+
+  .sum-arcade-screen .factory-stats .tech-stat {
+    min-height: 42px;
+  }
+
+  .sum-arcade-screen .factory-robo-panel {
+    min-height: 128px;
+  }
+
+  .sum-arcade-screen .factory-character {
+    width: 138px;
+    min-width: 138px;
+    height: 145px;
+  }
+
+  .sum-arcade-screen .factory-character .robot-wrap {
+    --robo-scale: 0.54;
+  }
+
+  .sum-arcade-screen .clone-round-brief {
+    min-height: 76px;
+    font-size: clamp(1.45rem, 2.6vw, 1.95rem);
+  }
+
+  .sum-arcade-screen .addition-clone-set,
+  .sum-arcade-screen .addition-question {
+    min-height: 112px;
+  }
+
+  .sum-arcade-screen .factory-option.sum-answer-card {
+    min-height: 92px;
+  }
+}
+
+@media (max-width: 860px) {
+  .sum-arcade-screen .factory-topbar {
+    grid-template-columns: 54px minmax(0, 1fr);
+  }
+
+  .sum-arcade-screen .factory-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sum-arcade-screen .factory-stats .tech-stat:nth-child(3),
+  .sum-arcade-screen .factory-exit {
+    display: none;
+  }
+
+  .sum-arcade-screen .factory-robo-panel {
+    width: min(100%, 560px);
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .sum-arcade-screen .factory-character {
+    justify-self: center;
+  }
+
+  .sum-arcade-screen .clone-round-brief::after {
+    left: 50%;
+    top: -13px;
+    transform: translateX(-50%) rotate(90deg);
+  }
+
+  .sum-arcade-screen .clone-equation {
+    grid-template-columns: 1fr;
+  }
+
+  .sum-arcade-screen .addition-symbol {
+    min-height: 20px;
+  }
+}
+
+@media (max-width: 560px) {
+  .sum-arcade-screen {
+    padding: 10px;
+  }
+
+  .sum-arcade-screen .factory-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Ajuste de simetria para Bahia Galactica */
+.sum-arcade-screen .factory-topbar {
+  width: min(100%, 980px);
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
+}
+
+.sum-arcade-screen .factory-stats {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(210px, 1.25fr) minmax(120px, 0.72fr) minmax(180px, 1fr) 64px;
+  align-items: center;
+  gap: clamp(12px, 2.2vw, 28px);
+}
+
+.sum-arcade-screen .factory-stats .tech-stat,
+.sum-arcade-screen .factory-exit {
+  margin: 0;
+  justify-self: stretch;
+}
+
+.sum-arcade-screen .factory-exit {
+  display: grid;
+  justify-self: end;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  position: static;
+}
+
+.sum-arcade-screen .factory-robo-panel {
+  width: min(100%, 640px);
+  min-height: 280px;
+  grid-template-columns: 1fr;
+  grid-template-rows: 142px auto;
+  justify-items: center;
+  align-items: center;
+  gap: 14px;
+}
+
+.sum-arcade-screen .factory-character {
+  justify-self: center;
+  align-self: end;
+}
+
+.sum-arcade-screen .clone-round-brief {
+  justify-self: center;
+  width: min(100%, 460px);
+}
+
+.sum-arcade-screen .clone-round-brief::after {
+  left: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.sum-arcade-screen .factory-floor,
+.sum-arcade-screen .factory-control {
+  justify-self: center;
+}
+
+.sum-arcade-screen .clone-lab-scene,
+.sum-arcade-screen .factory-options,
+.sum-arcade-screen .factory-message {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-height: 760px) and (min-width: 861px) {
+  .sum-arcade-screen .factory-robo-panel {
+    min-height: 228px;
+    grid-template-rows: 116px auto;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 980px) {
+  .sum-arcade-screen .factory-topbar {
+    grid-template-columns: 58px minmax(0, 1fr);
+  }
+
+  .sum-arcade-screen .factory-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sum-arcade-screen .factory-exit {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+@media (max-width: 860px) {
+  .sum-arcade-screen .factory-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sum-arcade-screen .clone-round-brief::after {
+    left: 50%;
+    top: -13px;
+    transform: translateX(-50%) rotate(90deg);
+  }
+}

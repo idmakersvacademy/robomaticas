@@ -1,17 +1,59 @@
+const DEFAULT_UNLOCKED_LEVELS = 4;
+
+function clampNumber(value, min, max, fallback = min) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return fallback;
+  return Math.min(max, Math.max(min, Math.trunc(number)));
+}
+
+function sanitizeStars(rawStars = {}) {
+  const stars = {};
+  levels.forEach((level) => {
+    const value = clampNumber(rawStars[level.id], 0, 3, 0);
+    if (value > 0) stars[level.id] = value;
+  });
+  return stars;
+}
+
+function expectedUnlockedFromStars(stars) {
+  const completedIds = Object.keys(stars)
+    .map((id) => clampNumber(id, 1, levels.length, 0))
+    .filter((id) => id > 0 && stars[id] > 0);
+  const highestCompleted = completedIds.length ? Math.max(...completedIds) : 0;
+  return Math.min(levels.length, Math.max(DEFAULT_UNLOCKED_LEVELS, highestCompleted + 1));
+}
+
+function sanitizeProgress(rawProgress = {}) {
+  const stars = sanitizeStars(rawProgress.stars);
+  const earnedUnlocked = expectedUnlockedFromStars(stars);
+  const requestedUnlocked = clampNumber(rawProgress.unlocked, DEFAULT_UNLOCKED_LEVELS, levels.length, DEFAULT_UNLOCKED_LEVELS);
+  return {
+    unlocked: Math.min(requestedUnlocked, earnedUnlocked),
+    stars,
+  };
+}
+
 function loadProgress() {
-  const fallback = { unlocked: 4, stars: {} };
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    return saved?.unlocked
-      ? { ...saved, unlocked: Math.min(levels.length, Math.max(saved.unlocked, 4)) }
-      : fallback;
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    return sanitizeProgress(saved);
   } catch {
-    return fallback;
+    return sanitizeProgress();
   }
 }
 
 function saveProgress() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state.storage));
+  state.storage = sanitizeProgress(state.storage);
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state.storage));
+  } catch {
+    // El juego puede seguir funcionando aunque el navegador bloquee localStorage.
+  }
+}
+
+function canAccessLevel(index) {
+  const level = levels[index];
+  return Boolean(level) && level.id <= state.storage.unlocked;
 }
 
 const state = {
@@ -98,6 +140,7 @@ const els = {
   homeStarCount: document.querySelector("#homeStarCount"),
   homeNextMission: document.querySelector("#homeNextMission"),
   startAdventureButton: document.querySelector("#startAdventureButton"),
+  conceptMenuButton: document.querySelector("#conceptMenuButton"),
   backStartButton: document.querySelector("#backStartButton"),
   levelGrid: document.querySelector("#levelGrid"),
   conceptEyebrow: document.querySelector("#conceptEyebrow"),

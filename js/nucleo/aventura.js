@@ -21,29 +21,53 @@ function updateHomeProgress() {
 function renderLevels() {
   els.levelGrid.innerHTML = "";
   levels.forEach((level, index) => {
-    const unlocked = level.id <= state.storage.unlocked;
+    const unlocked = canAccessLevel(index);
     const stars = state.storage.stars[level.id] || 0;
     const operations = level.pool || [level.type];
     const card = document.createElement("article");
     card.className = `level-card level-${level.type} ${level.pool ? "combo-level" : ""} ${unlocked ? "" : "locked"}`;
-    card.innerHTML = `
-      <div class="level-icon">${unlocked ? level.icon : "Bloq"}</div>
-      <div>
-        <p class="eyebrow">Nivel ${level.id}</p>
-        <h3>${level.title}</h3>
-        <p class="level-type">${level.label}</p>
-        ${level.pool ? '<span class="combo-badge">Combo</span>' : ""}
-        <div class="level-ops">${operations.map((operation) => `<span>${operationSymbol(operation)}</span>`).join("")}</div>
-      </div>
-      <div class="stars">${"\u2605".repeat(stars)}${"\u2606".repeat(3 - stars)}</div>
-      <button class="${unlocked ? "primary-btn" : "ghost-btn"}" ${unlocked ? "" : "disabled"}>
-        ${unlocked ? "Entrar" : "Bloqueado"}
-      </button>
-    `;
 
-    if (unlocked) {
-      card.querySelector("button").addEventListener("click", () => showConcept(index));
+    const icon = document.createElement("div");
+    icon.className = "level-icon";
+    icon.textContent = unlocked ? level.icon : "Bloq";
+
+    const body = document.createElement("div");
+    const eyebrow = document.createElement("p");
+    eyebrow.className = "eyebrow";
+    eyebrow.textContent = `Nivel ${level.id}`;
+    const title = document.createElement("h3");
+    title.textContent = level.title;
+    const type = document.createElement("p");
+    type.className = "level-type";
+    type.textContent = level.label;
+    const ops = document.createElement("div");
+    ops.className = "level-ops";
+    operations.forEach((operation) => {
+      const op = document.createElement("span");
+      op.textContent = operationSymbol(operation);
+      ops.appendChild(op);
+    });
+    body.append(eyebrow, title, type);
+    if (level.pool) {
+      const badge = document.createElement("span");
+      badge.className = "combo-badge";
+      badge.textContent = "Combo";
+      body.appendChild(badge);
     }
+    body.appendChild(ops);
+
+    const starsEl = document.createElement("div");
+    starsEl.className = "stars";
+    starsEl.textContent = "\u2605".repeat(stars) + "\u2606".repeat(3 - stars);
+
+    const button = document.createElement("button");
+    button.className = unlocked ? "primary-btn" : "ghost-btn";
+    button.type = "button";
+    button.disabled = !unlocked;
+    button.textContent = unlocked ? "Entrar" : "Bloqueado";
+    if (unlocked) button.addEventListener("click", () => showConcept(index));
+
+    card.append(icon, body, starsEl, button);
 
     els.levelGrid.appendChild(card);
   });
@@ -60,6 +84,12 @@ function operationSymbol(operation) {
 }
 
 function showConcept(index) {
+  if (!canAccessLevel(index)) {
+    renderLevels();
+    showScreen("level");
+    return;
+  }
+
   state.levelIndex = index;
   const level = levels[index];
   const concept = level.concept || conceptByType[level.type] || conceptByType.mixed;
@@ -100,6 +130,12 @@ function energyBatteryMarkup(count, className = "energy-battery") {
 }
 
 function startLevel(index) {
+  if (!canAccessLevel(index)) {
+    renderLevels();
+    showScreen("level");
+    return;
+  }
+
   if (levels[index].mode === "energyLab") {
     startEnergyLabLevel(index);
     return;
@@ -225,6 +261,7 @@ function openQuestion(tile) {
   };
 
   state.question = createQuestion();
+  state.question.locked = false;
   els.questionReason.textContent = reasons[tile];
   els.operationText.textContent = state.question.text;
   els.questionFeedback.textContent = "Elige una respuesta.";
@@ -354,7 +391,8 @@ function makeOptions(answer) {
 }
 
 function answerQuestion(button, value) {
-  if (!state.question) return;
+  if (!state.question || state.question.locked) return;
+  state.question.locked = true;
   const optionButtons = els.options.querySelectorAll(".option-btn");
   optionButtons.forEach((item) => {
     item.disabled = true;
@@ -385,6 +423,7 @@ function answerQuestion(button, value) {
           item.disabled = false;
         });
         button.disabled = true;
+        if (state.question) state.question.locked = false;
       }, 650);
     }
   }

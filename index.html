@@ -18,6 +18,9 @@
     <main class="app">
       <section class="screen active" id="startScreen">
         <div class="hero">
+          <div class="home-player-card" aria-hidden="true">
+            <div class="reward-chest" aria-hidden="true"></div>
+          </div>
           <div class="hero-world-map" aria-hidden="true">
             <span class="world-node node-suma">+</span>
             <span class="world-node node-resta">-</span>
@@ -25,24 +28,32 @@
             <span class="world-node node-delivery">/</span>
           </div>
           <div class="hero-copy">
-            <p class="eyebrow">EducaGames</p>
             <h1>Numeronautas de Robo</h1>
 
-            <div class="home-quick-stats" aria-label="Estado de aventura">
-              <span><strong id="homeMissionCount">3/12</strong> misiones</span>
-              <span><strong id="homeStarCount">0</strong> estrellas</span>
-              <span><strong id="homeNextMission">Nivel 3</strong> sigue</span>
+            <div class="feature-row hero-mission-pills" aria-label="Modos del juego">
+              <span> </span>
+              <span> </span>
+              <span> </span>
             </div>
 
-            <div class="feature-row hero-mission-pills" aria-label="Modos del juego">
-              <span>Misiones visuales</span>
-              <span>Planeta Clonix</span>
-              <span>Tablas Galacticas</span>
+            <div class="hero-progress-panel" aria-label="Progreso de aventura">
+              <div>
+                <strong id="homeMissionCount">3/12</strong>
+                <span>misiones abiertas</span>
+              </div>
+              <div>
+                <strong id="homeStarCount">0</strong>
+                <span>estrellas ganadas</span>
+              </div>
+              <div>
+                <strong id="homeNextMission">Nivel 3</strong>
+                <span>siguiente reto</span>
+              </div>
             </div>
 
             <div class="menu-actions" aria-label="Menu principal">
               <button class="primary-btn" id="playButton">Jugar</button>
-              <button class="ghost-btn" id="levelsButton">Misiones</button>
+              <button class="ghost-btn" id="levelsButton">Niveles</button>
             </div>
           </div>
           <div class="robo-showcase" aria-hidden="true">
@@ -101,7 +112,10 @@
               </div>
             </div>
             <p class="concept-note" id="conceptNote">Ejemplo: 2 estrellas + 3 estrellas = 5 estrellas.</p>
-            <button class="primary-btn" id="startAdventureButton">Iniciar mision</button>
+            <div class="concept-actions">
+              <button class="primary-btn" id="startAdventureButton">Iniciar mision</button>
+              <button class="ghost-btn" id="conceptMenuButton">Menu</button>
+            </div>
           </div>
         </div>
       </section>
@@ -611,7 +625,7 @@
               <span class="reactor-energy" id="reactorEnergyFill"></span>
               <strong id="reactorChargeText">0%</strong>
             </div>
-            <div class="mission-machine" id="energyMissionMachine" aria-hidden="true"></div>
+            <div class="mission-machine" id="energyMissionMachine" aria-label="Reactor visual de capsulas"></div>
             <div class="energy-lab-particles" id="energyLabParticles" aria-hidden="true"></div>
           </section>
 

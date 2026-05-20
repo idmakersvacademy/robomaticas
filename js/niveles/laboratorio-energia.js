@@ -7,6 +7,8 @@ const energyLab = {
   stars: 0,
   progress: 0,
   charge: 0,
+  visualValue: 0,
+  animation: null,
   stepIndex: 0,
   locked: false,
   question: null,
@@ -57,6 +59,8 @@ function startEnergyLabLevel(index) {
   energyLab.stars = 0;
   energyLab.progress = 0;
   energyLab.charge = 0;
+  energyLab.visualValue = 0;
+  energyLab.animation = null;
   energyLab.stepIndex = 0;
   energyLab.locked = false;
   energyLab.question = null;
@@ -99,15 +103,15 @@ function energyLabConfig() {
       title: "Torre de Compuertas",
       placeholder: "5 + 3 - 2",
       readyPrompt: "Abre la torre cuando Robo este listo.",
-      readyMessage: "Las compuertas estan dormidas y el flujo espera orden.",
-      beginMessage: "Primero decide si la compuerta carga o libera energia.",
-      stepOneLabel: "1 Primer cambio",
-      stepTwoLabel: "2 Estabiliza",
-      panelLeft: "GAIN",
-      panelRight: "FLOW",
+      readyMessage: "La torre esta apagada. Vamos a cargarla viendo capsulas entrar y salir.",
+      beginMessage: "Mira las capsulas del reactor. Primero entran nuevas cargas.",
+      stepOneLabel: "1 Entran capsulas",
+      stepTwoLabel: "2 Sale energia",
+      panelLeft: "ENTRAN",
+      panelRight: "SALEN",
       startText: "Abrir compuertas",
-      roundComplete: ["Compuerta calibrada.", "La torre respira energia estable.", "Robo alineo otro canal."],
-      nouns: { first: "energia", second: "energia" },
+      roundComplete: ["Torre cargada.", "Las compuertas quedaron estables.", "Robo conto el flujo perfecto."],
+      nouns: { first: "capsulas", second: "capsulas" },
     },
     6: {
       themeClass: "factory-danger-theme",
@@ -166,25 +170,45 @@ function createEnergyLabQuestion() {
 }
 
 function createControlCenterQuestion() {
-  const firstOperator = Math.random() > 0.45 ? "+" : "-";
-  const secondOperator = firstOperator === "+" ? "-" : "+";
-  const start = rand(firstOperator === "+" ? 3 : 7, 10 + energyLab.round);
-  const firstChange = rand(2, firstOperator === "+" ? 5 : Math.min(5, start - 1));
-  const core = firstOperator === "+" ? start + firstChange : start - firstChange;
-  const secondChange = rand(1, secondOperator === "+" ? 5 : Math.min(6, Math.max(1, core - 1)));
-  const answer = secondOperator === "+" ? core + secondChange : core - secondChange;
+  const start = rand(5, 8 + energyLab.round);
+  const firstChange = rand(2, 4);
+  const core = start + firstChange;
+  const secondChange = rand(1, Math.min(3, core - 1));
+  const answer = core - secondChange;
 
   return {
     start,
-    firstOperator,
+    valorInicial: start,
+    firstOperator: "+",
     firstChange,
-    secondOperator,
+    secondOperator: "-",
     secondChange,
-    firstAction: firstOperator === "+" ? "agrega" : "libera",
-    secondAction: secondOperator === "+" ? "agrega" : "libera",
+    firstAction: "agrega",
+    secondAction: "libera",
     core,
     answer,
-    text: `${start} ${firstOperator} ${firstChange} ${secondOperator} ${secondChange}`,
+    operacionTexto: `${start} + ${firstChange} - ${secondChange}`,
+    text: `${start} + ${firstChange} - ${secondChange}`,
+    pasos: [
+      {
+        tipo: "sumar",
+        operador: "+",
+        cantidad: firstChange,
+        pregunta: `Primero agrega ${firstChange} capsulas. Cuanta energia hay ahora?`,
+        respuestaCorrecta: core,
+        opciones: makeEnergyLabOptions(core),
+        robo: `Primero cargamos ${firstChange} capsulas nuevas.`,
+      },
+      {
+        tipo: "restar",
+        operador: "-",
+        cantidad: secondChange,
+        pregunta: `Ahora se usa ${secondChange} capsula${secondChange > 1 ? "s" : ""}. Cuanta energia queda?`,
+        respuestaCorrecta: answer,
+        opciones: makeEnergyLabOptions(answer),
+        robo: `Ahora descontamos ${secondChange} uso${secondChange > 1 ? "s" : ""} de energia.`,
+      },
+    ],
   };
 }
 
@@ -250,6 +274,8 @@ function nextEnergyLabQuestion() {
   energyLab.question = createEnergyLabQuestion();
   energyLab.stepIndex = 0;
   energyLab.locked = false;
+  energyLab.animation = null;
+  energyLab.visualValue = energyLab.question.start;
   els.stepOne.textContent = stepBadge(1);
   els.stepTwo.textContent = stepBadge(2);
   els.operation.textContent = energyLab.question.text;
@@ -257,6 +283,15 @@ function nextEnergyLabQuestion() {
   setEnergyLabMessage(stepMessage(1), "thinking");
   updateEnergyLabSteps();
   renderMissionMachine();
+  if (isGateTowerLevel()) {
+    const firstStep = currentGateStep();
+    els.prompt.textContent = `Empiezas con ${energyLab.question.start} capsulas encendidas. Mira el reactor.`;
+    setEnergyLabMessage(`Primero contamos ${energyLab.question.start} capsulas dentro de la torre.`, "thinking");
+    renderEnergyLabOptions(firstStep.opciones);
+    setEnergyLabOptionsDisabled(true);
+    setTimeout(mostrarPasoActual, 650);
+    return;
+  }
   renderEnergyLabOptions(makeEnergyLabOptions(energyLab.question.core));
 }
 
@@ -277,24 +312,12 @@ function renderMissionMachine() {
   const firstActive = step === 0 ? "active" : "done";
   const secondActive = step === 1 ? "active" : "";
 
+  if (level.id === 5) {
+    els.machine.innerHTML = renderGateTowerMachine();
+    return;
+  }
+
   const templates = {
-    5: `
-      <div class="mission-title">Torre de compuertas</div>
-      <div class="gate-board ${firstActive}">
-        <div class="gate-meter">${energyCells(question.start, "base")}<span>${question.start}</span></div>
-        <div class="energy-gate ${question.firstOperator === "+" ? "open" : "vent"}">
-          <b>${question.firstOperator} ${question.firstChange}</b>
-          <i></i>
-        </div>
-        <div class="gate-meter target">${energyCells(question.core, "gain")}<span>${question.core}</span></div>
-      </div>
-      <div class="stability-rail ${secondActive}">
-        <span>${question.core}</span>
-        <b>${question.secondOperator} ${question.secondChange}</b>
-        <span>${question.answer}</span>
-        <em>flujo estable</em>
-      </div>
-    `,
     6: `
       <div class="mission-title">Rescate de banda Chispa</div>
       <div class="factory-rescue ${firstActive}">
@@ -337,6 +360,98 @@ function renderMissionMachine() {
   };
 
   els.machine.innerHTML = templates[level.id] || templates[5];
+}
+
+function isGateTowerLevel() {
+  return levels[state.levelIndex]?.id === 5;
+}
+
+function currentGateStep() {
+  return energyLab.question?.pasos?.[energyLab.stepIndex];
+}
+
+function renderGateTowerMachine() {
+  const question = energyLab.question;
+  const step = currentGateStep();
+  const animationClass = energyLab.animation ? `is-${energyLab.animation.tipo}` : "";
+  const outgoing = energyLab.animation?.tipo === "restar" ? energyLab.animation.cantidad : 0;
+  return `
+    <div class="gate-tower-playfield ${animationClass}">
+      <div class="gate-operation-pill">${question.operacionTexto}</div>
+      <div class="gate-step-chip ${step?.tipo || ""}">
+        <span>Paso ${energyLab.stepIndex + 1}</span>
+        <strong>${step?.operador || "+"}${step?.cantidad || 0}</strong>
+      </div>
+      <div class="gate-reactor-panel" aria-label="${energyLab.visualValue} capsulas de energia">
+        <div class="gate-reactor-shell">
+          <span class="gate-reactor-glow"></span>
+          <div class="gate-capsule-grid">${renderEnergia(energyLab.visualValue)}</div>
+          ${outgoing ? `<div class="gate-exit-stream">${renderEnergia(outgoing, "leaving")}</div>` : ""}
+        </div>
+        <div class="gate-energy-meter">
+          <span style="--gate-charge: ${Math.min(100, energyLab.visualValue * 8)}%"></span>
+        </div>
+        <strong class="gate-count">${energyLab.visualValue}</strong>
+      </div>
+    </div>
+  `;
+}
+
+function renderEnergia(cantidad, extraClass = "") {
+  const animation = energyLab.animation;
+  const enteringFrom = animation?.tipo === "sumar" ? Math.max(0, cantidad - animation.cantidad) : Infinity;
+  return Array.from({ length: Math.max(0, cantidad) }, (_, index) => {
+    const entering = index >= enteringFrom ? " entering" : "";
+    return `<span class="gate-capsule ${extraClass}${entering}" style="--delay: ${index * 0.035}s"></span>`;
+  }).join("");
+}
+
+function animarEntrada(cantidad) {
+  return runGateAnimation("sumar", cantidad);
+}
+
+function animarSalida(cantidad) {
+  return runGateAnimation("restar", cantidad);
+}
+
+function runGateAnimation(tipo, cantidad) {
+  energyLab.locked = true;
+  energyLab.animation = { tipo, cantidad };
+  renderMissionMachine();
+  setEnergyLabOptionsDisabled(true);
+  getEnergyLabEls().screen.classList.toggle("energy-gain", tipo === "sumar");
+  getEnergyLabEls().screen.classList.toggle("energy-release", tipo === "restar");
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      energyLab.animation = null;
+      getEnergyLabEls().screen.classList.remove("energy-gain", "energy-release");
+      renderMissionMachine();
+      energyLab.locked = false;
+      setEnergyLabOptionsDisabled(false);
+      resolve();
+    }, 720);
+  });
+}
+
+function mostrarPasoActual() {
+  const step = currentGateStep();
+  if (!step) return;
+  const els = getEnergyLabEls();
+  energyLab.visualValue = step.respuestaCorrecta;
+  els.operation.textContent = energyLab.question.operacionTexto;
+  els.prompt.textContent = step.pregunta;
+  setEnergyLabMessage(step.robo, "thinking");
+  updateEnergyLabSteps();
+  renderMissionMachine();
+  renderEnergyLabOptions(step.opciones);
+
+  if (step.tipo === "sumar") {
+    animarEntrada(step.cantidad);
+    return;
+  }
+
+  animarSalida(step.cantidad);
 }
 
 function energyCells(count, className) {
@@ -430,8 +545,15 @@ function renderEnergyLabOptions(options) {
     button.className = "energy-option";
     button.type = "button";
     button.textContent = option;
+    button.setAttribute("aria-label", `Responder ${option}`);
     button.addEventListener("click", () => answerEnergyLabStep(button, option));
     els.options.appendChild(button);
+  });
+}
+
+function setEnergyLabOptionsDisabled(disabled) {
+  getEnergyLabEls().options.querySelectorAll("button").forEach((item) => {
+    item.disabled = disabled;
   });
 }
 
@@ -448,11 +570,11 @@ function makeEnergyLabOptions(answer) {
 function answerEnergyLabStep(button, value) {
   if (energyLab.locked || !energyLab.question || !energyLab.started) return;
   energyLab.locked = true;
-  getEnergyLabEls().options.querySelectorAll("button").forEach((item) => {
-    item.disabled = true;
-  });
+  setEnergyLabOptionsDisabled(true);
 
-  const expected = energyLab.stepIndex === 0 ? energyLab.question.core : energyLab.question.answer;
+  const expected = isGateTowerLevel()
+    ? currentGateStep().respuestaCorrecta
+    : energyLab.stepIndex === 0 ? energyLab.question.core : energyLab.question.answer;
   if (value === expected) {
     button.classList.add("correct");
     energyLabCorrectStep();
@@ -467,13 +589,17 @@ function energyLabCorrectStep() {
   const els = getEnergyLabEls();
   playSound("energy-lab-correct");
   energyLab.score += energyLab.stepIndex === 0 ? 80 : 150;
-  const direction = energyLab.stepIndex === 0 ? energyLab.question.firstOperator : energyLab.question.secondOperator;
+  const gateStep = currentGateStep();
+  const direction = isGateTowerLevel()
+    ? gateStep.operador
+    : energyLab.stepIndex === 0 ? energyLab.question.firstOperator : energyLab.question.secondOperator;
   const chargeDelta = ["+", "x"].includes(direction) ? 14 : -8;
   energyLab.charge = Math.max(8, Math.min(100, energyLab.charge + chargeDelta + (energyLab.stepIndex === 1 ? 12 : 0)));
   els.reactor.classList.add("charged");
   els.screen.classList.add("success-pulse", direction === "+" ? "energy-gain" : "energy-release");
   popEnergyLabParticles(["+", "x"].includes(direction) ? "gain" : "release");
   updateEnergyLabHud();
+  mostrarFeedbackCorrecto();
   setEnergyLabMood("happy");
 
   setTimeout(() => {
@@ -482,6 +608,10 @@ function energyLabCorrectStep() {
 
     if (energyLab.stepIndex === 0) {
       energyLab.stepIndex = 1;
+      if (isGateTowerLevel()) {
+        mostrarPasoActual();
+        return;
+      }
       energyLab.locked = false;
       els.prompt.textContent = stepPrompt(2);
       els.operation.textContent = stepTwoOperation();
@@ -505,7 +635,7 @@ function energyLabWrongStep(expected) {
   els.reactor.classList.add("short");
   popEnergyLabParticles("error");
   updateEnergyLabHud();
-  setEnergyLabMessage(`Alerta suave: revisa el flujo. Ese paso debe dejar ${expected} de energia.`, "sad");
+  mostrarFeedbackIncorrecto(expected);
 
   if (energyLab.lives <= 0) {
     setTimeout(() => {
@@ -520,16 +650,17 @@ function energyLabWrongStep(expected) {
     els.reactor.classList.remove("short");
     energyLab.locked = false;
     getEnergyLabEls().options.querySelectorAll("button").forEach((item) => {
-      item.disabled = false;
       item.classList.remove("wrong");
     });
-    setEnergyLabMessage("Probemos otra vez: mira si la energia sube o baja.", "thinking");
+    setEnergyLabOptionsDisabled(false);
+    const step = currentGateStep();
+    setEnergyLabMessage(isGateTowerLevel() && step ? step.robo : "Probemos otra vez: mira si la energia sube o baja.", "thinking");
   }, 950);
 }
 
 function completeEnergyLabRound() {
   energyLab.progress = Math.min(100, energyLab.progress + 25);
-  energyLab.stars = Math.min(3, Math.max(1, Math.ceil(energyLab.progress / 34)));
+  energyLab.stars = isGateTowerLevel() ? Math.max(1, energyLab.lives) : Math.min(3, Math.max(1, Math.ceil(energyLab.progress / 34)));
   setEnergyLabMessage(randomFrom(energyLabConfig().roundComplete), "happy");
   updateEnergyLabHud();
   renderMissionMachine();
@@ -547,6 +678,7 @@ function completeEnergyLabLevel() {
   energyLab.active = false;
   state.score = energyLab.score;
   state.lives = energyLab.lives;
+  energyLab.stars = Math.max(1, energyLab.lives);
   completeLevel();
 }
 
@@ -558,6 +690,37 @@ function updateEnergyLabHud() {
   els.progressBar.style.width = `${energyLab.progress}%`;
   els.reactorFill.style.setProperty("--charge", `${energyLab.charge}%`);
   els.reactorChargeText.textContent = `${energyLab.charge}%`;
+}
+
+function validarRespuesta(valor) {
+  const buttons = [...getEnergyLabEls().options.querySelectorAll("button")];
+  const button = buttons.find((item) => Number(item.textContent) === Number(valor));
+  if (button) answerEnergyLabStep(button, valor);
+}
+
+function actualizarHUD() {
+  updateEnergyLabHud();
+}
+
+function mostrarFeedbackCorrecto() {
+  const step = currentGateStep();
+  if (isGateTowerLevel() && step) {
+    setEnergyLabMessage(`Correcto: ahora hay ${step.respuestaCorrecta} capsulas.`, "happy");
+    return;
+  }
+  setEnergyLabMessage("Respuesta correcta. El sistema se ilumina.", "happy");
+}
+
+function mostrarFeedbackIncorrecto(expected) {
+  if (isGateTowerLevel()) {
+    setEnergyLabMessage(`Mira las capsulas otra vez. Este paso deja ${expected}.`, "sad");
+    return;
+  }
+  setEnergyLabMessage(`Alerta suave: revisa el flujo. Ese paso debe dejar ${expected} de energia.`, "sad");
+}
+
+function completarNivel() {
+  completeEnergyLabLevel();
 }
 
 function updateEnergyLabSteps() {

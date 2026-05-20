@@ -23,17 +23,39 @@ const tableThemes = [
 function loadGalacticTablesProgress() {
   try {
     const saved = JSON.parse(localStorage.getItem(GALACTIC_TABLES_KEY)) || {};
-    return {
-      completed: saved.completed || {},
-      practiced: saved.practiced || {},
-    };
+    return sanitizeGalacticTablesProgress(saved);
   } catch {
-    return { completed: {}, practiced: {} };
+    return sanitizeGalacticTablesProgress();
   }
 }
 
 function saveGalacticTablesProgress() {
-  localStorage.setItem(GALACTIC_TABLES_KEY, JSON.stringify(galacticTables.progress));
+  galacticTables.progress = sanitizeGalacticTablesProgress(galacticTables.progress);
+  try {
+    localStorage.setItem(GALACTIC_TABLES_KEY, JSON.stringify(galacticTables.progress));
+  } catch {
+    // Las tablas siguen funcionando aunque el guardado local no este disponible.
+  }
+}
+
+function sanitizeGalacticTablesProgress(rawProgress = {}) {
+  const progress = { completed: {}, practiced: {} };
+
+  for (let table = 1; table <= 9; table += 1) {
+    const practicedTable = rawProgress.practiced?.[table] || {};
+    for (let factor = 1; factor <= 9; factor += 1) {
+      if (practicedTable[factor] === true) {
+        progress.practiced[table] ||= {};
+        progress.practiced[table][factor] = true;
+      }
+    }
+
+    if (Object.keys(progress.practiced[table] || {}).length === 9 && rawProgress.completed?.[table] === true) {
+      progress.completed[table] = true;
+    }
+  }
+
+  return progress;
 }
 
 function completedTablesCount() {

@@ -50,10 +50,55 @@ function fireConfetti() {
   }
 }
 
+const soundCache = {};
+const soundVolume = {
+  correct: 0.55,
+  wrong: 0.45,
+  win: 0.65,
+  lose: 0.55,
+  "clone-success": 0.55,
+  "clone-error": 0.45,
+  "factory-start": 0.5,
+  "battle-start": 0.55,
+  attack: 0.5,
+  explosion: 0.55,
+  "lab-unlock": 0.6,
+  "delivery-correct": 0.55,
+  "delivery-wrong": 0.45,
+  "traffic-mode": 0.5,
+  "energy-lab-correct": 0.55,
+  "energy-lab-wrong": 0.45,
+  "galactic-table": 0.55,
+};
+const allowedSounds = new Set(Object.keys(soundVolume));
+const soundLastPlayed = {};
+const SOUND_COOLDOWN_MS = 70;
+
 function playSound(name) {
-  // Conecta aqui archivos mp3 si los agregas al proyecto.
-  // Ejemplo: new Audio(`assets/${name}.mp3`).play();
-  return name;
+  if (!allowedSounds.has(name) || typeof Audio === "undefined") return null;
+
+  try {
+    const now = typeof performance !== "undefined" ? performance.now() : Date.now();
+    if (now - (soundLastPlayed[name] || 0) < SOUND_COOLDOWN_MS) return null;
+    soundLastPlayed[name] = now;
+
+    if (!soundCache[name]) {
+      const audio = new Audio(`assets/sounds/${name}.mp3`);
+      audio.preload = "auto";
+      audio.volume = soundVolume[name] ?? 0.5;
+      audio.addEventListener("error", () => {
+        delete soundCache[name];
+      }, { once: true });
+      soundCache[name] = audio;
+    }
+
+    const sound = soundCache[name].cloneNode();
+    sound.volume = soundVolume[name] ?? 0.5;
+    sound.play().catch(() => {});
+    return sound;
+  } catch {
+    return null;
+  }
 }
 
 function rand(min, max) {

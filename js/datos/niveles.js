@@ -135,9 +135,9 @@ const levels = [
     label: "Mision de sumas",
     task: "Junta cantidades",
     concept: {
-      title: "Sumar es juntar energia",
-      intro: "En Bahia de Sumas, Robo une dos grupos de baterias para saber cuanta energia hay en total.",
-      note: "Ejemplo: 2 baterias + 3 baterias = 5 baterias de energia.",
+      title: "Sumar es cargar el nucleo",
+      intro: "En Bahia de Sumas, Robo conecta dos grupos de baterias. Al juntarlas, el nucleo recibe una sola carga total.",
+      note: "Ejemplo: 2 baterias + 3 baterias = 5 baterias conectadas al nucleo.",
       demo: [
         ["batteries", 2],
         ["symbol", "+"],
@@ -218,12 +218,12 @@ const levels = [
     icon: "+-",
     intro: "Ayuda a Robo a despertar una torre de compuertas: unas puertas cargan energia y otras liberan el exceso antes de que tiemble el sistema.",
     label: "Operaciones combinadas",
-    task: "Estabiliza energia",
+    task: "Cuenta capsulas",
     pool: ["add", "subtract"],
     concept: {
-      title: "La energia sube y baja",
-      intro: "En la torre, cada suma abre una compuerta que mete energia. Cada resta abre una valvula que saca energia para balancear el flujo.",
-      note: "Ejemplo: 5 + 3 - 2. La compuerta sube de 5 a 8. Despues la valvula baja a 6 y el flujo queda estable.",
+      title: "Las capsulas entran y salen",
+      intro: "En la torre, primero miras cuantas capsulas hay. Cuando aparece una suma, entran capsulas nuevas. Cuando aparece una resta, algunas salen del reactor.",
+      note: "Ejemplo: 6 + 2 - 1. Empiezas con 6, entran 2 y ves 8. Luego sale 1 y quedan 7.",
       demo: [
         ["batteryTotal", 5],
         ["symbol", "+"],
@@ -308,9 +308,9 @@ const levels = [
 
 const conceptByType = {
   add: {
-    title: "Sumar es juntar",
-    intro: "Cuando sumamos, unimos dos grupos de baterias para saber cuanta energia hay en total.",
-    note: "Ejemplo: 2 baterias + 3 baterias = 5 baterias de energia.",
+    title: "Sumar es cargar el nucleo",
+    intro: "Cuando sumamos, conectamos dos grupos de baterias para formar una sola carga total.",
+    note: "Ejemplo: 2 baterias + 3 baterias = 5 baterias conectadas al nucleo.",
     demo: [
       ["batteries", 2],
       ["symbol", "+"],

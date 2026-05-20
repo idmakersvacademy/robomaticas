@@ -87,7 +87,7 @@ function renderOpciones(options) {
     } else {
       button.textContent = option;
     }
-    button.addEventListener("click", () => validarRespuesta(button, option));
+    button.addEventListener("click", () => validarRespuestaFactory(button, option));
     els.factoryOptions.appendChild(button);
   });
 }
@@ -100,10 +100,10 @@ function createFactoryQuestion() {
 
 
 function answerFactoryQuestion(button, value) {
-  validarRespuesta(button, value);
+  validarRespuestaFactory(button, value);
 }
 
-function validarRespuesta(button, value) {
+function validarRespuestaFactory(button, value) {
   if (factory.locked || !factory.question || !factory.started) return;
   factory.locked = true;
   els.factoryOptions.querySelectorAll(".factory-option").forEach((item) => {
