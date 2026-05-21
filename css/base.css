@@ -1841,7 +1841,6 @@ button:disabled {
   }
 }
 
-/* Studio polish pass: layered tiles, richer scene, premium mobile-game feel */
 .game-layout {
   background:
     radial-gradient(circle at 86% 8%, rgba(255, 215, 93, 0.24) 0 13%, transparent 14%),
@@ -2576,7 +2575,6 @@ button:disabled {
   }
 }
 
-/* Pulido general de la web: portada y menu de misiones mas juguetones. */
 body {
   background:
     radial-gradient(circle at 10% 12%, rgba(32, 216, 238, 0.28), transparent 24%),
@@ -2913,7 +2911,6 @@ body {
   }
 }
 
-/* Ajuste de portada para pantallas grandes y navegadores con zoom raro. */
 .app {
   width: min(1560px, calc(100% - 40px));
   align-items: center;

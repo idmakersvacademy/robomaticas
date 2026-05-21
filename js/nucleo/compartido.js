@@ -73,17 +73,26 @@ const soundVolume = {
 const allowedSounds = new Set(Object.keys(soundVolume));
 const soundLastPlayed = {};
 const SOUND_COOLDOWN_MS = 70;
+const soundFallbacks = {
+  "delivery-correct": "correct",
+  "delivery-wrong": "wrong",
+  "traffic-mode": "battle-start",
+  "energy-lab-correct": "correct",
+  "energy-lab-wrong": "wrong",
+  "galactic-table": "lab-unlock",
+};
 
 function playSound(name) {
   if (!allowedSounds.has(name) || typeof Audio === "undefined") return null;
 
   try {
+    const fileName = soundFallbacks[name] || name;
     const now = typeof performance !== "undefined" ? performance.now() : Date.now();
     if (now - (soundLastPlayed[name] || 0) < SOUND_COOLDOWN_MS) return null;
     soundLastPlayed[name] = now;
 
     if (!soundCache[name]) {
-      const audio = new Audio(`assets/sounds/${name}.mp3`);
+      const audio = new Audio(`assets/sounds/${fileName}.mp3`);
       audio.preload = "auto";
       audio.volume = soundVolume[name] ?? 0.5;
       audio.addEventListener("error", () => {

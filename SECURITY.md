@@ -1,8 +1,8 @@
-# Seguridad de Numeronautas
+# Seguridad de ROBOMÁTICAS
 
 ## Estado actual
 
-Numeronautas es un juego frontend estatico hecho con HTML, CSS y JavaScript puro. No guarda datos sensibles, no usa autenticacion y no se conecta a APIs externas. El riesgo principal esta en manipulacion del cliente, corrupcion de `localStorage`, abuso de clicks/sonidos y uso accidental de HTML dinamico inseguro.
+ROBOMÁTICAS es un juego frontend estatico hecho con HTML, CSS y JavaScript puro. No guarda datos sensibles, no usa autenticacion y no se conecta a APIs externas. El riesgo principal esta en manipulacion del cliente, corrupcion de `localStorage`, abuso de clicks/sonidos y uso accidental de HTML dinamico inseguro.
 
 ## Cambios aplicados
 

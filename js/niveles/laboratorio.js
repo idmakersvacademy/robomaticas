@@ -25,17 +25,17 @@ function startFactoryLevel(index) {
   els.factoryScreen.classList.toggle("multiply-factory-screen", mode === "multiply");
   els.factoryScreen.classList.toggle("planet-clonix-screen", mode === "multiply");
   els.factoryEyebrow.textContent = level.label;
-  els.factoryTitle.textContent = mode === "add" ? "Bahia de Sumas: Laboratorio Robo" : "PLANETA CLONIX";
+  els.factoryTitle.textContent = mode === "add" ? "Bahía de Sumas" : "PLANETA CLONIX";
   els.factoryStartButton.style.display = "inline-grid";
   els.factoryStartButton.textContent = mode === "add" ? "Iniciar Sumas" : "Crear Planeta";
   els.factoryOptions.innerHTML = "";
-  els.cloneRoundBrief.textContent = mode === "add" ? "Cuanta energia hay en total?" : "Cuantos clones nacen en total?";
-  els.cloneEquation.textContent = mode === "add" ? "Inicia la suma" : "Abre los portales";
+  els.cloneRoundBrief.textContent = mode === "add" ? "Conecta baterías para cargar la bahía." : "Cuantos clones nacen en total?";
+  els.cloneEquation.textContent = mode === "add" ? "Estación en espera" : "Abre los portales";
   els.cloneGroups.innerHTML = "";
   setFactoryRoboMood("happy");
   setFactoryMessage(
     mode === "add"
-      ? "Robo esta listo para contar."
+      ? "Robo está listo para encender la bahía."
       : "Resuelve para evolucionar el planeta.",
   );
   updateFactoryHud();

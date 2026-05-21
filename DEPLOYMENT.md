@@ -1,6 +1,6 @@
-# Despliegue de Numeronautas
+# Despliegue de ROBOMÁTICAS
 
-Numeronautas es un sitio estatico. No requiere build, framework ni servidor especial. El archivo de entrada es `index.html`.
+ROBOMÁTICAS es un sitio estatico. No requiere build, framework ni servidor especial. El archivo de entrada es `index.html`.
 
 ## Estructura actual
 

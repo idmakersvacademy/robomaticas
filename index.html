@@ -3,7 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Numeronautas de Robo</title>
+    <title>ROBOMÁTICAS</title>
+    <meta
+      name="description"
+      content="ROBOMÁTICAS es un juego educativo de misiones matemáticas con robots, repartos, energía y retos visuales."
+    />
+    <meta name="theme-color" content="#081a52" />
+    <link rel="manifest" href="site.webmanifest" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -28,12 +34,14 @@
             <span class="world-node node-delivery">/</span>
           </div>
           <div class="hero-copy">
-            <h1>Numeronautas de Robo</h1>
+            <span class="brand-mark" aria-hidden="true">RBM</span>
+            <h1>ROBOMÁTICAS</h1>
+            <p class="brand-kicker">Misiones matemáticas para jugar pensando.</p>
 
             <div class="feature-row hero-mission-pills" aria-label="Modos del juego">
-              <span> </span>
-              <span> </span>
-              <span> </span>
+              <span>Sumas</span>
+              <span>Retos</span>
+              <span>Repartos</span>
             </div>
 
             <div class="hero-progress-panel" aria-label="Progreso de aventura">
@@ -356,8 +364,8 @@
 
         <header class="factory-topbar">
           <div>
-            <p class="eyebrow">Numeronautas</p>
-            <h2>Numeronautas: Laboratorio de Clones</h2>
+            <p class="eyebrow">ROBOMÁTICAS</p>
+            <h2>Planeta Clonix</h2>
           </div>
           <div class="factory-stats">
             <div class="tech-stat">
@@ -490,7 +498,7 @@
         <header class="delivery-hud">
           <div>
             <p class="eyebrow">Nivel 4</p>
-            <h2>ROBO DELIVERY</h2>
+            <h2>CENTRAL DELIVERY</h2>
           </div>
           <div class="delivery-stats">
             <div><span>Estrellas</span><strong id="deliveryStarsText">0</strong></div>
@@ -505,7 +513,7 @@
           <section class="delivery-robo-panel">
             <div class="delivery-robo-card">
               <div class="delivery-backpack"></div>
-              <div class="personaje-wrap delivery-robo" id="deliveryRobo" aria-label="Robo Delivery">
+              <div class="personaje-wrap delivery-robo" id="deliveryRobo" aria-label="Central Delivery">
                 <div class="robot-wrap happy speaking">
                   <div class="antena"></div>
                   <div class="cabeza">
@@ -527,7 +535,7 @@
               <div class="delivery-flames" aria-hidden="true"><span></span><span></span></div>
             </div>
             <p class="delivery-speech" id="deliveryMessage">Reparte los paquetes por igual.</p>
-            <button class="ghost-btn traffic-btn" id="trafficModeButton">Trafico Robotico</button>
+            <button class="ghost-btn traffic-btn" id="trafficModeButton">Ruta rápida</button>
           </section>
 
           <section class="delivery-play-zone">
@@ -616,8 +624,8 @@
             <div class="lab-turbine turbine-right" aria-hidden="true"></div>
             <div class="energy-pipe-lab pipe-top" aria-hidden="true"><span></span></div>
             <div class="energy-pipe-lab pipe-bottom" aria-hidden="true"><span></span></div>
-            <div class="holo-panel panel-left" aria-hidden="true">GAIN</div>
-            <div class="holo-panel panel-right" aria-hidden="true">FLOW</div>
+            <div class="holo-panel panel-left" aria-hidden="true">CARGA</div>
+            <div class="holo-panel panel-right" aria-hidden="true">FLUJO</div>
             <div class="reactor-core" id="energyReactor" aria-hidden="true">
               <span class="reactor-ring ring-one"></span>
               <span class="reactor-ring ring-two"></span>
@@ -649,7 +657,7 @@
           <p class="eyebrow">Mision completa</p>
           <h2>¡Ganaste!</h2>
           <div class="stars" id="victoryStars">★★★</div>
-          <p id="victoryText">Robo llego a la meta.</p>
+          <p id="victoryText">Robo llegó a la meta.</p>
           <div class="result-actions">
             <button class="primary-btn" id="nextLevelButton">Siguiente nivel</button>
             <button class="ghost-btn" id="victoryLevelsButton">Menu de niveles</button>
@@ -661,7 +669,7 @@
         <div class="result-card">
           <p class="eyebrow">Mision detenida</p>
           <h2>Intenta otra vez</h2>
-          <p>Robo se quedo sin energia, pero puede volver a intentarlo.</p>
+          <p>Robo se quedó sin energia, pero puede volver a intentarlo.</p>
           <div class="result-actions">
             <button class="primary-btn" id="retryButton">Reintentar</button>
             <button class="ghost-btn" id="defeatLevelsButton">Menu de niveles</button>

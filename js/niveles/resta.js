@@ -13,7 +13,7 @@ function startBattleLevel(index) {
   setupBattleEnemy();
   setBattleRoboMood("happy");
   updateBattleHud();
-  setBattleMessage("Robo entro a Operacion Resta. Resuelve restas para lanzar ataques brillantes.");
+  setBattleMessage("Robo entró a Operacion Resta. Resuelve restas para lanzar ataques brillantes.");
   showScreen("battle");
   playSound("battle-start");
   nextBattleQuestion();

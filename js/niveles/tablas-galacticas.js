@@ -1,4 +1,4 @@
-const GALACTIC_TABLES_KEY = "numeronautas_tablas_galacticas";
+const GALACTIC_TABLES_KEY = "robomaticas_tablas_galacticas";
 
 const galacticTables = {
   current: 1,

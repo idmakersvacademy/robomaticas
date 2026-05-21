@@ -6,7 +6,7 @@ function createFactoryAdditionQuestion() {
   const answer = left + right;
   return {
     text: `${left} + ${right} = ?`,
-    brief: "Cuanta energia hay en total?",
+    brief: "Suma las dos cargas y activa la cápsula correcta.",
     equation: `${left} + ${right} = ?`,
     equationMarkup: `
       <span class="addition-clone-set energy-set">${generarBaterias(left)}</span>
@@ -47,8 +47,9 @@ function makeAdditionOptions(answer) {
 
 function animarRespuestaCorrecta(button) {
   factory.score += 1;
+  factory.progress = Math.min(100, ((factory.machineIndex + 1) / getFactoryMachines().length) * 100);
   setFactoryRoboMood("celebrating");
-  setFactoryMessage("Genial!");
+  setFactoryMessage(randomFrom(["Carga exacta.", "Bahía encendida.", "Energía estable."]));
   playSound("clone-success");
   els.factoryLayout.classList.add("machine-on");
   button?.classList.add("chosen");

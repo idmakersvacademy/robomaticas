@@ -1,4 +1,3 @@
-/* Bahia de Sumas: arcade robot design */
 .sum-arcade-screen {
   min-height: min(900px, calc(100vh - 36px));
   padding: clamp(12px, 1.8vw, 20px);
@@ -828,7 +827,6 @@
   100% { transform: translate(var(--fly-x), var(--fly-y)) scale(0.28) rotate(18deg); opacity: 0; }
 }
 
-/* Clean kid-game layout: HUD, Robo, exercise, answers */
 .sum-arcade-screen {
   min-height: min(900px, calc(100vh - 28px));
   padding: clamp(12px, 2vw, 22px);
@@ -1148,7 +1146,6 @@
   }
 }
 
-/* Rediseño juguete-laboratorio para la Bahia de Sumas */
 .sum-arcade-screen {
   min-height: min(880px, calc(100vh - 24px));
   display: grid;
@@ -1594,7 +1591,6 @@
   }
 }
 
-/* Variante de energia: baterias para contar, numeros para responder */
 .sum-arcade-screen .energy-set {
   gap: clamp(10px, 1.6vw, 16px);
 }
@@ -1726,7 +1722,6 @@
   }
 }
 
-/* Diseño compacto de baterias: limpio, infantil y centrado */
 .sum-arcade-screen {
   width: min(100%, 884px);
   min-height: min(802px, calc(100vh - 24px));
@@ -1997,7 +1992,6 @@
   }
 }
 
-/* Pantalla estilo videojuego premium: Robo guia + energia */
 .sum-arcade-screen {
   width: min(100%, 1180px);
   min-height: min(900px, calc(100vh - 18px));
@@ -2839,7 +2833,6 @@
   }
 }
 
-/* Bahia Galactica: usa mejor la pantalla y convierte la suma en una bahia espacial */
 .sum-arcade-screen {
   width: min(100%, 1180px);
   min-height: calc(100vh - 18px);
@@ -3171,7 +3164,6 @@
   }
 }
 
-/* Ajuste de simetria para Bahia Galactica */
 .sum-arcade-screen .factory-topbar {
   width: min(100%, 980px);
   grid-template-columns: 64px minmax(0, 1fr);

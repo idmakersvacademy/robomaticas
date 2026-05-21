@@ -15,7 +15,7 @@ function startDeliveryLevel(index) {
   delivery.question = null;
   els.deliveryLayout?.classList.remove("traffic-mode", "delivery-success", "delivery-error", "delivery-distributing", "delivery-imbalanced");
   els.trafficModeButton?.classList.remove("active");
-  setDeliveryMessage("Robo Delivery listo para repartir paquetes.", "happy");
+  setDeliveryMessage("Central Delivery listo para repartir paquetes.", "happy");
   updateDeliveryHud();
   nextDeliveryRoute();
   showScreen("delivery");
@@ -25,7 +25,7 @@ function nextDeliveryRoute() {
   delivery.locked = false;
   delivery.question = createDeliveryQuestion();
   renderDeliveryQuestion();
-  setDeliveryMessage(delivery.traffic ? "Trafico Robotico: entrega rapido!" : "Reparte todos los paquetes por igual.", "thinking");
+  setDeliveryMessage(delivery.traffic ? "Ruta rápida: entrega en modo turbo." : "Reparte todos los paquetes por igual.", "thinking");
 }
 
 function createDeliveryQuestion() {
@@ -43,11 +43,14 @@ function createDeliveryQuestion() {
 function renderDeliveryQuestion() {
   const question = delivery.question;
   if (!question) return;
+  const operationText = `${question.packages} dividido entre ${question.drones}`;
   els.deliveryPackageCount.textContent = question.packages;
   els.deliveryDroneCount.textContent = question.drones;
   els.deliveryPackagesLabel.textContent = `${question.packages} paquetes`;
   els.deliveryDronesLabel.textContent = `${question.drones} drones`;
   els.deliveryEachLabel.textContent = "?";
+  els.deliveryPackages.setAttribute("aria-label", `Bodega con ${question.packages} paquetes`);
+  els.deliveryDrones.setAttribute("aria-label", `${question.drones} drones esperando paquetes`);
   els.deliveryEqualLine.textContent = "Selecciona una respuesta para ver el reparto.";
   els.deliveryPackages.innerHTML = energyPackagesMarkup(question.packages);
   els.deliveryDrones.innerHTML = deliveryDronesMarkup(question.drones);
@@ -58,6 +61,7 @@ function renderDeliveryQuestion() {
     const button = document.createElement("button");
     button.className = "delivery-option";
     button.type = "button";
+    button.setAttribute("aria-label", `${operationText}: ${option} paquetes por drone`);
     button.innerHTML = `<strong>${option}</strong><span>por drone</span>`;
     button.addEventListener("click", () => validateDeliveryAnswer(button, option));
     els.deliveryOptions.appendChild(button);
@@ -66,13 +70,13 @@ function renderDeliveryQuestion() {
 
 function energyPackagesMarkup(count) {
   return Array.from({ length: count }, (_, index) => (
-    `<span class="energy-package" style="--delay:${index * 0.025}s">${energyPackageSvg()}</span>`
+    `<span class="energy-package" style="--delay:${index * 0.018}s">${energyPackageSvg()}</span>`
   )).join("");
 }
 
 function deliveryDronesMarkup(count) {
   return Array.from({ length: count }, (_, index) => `
-    <article class="delivery-drone waiting" data-drone="${index}" style="--delay:${index * 0.06}s">
+    <article class="delivery-drone waiting" data-drone="${index}" data-load="0" aria-label="Drone ${index + 1} con 0 paquetes" style="--delay:${index * 0.05}s">
       ${deliveryDroneSvg(index)}
       <strong class="drone-count">0</strong>
       <div class="drone-bay"></div>
@@ -81,39 +85,41 @@ function deliveryDronesMarkup(count) {
 }
 
 function deliveryDroneSvg(index = 0) {
-  const accent = ["#55f6ff", "#8f68ff", "#7effa7"][index % 3];
+  const accent = ["#55f6ff", "#7effa7", "#ffdf55"][index % 3];
   return `
-    <svg class="drone-svg" viewBox="0 0 150 112" aria-hidden="true">
+    <svg class="drone-svg" viewBox="0 0 160 128" aria-hidden="true">
       <defs>
-        <linearGradient id="droneBody${index}" x1="22" y1="14" x2="124" y2="100" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stop-color="#ffffff"/>
-          <stop offset="0.38" stop-color="${accent}"/>
-          <stop offset="1" stop-color="#2a55ff"/>
+        <linearGradient id="deliveryBotBody${index}" x1="42" y1="24" x2="118" y2="106" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#f8fcff"/>
+          <stop offset="0.45" stop-color="${accent}"/>
+          <stop offset="1" stop-color="#2767ff"/>
         </linearGradient>
-        <radialGradient id="droneGlow${index}" cx="50%" cy="45%" r="58%">
-          <stop offset="0" stop-color="#ffffff" stop-opacity="0.62"/>
-          <stop offset="0.45" stop-color="${accent}" stop-opacity="0.36"/>
-          <stop offset="1" stop-color="${accent}" stop-opacity="0"/>
-        </radialGradient>
-        <filter id="droneShadow${index}" x="-30%" y="-40%" width="160%" height="190%">
-          <feDropShadow dx="0" dy="9" stdDeviation="8" flood-color="${accent}" flood-opacity="0.38"/>
-        </filter>
       </defs>
-      <ellipse class="drone-shadow" cx="75" cy="104" rx="42" ry="8"/>
-      <g class="drone-prop left"><ellipse cx="25" cy="32" rx="24" ry="8"/><circle cx="25" cy="32" r="9"/></g>
-      <g class="drone-prop right"><ellipse cx="125" cy="32" rx="24" ry="8"/><circle cx="125" cy="32" r="9"/></g>
-      <path class="drone-antenna" d="M75 22 C78 9 88 7 93 15"/>
-      <circle class="drone-light" cx="94" cy="15" r="6"/>
-      <rect class="drone-body" x="39" y="24" width="72" height="58" rx="25" fill="url(#droneBody${index})" filter="url(#droneShadow${index})"/>
-      <ellipse class="drone-glow" cx="75" cy="52" rx="48" ry="36" fill="url(#droneGlow${index})"/>
-      <circle class="drone-eye-svg eye-left" cx="64" cy="50" r="7"/>
-      <circle class="drone-eye-svg eye-right" cx="86" cy="50" r="7"/>
-      <path class="drone-mouth happy-mouth" d="M64 64 Q75 74 86 64"/>
-      <path class="drone-mouth sad-mouth" d="M64 70 Q75 60 86 70"/>
-      <path class="drone-mouth error-mouth" d="M66 67 L84 67"/>
-      <rect class="drone-cargo-slot" x="57" y="78" width="36" height="10" rx="5"/>
-      <path class="drone-jet left" d="M55 86 C49 96 53 103 60 108 C66 101 65 94 60 86"/>
-      <path class="drone-jet right" d="M90 86 C84 96 88 103 95 108 C101 101 100 94 95 86"/>
+      <ellipse class="drone-shadow" cx="80" cy="118" rx="50" ry="8"/>
+      <path class="drone-antenna" d="M80 30 C84 16 96 15 102 25"/>
+      <circle class="drone-light" cx="103" cy="25" r="5"/>
+      <g class="drone-wing left">
+        <rect x="18" y="50" width="32" height="12" rx="6"/>
+        <circle cx="24" cy="56" r="12"/>
+        <path class="drone-propeller" d="M6 56 C16 48 32 48 42 56 C32 64 16 64 6 56Z"/>
+      </g>
+      <g class="drone-wing right">
+        <rect x="110" y="50" width="32" height="12" rx="6"/>
+        <circle cx="136" cy="56" r="12"/>
+        <path class="drone-propeller" d="M118 56 C128 48 144 48 154 56 C144 64 128 64 118 56Z"/>
+      </g>
+      <rect class="drone-body" x="45" y="28" width="70" height="68" rx="24" fill="url(#deliveryBotBody${index})"/>
+      <rect class="drone-screen" x="58" y="44" width="44" height="30" rx="13"/>
+      <circle class="drone-eye-svg eye-left" cx="70" cy="58" r="5"/>
+      <circle class="drone-eye-svg eye-right" cx="90" cy="58" r="5"/>
+      <path class="drone-mouth happy-mouth" d="M70 68 Q80 75 90 68"/>
+      <path class="drone-mouth sad-mouth" d="M70 72 Q80 66 90 72"/>
+      <path class="drone-mouth error-mouth" d="M70 70 L90 70"/>
+      <rect class="drone-cargo-slot" x="58" y="82" width="44" height="12" rx="6"/>
+      <path class="drone-arm left" d="M50 82 C36 86 32 94 35 103"/>
+      <path class="drone-arm right" d="M110 82 C124 86 128 94 125 103"/>
+      <path class="drone-jet left" d="M58 98 C52 108 56 116 64 121 C70 113 68 105 64 98"/>
+      <path class="drone-jet right" d="M96 98 C90 108 94 116 102 121 C108 113 106 105 102 98"/>
     </svg>
   `;
 }
@@ -121,18 +127,8 @@ function deliveryDroneSvg(index = 0) {
 function energyPackageSvg() {
   return `
     <svg class="package-svg" viewBox="0 0 74 58" aria-hidden="true">
-      <defs>
-        <linearGradient id="packageFace" x1="9" y1="7" x2="64" y2="54" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stop-color="#dfffff"/>
-          <stop offset="0.45" stop-color="#55f6ff"/>
-          <stop offset="1" stop-color="#236cff"/>
-        </linearGradient>
-        <filter id="packageGlow" x="-35%" y="-50%" width="170%" height="210%">
-          <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#55f6ff" flood-opacity="0.48"/>
-        </filter>
-      </defs>
       <path class="package-shadow" d="M15 50 C25 57 50 57 60 50 C48 46 27 46 15 50Z"/>
-      <path class="package-body" d="M12 15 L31 6 H60 L67 17 L59 45 L37 53 L12 44 Z" filter="url(#packageGlow)"/>
+      <path class="package-body" d="M12 15 L31 6 H60 L67 17 L59 45 L37 53 L12 44 Z"/>
       <path class="package-top" d="M12 15 L31 6 H60 L44 16 Z"/>
       <path class="package-side" d="M44 16 L67 17 L59 45 L37 53 Z"/>
       <path class="package-ribbon" d="M34 9 L44 16 L37 53 L28 49 L35 18 Z"/>
@@ -178,7 +174,7 @@ function completeDeliveryRoute() {
   delivery.stars = Math.min(3, Math.floor(delivery.score / 300));
   delivery.energy = Math.min(100, delivery.energy + 8);
   delivery.progress = Math.min(100, delivery.progress + (delivery.traffic ? 26 : 20));
-  setDeliveryMessage(randomFrom(["ENTREGA PERFECTA", "COMBO PERFECTO", "SUPER ENTREGA"]), "happy");
+  setDeliveryMessage(randomFrom(["Entrega perfecta", "Reparto exacto", "Ruta completada"]), "happy");
   els.deliveryLayout.classList.remove("delivery-distributing");
   els.deliveryLayout.classList.add("delivery-success");
   popDeliveryParticles("success");
@@ -266,6 +262,8 @@ function animateDeliveryDistribution(selected, correct) {
       drone.classList.add("receiving");
       drone.querySelector(".drone-bay").innerHTML = "";
       drone.querySelector(".drone-count").textContent = "0";
+      drone.dataset.load = "0";
+      drone.setAttribute("aria-label", `Drone ${Number(drone.dataset.drone) + 1} con 0 paquetes`);
     });
 
     function moveNext() {
@@ -308,26 +306,28 @@ function addPackageToDrone(drone) {
   bay.appendChild(pack);
   const count = bay.children.length;
   drone.querySelector(".drone-count").textContent = count;
+  drone.dataset.load = String(count);
+  drone.setAttribute("aria-label", `Drone ${Number(drone.dataset.drone) + 1} con ${count} paquetes`);
   drone.classList.add("receiving-pop");
   setTimeout(() => drone.classList.remove("receiving-pop"), 180);
 }
 
 function flyPackageToDrone(sourcePackage, drone) {
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce), (max-width: 520px)").matches) return;
   const start = sourcePackage.getBoundingClientRect();
   const target = drone.querySelector(".drone-bay").getBoundingClientRect();
   const flying = document.createElement("span");
   flying.className = "flying-package";
   flying.innerHTML = energyPackageSvg();
-  flying.style.left = `${start.left}px`;
-  flying.style.top = `${start.top}px`;
   flying.style.width = `${start.width}px`;
   flying.style.height = `${start.height}px`;
+  flying.style.transform = `translate3d(${start.left}px, ${start.top}px, 0)`;
   document.body.appendChild(flying);
 
   requestAnimationFrame(() => {
     const tx = target.left + target.width / 2 - start.left - start.width / 2;
     const ty = target.top + target.height / 2 - start.top - start.height / 2;
-    flying.style.transform = `translate(${tx}px, ${ty}px) scale(0.48) rotate(18deg)`;
+    flying.style.transform = `translate3d(${start.left + tx}px, ${start.top + ty}px, 0) scale(0.48) rotate(18deg)`;
     flying.style.opacity = "0.15";
   });
 
@@ -378,13 +378,14 @@ function toggleTrafficMode() {
   delivery.traffic = !delivery.traffic;
   els.deliveryLayout?.classList.toggle("traffic-mode", delivery.traffic);
   els.trafficModeButton?.classList.toggle("active", delivery.traffic);
-  setDeliveryMessage(delivery.traffic ? "Trafico Robotico activado!" : "Ruta normal activada.", "happy");
+  setDeliveryMessage(delivery.traffic ? "Ruta rápida activada." : "Ruta normal activada.", "happy");
   playSound("traffic-mode");
 }
 
 function popDeliveryParticles(type) {
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce), (max-width: 700px)").matches) return;
   els.deliveryParticles.innerHTML = "";
-  const count = type === "success" ? 34 : 18;
+  const count = type === "success" ? 14 : 6;
   for (let i = 0; i < count; i += 1) {
     const particle = document.createElement("span");
     particle.className = `delivery-particle ${type}`;

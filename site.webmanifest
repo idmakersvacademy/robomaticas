@@ -1,0 +1,11 @@
+{
+  "name": "ROBOMÁTICAS",
+  "short_name": "ROBOMÁTICAS",
+  "description": "Juego educativo de misiones matemáticas con robots, energía y reparto visual.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#05091f",
+  "theme_color": "#081a52",
+  "lang": "es",
+  "icons": []
+}

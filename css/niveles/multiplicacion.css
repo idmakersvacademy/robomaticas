@@ -1,4 +1,4 @@
-/* Numeronautas: Laboratorio de Clones */
+/* ROBOMÁTICAS: Laboratorio de Clones */
 .factory-screen {
   position: relative;
   min-height: min(920px, calc(100vh - 56px));
@@ -1034,7 +1034,6 @@
   }
 }
 
-/* Multiplicaciones: fabrica premium de mini robots */
 .multiply-factory-screen {
   min-height: min(900px, calc(100vh - 18px));
   width: min(100%, 1180px);

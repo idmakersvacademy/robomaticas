@@ -1,4 +1,4 @@
-const STORAGE_KEY = "numeronautas_robo";
+const STORAGE_KEY = "robomaticas_robo";
 
 const baseMap = [
   "##########",
@@ -128,16 +128,16 @@ const maps = [
 const levels = [
   {
     id: 1,
-    title: "Bahia de Sumas",
+    title: "Bahía de Sumas",
     type: "add",
     icon: "+",
-    intro: "Ayuda a Robo a contar grupos de baterias en Bahia de Sumas.",
+    intro: "Acompaña a Robo a cargar la Bahía de Sumas conectando baterías.",
     label: "Mision de sumas",
     task: "Junta cantidades",
     concept: {
-      title: "Sumar es cargar el nucleo",
-      intro: "En Bahia de Sumas, Robo conecta dos grupos de baterias. Al juntarlas, el nucleo recibe una sola carga total.",
-      note: "Ejemplo: 2 baterias + 3 baterias = 5 baterias conectadas al nucleo.",
+      title: "Sumar es cargar el núcleo",
+      intro: "En Bahía de Sumas, Robo conecta dos grupos de baterías. Al juntarlas, el núcleo recibe una sola carga total.",
+      note: "Ejemplo: 2 baterías + 3 baterías = 5 baterías conectadas al núcleo.",
       demo: [
         ["batteries", 2],
         ["symbol", "+"],
@@ -158,7 +158,7 @@ const levels = [
     concept: {
       title: "Restar es quitar energia",
       intro: "En la arena, Robo empieza con una cantidad de carga y gasta una parte al atacar.",
-      note: "Ejemplo: Robo tenia 9 cargas. Uso 4 en un laser. Le quedaron 5 cargas.",
+      note: "Ejemplo: Robo tenía 9 cargas. Uso 4 en un laser. Le quedaron 5 cargas.",
       demo: [
         ["battleDots", 9, 4, "9"],
         ["symbol", "-"],
@@ -170,10 +170,10 @@ const levels = [
   },
   {
     id: 3,
-    title: "Numeronautas: Laboratorio de Clones",
+    title: "Planeta Clonix",
     type: "multiply",
     icon: "x",
-    intro: "Ayuda a Robo a restaurar un laboratorio futurista creando clones con multiplicaciones.",
+    intro: "Acompaña a Robo a restaurar un laboratorio futurista creando clones con multiplicaciones.",
     label: "Mision de multiplicacion",
     task: "Crea clones",
     concept: {
@@ -191,15 +191,15 @@ const levels = [
   },
   {
     id: 4,
-    title: "ROBO DELIVERY",
+    title: "CENTRAL DELIVERY",
     type: "divide",
     icon: "RD",
-    intro: "Ayuda a Robo Delivery a repartir paquetes energeticos entre drones y estaciones de la ciudad.",
+    intro: "Ayuda a Central Delivery a repartir paquetes energeticos entre drones y estaciones de la ciudad.",
     label: "Mision de repartos",
     task: "Entrega paquetes",
     concept: {
       title: "Dividir es repartir entregas",
-      intro: "Robo Delivery toma un grupo de paquetes y los reparte por igual entre drones repartidores.",
+      intro: "Central Delivery toma un grupo de paquetes y los reparte por igual entre drones repartidores.",
       note: "Ejemplo: 24 paquetes / 6 drones = 4 paquetes para cada drone.",
       demo: [
         ["total", "24"],
@@ -216,7 +216,7 @@ const levels = [
     type: "mixed",
     mode: "energyLab",
     icon: "+-",
-    intro: "Ayuda a Robo a despertar una torre de compuertas: unas puertas cargan energia y otras liberan el exceso antes de que tiemble el sistema.",
+    intro: "Acompaña a Robo a despertar una torre de compuertas: unas puertas cargan energia y otras liberan el exceso antes de que tiemble el sistema.",
     label: "Operaciones combinadas",
     task: "Cuenta capsulas",
     pool: ["add", "subtract"],
@@ -241,7 +241,7 @@ const levels = [
     type: "mixed",
     mode: "energyLab",
     icon: "-x",
-    intro: "Ayuda a Robo a rescatar la Fabrica Chispa: los brazos fabrican piezas en grupos y la banda consume recursos al instalarlas.",
+    intro: "Acompaña a Robo a rescatar la Fabrica Chispa: los brazos fabrican piezas en grupos y la banda consume recursos al instalarlas.",
     label: "Resta + multiplicacion",
     task: "Repara maquinas",
     pool: ["subtract", "multiply"],
@@ -264,7 +264,7 @@ const levels = [
     type: "mixed",
     mode: "energyLab",
     icon: "x/",
-    intro: "Ayuda a Robo a abrir el Portal Orion: el nucleo multiplica combustible y despues lo divide entre motores de salto.",
+    intro: "Acompaña a Robo a abrir el Portal Orion: el nucleo multiplica combustible y despues lo divide entre motores de salto.",
     label: "Multiplicacion + division",
     task: "Activa el motor",
     pool: ["multiply", "divide"],
@@ -287,7 +287,7 @@ const levels = [
     type: "mixed",
     mode: "energyLab",
     icon: "/+",
-    intro: "Ayuda a Robo a preparar una mezcla prisma: reparte muestras en tubos iguales y despues suma potencia al reactor.",
+    intro: "Acompaña a Robo a preparar una mezcla prisma: reparte muestras en tubos iguales y despues suma potencia al reactor.",
     label: "Division + suma",
     task: "Equilibra laboratorio",
     pool: ["divide", "add"],
@@ -308,9 +308,9 @@ const levels = [
 
 const conceptByType = {
   add: {
-    title: "Sumar es cargar el nucleo",
-    intro: "Cuando sumamos, conectamos dos grupos de baterias para formar una sola carga total.",
-    note: "Ejemplo: 2 baterias + 3 baterias = 5 baterias conectadas al nucleo.",
+    title: "Sumar es cargar el núcleo",
+    intro: "Cuando sumamos, conectamos dos grupos de baterías para formar una sola carga total.",
+    note: "Ejemplo: 2 baterías + 3 baterías = 5 baterías conectadas al núcleo.",
     demo: [
       ["batteries", 2],
       ["symbol", "+"],
@@ -322,7 +322,7 @@ const conceptByType = {
   subtract: {
     title: "Restar es quitar y contar lo que queda",
     intro: "Cuando restamos, empezamos con una cantidad. Luego quitamos, usamos o perdemos una parte. El resultado nos dice cuanto queda.",
-    note: "Ejemplo: Robo tenia 9 cargas. Uso 4 cargas en su ataque. Le quedaron 5 cargas.",
+    note: "Ejemplo: Robo tenía 9 cargas. Uso 4 cargas en su ataque. Le quedaron 5 cargas.",
     demo: [
       ["battleDots", 9, 4, "9"],
       ["symbol", "-"],

@@ -110,7 +110,7 @@ function energyLabConfig() {
       panelLeft: "ENTRAN",
       panelRight: "SALEN",
       startText: "Abrir compuertas",
-      roundComplete: ["Torre cargada.", "Las compuertas quedaron estables.", "Robo conto el flujo perfecto."],
+      roundComplete: ["Torre cargada.", "Las compuertas quedaron estables.", "Robo contó el flujo perfecto."],
       nouns: { first: "capsulas", second: "capsulas" },
     },
     6: {

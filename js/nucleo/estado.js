@@ -98,11 +98,11 @@ const factoryMachines = [
 ];
 
 const additionMachines = [
-  { name: "Recarga el nucleo", activity: "Cuenta las energias y selecciona la respuesta correcta.", verb: "recargo" },
-  { name: "Activa la consola", activity: "Suma las baterias y toca la capsula correcta.", verb: "activo" },
-  { name: "Llena el reactor", activity: "Cuenta la energia total para ayudar a Robo.", verb: "cargo" },
-  { name: "Conecta la antena", activity: "Encuentra cuanta energia hay en total.", verb: "conecto" },
-  { name: "Enciende el portal", activity: "Elige la respuesta correcta para abrir el portal.", verb: "encendio" },
+  { name: "Recarga el núcleo", activity: "Cuenta las energías y selecciona la respuesta correcta.", verb: "recargó" },
+  { name: "Activa la consola", activity: "Suma las baterías y toca la cápsula correcta.", verb: "activó" },
+  { name: "Llena el reactor", activity: "Cuenta la energía total para ayudar a Robo.", verb: "cargó" },
+  { name: "Conecta la antena", activity: "Encuentra cuánta energía hay en total.", verb: "conectó" },
+  { name: "Enciende el portal", activity: "Elige la respuesta correcta para abrir el portal.", verb: "encendió" },
 ];
 
 const factory = {
