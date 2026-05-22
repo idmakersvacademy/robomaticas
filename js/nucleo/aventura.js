@@ -23,9 +23,9 @@ function renderLevels() {
   levels.forEach((level, index) => {
     const unlocked = canAccessLevel(index);
     const stars = state.storage.stars[level.id] || 0;
-    const operations = level.pool || [level.type];
+    const operations = [level.type];
     const card = document.createElement("article");
-    card.className = `level-card level-${level.type} ${level.pool ? "combo-level" : ""} ${unlocked ? "" : "locked"}`;
+    card.className = `level-card level-${level.type} ${unlocked ? "" : "locked"}`;
 
     const icon = document.createElement("div");
     icon.className = "level-icon";
@@ -48,12 +48,6 @@ function renderLevels() {
       ops.appendChild(op);
     });
     body.append(eyebrow, title, type);
-    if (level.pool) {
-      const badge = document.createElement("span");
-      badge.className = "combo-badge";
-      badge.textContent = "Combo";
-      body.appendChild(badge);
-    }
     body.appendChild(ops);
 
     const starsEl = document.createElement("div");
@@ -79,7 +73,6 @@ function operationSymbol(operation) {
     subtract: "-",
     multiply: "x",
     divide: "/",
-    mixed: "mix",
   }[operation] || "?";
 }
 
@@ -92,91 +85,15 @@ function showConcept(index) {
 
   state.levelIndex = index;
   const level = levels[index];
-  const concept = level.concept || conceptByType[level.type] || conceptByType.mixed;
+  const concept = level.concept || conceptByType[level.type];
   els.conceptEyebrow.textContent = `Nivel ${level.id}: ${level.title}`;
-  const conceptCard = els.conceptDemo.closest(".concept-card");
-  conceptCard?.classList.toggle("gate-tutorial-card", level.id === 5);
-  els.conceptDemo.className = level.id === 5 ? "sum-demo gate-tutorial-demo" : "sum-demo";
-  if (level.id === 5) {
-    els.conceptTitle.textContent = "Activa el reactor de compuertas";
-    els.conceptIntro.textContent = "Observa el flujo. Decide cuando el sensor este listo.";
-    els.conceptNote.textContent = "Las capsulas azules cargan energia. Las compuertas doradas liberan exceso.";
-    els.conceptDemo.innerHTML = renderGateTowerTutorial();
-  } else {
-    els.conceptTitle.textContent = concept.title;
-    els.conceptIntro.textContent = concept.intro;
-    els.conceptNote.textContent = concept.note;
-    els.conceptDemo.innerHTML = concept.demo.map(renderConceptPart).join("");
-  }
+  els.conceptDemo.className = "sum-demo";
+  els.conceptTitle.textContent = concept.title;
+  els.conceptIntro.textContent = concept.intro;
+  els.conceptNote.textContent = concept.note;
+  els.conceptDemo.innerHTML = concept.demo.map(renderConceptPart).join("");
   els.startAdventureButton.textContent = `Iniciar ${level.title}`;
   showScreen("concept");
-}
-
-function renderGateTowerTutorial() {
-  const capsuleRow = Array.from({ length: 7 }, (_, index) => (
-    `<span class="tutorial-capsule capsule-${index + 1}" style="--delay:${index * 0.08}s"></span>`
-  )).join("");
-  const sparks = Array.from({ length: 12 }, (_, index) => (
-    `<span class="gate-tutorial-spark" style="--x:${8 + (index * 8) % 84}%; --y:${14 + (index * 17) % 70}%; --delay:${index * 0.12}s"></span>`
-  )).join("");
-
-  return `
-    <div class="gate-tutorial-scene" aria-label="Tutorial visual del reactor de compuertas">
-      <div class="gate-tutorial-depth" aria-hidden="true">
-        <span class="gate-tutorial-grid"></span>
-        <span class="gate-tutorial-orbit orbit-one"></span>
-        <span class="gate-tutorial-orbit orbit-two"></span>
-        ${sparks}
-      </div>
-
-      <div class="tutorial-pipe pipe-in" aria-hidden="true">
-        <span class="pipe-light"></span>
-        <span class="tutorial-flow flow-a"></span>
-        <span class="tutorial-flow flow-b"></span>
-        <span class="tutorial-flow flow-c"></span>
-      </div>
-
-      <div class="tutorial-pipe pipe-out" aria-hidden="true">
-        <span class="pipe-light"></span>
-        <span class="tutorial-flow flow-out-a"></span>
-        <span class="tutorial-flow flow-out-b"></span>
-      </div>
-
-      <div class="tutorial-reactor">
-        <span class="tutorial-reactor-ring ring-a"></span>
-        <span class="tutorial-reactor-ring ring-b"></span>
-        <span class="tutorial-vapor vapor-left"></span>
-        <span class="tutorial-vapor vapor-right"></span>
-        <div class="tutorial-core">
-          <span class="core-glow"></span>
-          <div class="tutorial-capsule-field">${capsuleRow}</div>
-        </div>
-        <div class="tutorial-energy-rail"><span></span></div>
-      </div>
-
-      <div class="tutorial-gate gate-entry" aria-hidden="true">
-        <span></span><strong>ENTRA</strong>
-      </div>
-      <div class="tutorial-gate gate-exit" aria-hidden="true">
-        <span></span><strong>SALE</strong>
-      </div>
-
-      <div class="tutorial-steps" aria-label="Como jugar">
-        <article>
-          <strong>1</strong>
-          <span>Mira el nucleo.</span>
-        </article>
-        <article>
-          <strong>2</strong>
-          <span>Sigue las capsulas.</span>
-        </article>
-        <article>
-          <strong>3</strong>
-          <span>Estabiliza el sensor.</span>
-        </article>
-      </div>
-    </div>
-  `;
 }
 
 function renderConceptPart(part) {
@@ -210,11 +127,6 @@ function startLevel(index) {
   if (!canAccessLevel(index)) {
     renderLevels();
     showScreen("level");
-    return;
-  }
-
-  if (levels[index].mode === "energyLab") {
-    startEnergyLabLevel(index);
     return;
   }
 
@@ -359,8 +271,6 @@ function openQuestion(tile) {
 
 function createQuestion() {
   const level = levels[state.levelIndex];
-  if (level.type === "mixed") return createMixedQuestion(level);
-
   const type = level.type;
   const max = Math.min(20, 5 + level.id * 2);
   let a = rand(1, max);
@@ -395,63 +305,6 @@ function createQuestion() {
 
   return {
     text: `${a} ${symbol} ${b}`,
-    answer,
-    options: makeOptions(answer),
-  };
-}
-
-function createMixedQuestion(level) {
-  const pool = level.pool || ["add", "subtract", "multiply", "divide"];
-  const max = Math.min(18, 6 + level.id * 2);
-
-  if (pool.length === 2 && pool.includes("add") && pool.includes("subtract")) {
-    const a = rand(3, max);
-    const b = rand(2, max);
-    const c = rand(1, Math.min(a + b - 1, max));
-    const answer = a + b - c;
-    return {
-      text: `${a} + ${b} - ${c}`,
-      answer,
-      options: makeOptions(answer),
-    };
-  }
-
-  if (pool.length === 2 && pool.includes("multiply") && pool.includes("divide")) {
-    const divisor = rand(2, 4);
-    const multiplier = rand(1, 3);
-    const items = rand(2, 8);
-    const groups = divisor * multiplier;
-    const answer = multiplier * items;
-    return {
-      text: `(${groups} x ${items}) / ${divisor}`,
-      answer,
-      options: makeOptions(answer),
-    };
-  }
-
-  if (pool.length === 3) {
-    const groups = rand(2, 7);
-    const items = rand(2, 6);
-    const add = rand(2, 9);
-    const subtract = rand(1, Math.min(add + groups - 1, 8));
-    const answer = groups * items + add - subtract;
-    return {
-      text: `(${groups} x ${items}) + ${add} - ${subtract}`,
-      answer,
-      options: makeOptions(answer),
-    };
-  }
-
-  const divisor = rand(2, 4);
-  const multiplier = rand(1, 3);
-  const items = rand(2, 7);
-  const groups = divisor * multiplier;
-  const divided = multiplier * items;
-  const add = rand(2, 8);
-  const subtract = rand(1, add);
-  const answer = divided + add - subtract;
-  return {
-    text: `(${groups} x ${items}) / ${divisor} + ${add} - ${subtract}`,
     answer,
     options: makeOptions(answer),
   };

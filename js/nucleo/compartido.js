@@ -66,8 +66,6 @@ const soundVolume = {
   "delivery-correct": 0.55,
   "delivery-wrong": 0.45,
   "traffic-mode": 0.5,
-  "energy-lab-correct": 0.55,
-  "energy-lab-wrong": 0.45,
   "galactic-table": 0.55,
 };
 const allowedSounds = new Set(Object.keys(soundVolume));
@@ -77,8 +75,6 @@ const soundFallbacks = {
   "delivery-correct": "correct",
   "delivery-wrong": "wrong",
   "traffic-mode": "battle-start",
-  "energy-lab-correct": "correct",
-  "energy-lab-wrong": "wrong",
   "galactic-table": "lab-unlock",
 };
 

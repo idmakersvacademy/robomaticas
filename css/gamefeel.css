@@ -329,7 +329,6 @@ body::before {
 .level-card.level-subtract { --world-color: #ff5da8; }
 .level-card.level-multiply { --world-color: #8f68ff; }
 .level-card.level-divide { --world-color: #7effa7; }
-.level-card.level-mixed { --world-color: #ffdf55; }
 
 .level-card::before {
   background:
@@ -337,8 +336,7 @@ body::before {
     radial-gradient(circle, color-mix(in srgb, var(--world-color, #55f6ff) 46%, transparent), transparent 64%);
 }
 
-.level-ops span,
-.combo-badge {
+.level-ops span {
   box-shadow: 0 0 18px color-mix(in srgb, var(--world-color, #55f6ff) 26%, transparent);
 }
 

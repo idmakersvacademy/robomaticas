@@ -564,90 +564,6 @@
         <div class="delivery-particles" id="deliveryParticles" aria-hidden="true"></div>
       </section>
 
-      <section class="screen energy-lab-screen" id="energyLabScreen">
-        <div class="energy-lab-bg" aria-hidden="true">
-          <span class="lab-grid"></span>
-          <span class="lab-orbit orbit-a"></span>
-          <span class="lab-orbit orbit-b"></span>
-          <span class="lab-spark spark-a"></span>
-          <span class="lab-spark spark-b"></span>
-          <span class="lab-spark spark-c"></span>
-        </div>
-
-        <header class="energy-lab-hud">
-          <div>
-            <p class="eyebrow">Nivel 5</p>
-            <h2>Centro de Control Energetico</h2>
-          </div>
-          <div class="energy-lab-stats">
-            <div><span>Estrellas</span><strong id="energyLabStars">0/3</strong></div>
-            <div><span>Vidas</span><strong id="energyLabLives">3</strong></div>
-            <div><span>Progreso</span><strong id="energyLabProgressText">0%</strong></div>
-            <button class="ghost-btn" id="energyLabExitButton">Regresar</button>
-          </div>
-        </header>
-
-        <div class="energy-lab-layout" id="energyLabLayout">
-          <section class="energy-lab-robo-panel">
-            <div class="personaje-wrap energy-lab-robo" id="energyLabRobo" aria-label="Robo">
-              <div class="robot-wrap happy speaking">
-                <div class="antena"></div>
-                <div class="cabeza">
-                  <div class="luz"></div>
-                  <div class="cara">
-                    <span class="ceja izq"></span>
-                    <span class="ceja der"></span>
-                    <span class="ojo izq"></span>
-                    <span class="ojo der"></span>
-                    <span class="boca"></span>
-                  </div>
-                </div>
-                <div class="cuello"></div>
-                <div class="torso"></div>
-                <div class="brazo-izq"></div>
-                <div class="brazo-der"></div>
-              </div>
-            </div>
-            <p class="energy-lab-dialog" id="energyLabMessage">Estabiliza el centro paso a paso.</p>
-            <div class="helper-bots" aria-hidden="true">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </section>
-
-          <section class="reactor-stage" aria-label="Centro de control energetico">
-            <div class="lab-turbine turbine-left" aria-hidden="true"></div>
-            <div class="lab-turbine turbine-right" aria-hidden="true"></div>
-            <div class="energy-pipe-lab pipe-top" aria-hidden="true"><span></span></div>
-            <div class="energy-pipe-lab pipe-bottom" aria-hidden="true"><span></span></div>
-            <div class="holo-panel panel-left" aria-hidden="true">CARGA</div>
-            <div class="holo-panel panel-right" aria-hidden="true">FLUJO</div>
-            <div class="reactor-core" id="energyReactor" aria-hidden="true">
-              <span class="reactor-ring ring-one"></span>
-              <span class="reactor-ring ring-two"></span>
-              <span class="reactor-glass"></span>
-              <span class="reactor-energy" id="reactorEnergyFill"></span>
-              <strong id="reactorChargeText">0%</strong>
-            </div>
-            <div class="mission-machine" id="energyMissionMachine" aria-label="Reactor visual de capsulas"></div>
-            <div class="energy-lab-particles" id="energyLabParticles" aria-hidden="true"></div>
-          </section>
-
-          <section class="energy-lab-console" aria-label="Panel de operaciones combinadas">
-            <div class="energy-lab-progress"><span id="energyLabProgressBar"></span></div>
-            <div class="energy-lab-operation" id="energyLabOperation">5 + 3 - 2</div>
-            <div class="energy-lab-steps">
-              <span id="energyStepOne">1 Sube energia</span>
-              <span id="energyStepTwo">2 Libera energia</span>
-            </div>
-            <p class="energy-lab-prompt" id="energyLabPrompt">Primero sube la energia del sistema.</p>
-            <div class="energy-lab-options" id="energyLabOptions"></div>
-            <button class="primary-btn" id="energyLabStartButton">Encender centro</button>
-          </section>
-        </div>
-      </section>
-
       <section class="screen result-screen" id="victoryScreen">
         <div class="confetti" id="confetti"></div>
         <div class="result-card">
@@ -693,7 +609,6 @@
     <script src="js/niveles/suma.js"></script>
     <script src="js/niveles/multiplicacion.js"></script>
     <script src="js/niveles/division.js"></script>
-    <script src="js/niveles/laboratorio-energia.js"></script>
     <script src="js/niveles/tablas-galacticas.js"></script>
     <script src="js/nucleo/compartido.js"></script>
     <script src="js/nucleo/efectos.js"></script>
