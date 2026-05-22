@@ -94,12 +94,89 @@ function showConcept(index) {
   const level = levels[index];
   const concept = level.concept || conceptByType[level.type] || conceptByType.mixed;
   els.conceptEyebrow.textContent = `Nivel ${level.id}: ${level.title}`;
-  els.conceptTitle.textContent = concept.title;
-  els.conceptIntro.textContent = concept.intro;
-  els.conceptNote.textContent = concept.note;
-  els.conceptDemo.innerHTML = concept.demo.map(renderConceptPart).join("");
+  const conceptCard = els.conceptDemo.closest(".concept-card");
+  conceptCard?.classList.toggle("gate-tutorial-card", level.id === 5);
+  els.conceptDemo.className = level.id === 5 ? "sum-demo gate-tutorial-demo" : "sum-demo";
+  if (level.id === 5) {
+    els.conceptTitle.textContent = "Activa el reactor de compuertas";
+    els.conceptIntro.textContent = "Observa el flujo. Decide cuando el sensor este listo.";
+    els.conceptNote.textContent = "Las capsulas azules cargan energia. Las compuertas doradas liberan exceso.";
+    els.conceptDemo.innerHTML = renderGateTowerTutorial();
+  } else {
+    els.conceptTitle.textContent = concept.title;
+    els.conceptIntro.textContent = concept.intro;
+    els.conceptNote.textContent = concept.note;
+    els.conceptDemo.innerHTML = concept.demo.map(renderConceptPart).join("");
+  }
   els.startAdventureButton.textContent = `Iniciar ${level.title}`;
   showScreen("concept");
+}
+
+function renderGateTowerTutorial() {
+  const capsuleRow = Array.from({ length: 7 }, (_, index) => (
+    `<span class="tutorial-capsule capsule-${index + 1}" style="--delay:${index * 0.08}s"></span>`
+  )).join("");
+  const sparks = Array.from({ length: 12 }, (_, index) => (
+    `<span class="gate-tutorial-spark" style="--x:${8 + (index * 8) % 84}%; --y:${14 + (index * 17) % 70}%; --delay:${index * 0.12}s"></span>`
+  )).join("");
+
+  return `
+    <div class="gate-tutorial-scene" aria-label="Tutorial visual del reactor de compuertas">
+      <div class="gate-tutorial-depth" aria-hidden="true">
+        <span class="gate-tutorial-grid"></span>
+        <span class="gate-tutorial-orbit orbit-one"></span>
+        <span class="gate-tutorial-orbit orbit-two"></span>
+        ${sparks}
+      </div>
+
+      <div class="tutorial-pipe pipe-in" aria-hidden="true">
+        <span class="pipe-light"></span>
+        <span class="tutorial-flow flow-a"></span>
+        <span class="tutorial-flow flow-b"></span>
+        <span class="tutorial-flow flow-c"></span>
+      </div>
+
+      <div class="tutorial-pipe pipe-out" aria-hidden="true">
+        <span class="pipe-light"></span>
+        <span class="tutorial-flow flow-out-a"></span>
+        <span class="tutorial-flow flow-out-b"></span>
+      </div>
+
+      <div class="tutorial-reactor">
+        <span class="tutorial-reactor-ring ring-a"></span>
+        <span class="tutorial-reactor-ring ring-b"></span>
+        <span class="tutorial-vapor vapor-left"></span>
+        <span class="tutorial-vapor vapor-right"></span>
+        <div class="tutorial-core">
+          <span class="core-glow"></span>
+          <div class="tutorial-capsule-field">${capsuleRow}</div>
+        </div>
+        <div class="tutorial-energy-rail"><span></span></div>
+      </div>
+
+      <div class="tutorial-gate gate-entry" aria-hidden="true">
+        <span></span><strong>ENTRA</strong>
+      </div>
+      <div class="tutorial-gate gate-exit" aria-hidden="true">
+        <span></span><strong>SALE</strong>
+      </div>
+
+      <div class="tutorial-steps" aria-label="Como jugar">
+        <article>
+          <strong>1</strong>
+          <span>Mira el nucleo.</span>
+        </article>
+        <article>
+          <strong>2</strong>
+          <span>Sigue las capsulas.</span>
+        </article>
+        <article>
+          <strong>3</strong>
+          <span>Estabiliza el sensor.</span>
+        </article>
+      </div>
+    </div>
+  `;
 }
 
 function renderConceptPart(part) {
