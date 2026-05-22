@@ -911,14 +911,14 @@
 
 .control-center-theme {
   background:
-    radial-gradient(circle at 52% 42%, rgba(85, 246, 255, 0.2), transparent 26%),
-    radial-gradient(circle at 16% 18%, rgba(126, 255, 167, 0.18), transparent 22%),
-    radial-gradient(circle at 88% 76%, rgba(143, 104, 255, 0.18), transparent 24%),
-    linear-gradient(145deg, #061a3d 0%, #071033 50%, #150a3a 100%);
+    radial-gradient(circle at 52% 38%, rgba(45, 232, 255, 0.22), transparent 27%),
+    radial-gradient(circle at 12% 14%, rgba(255, 213, 91, 0.12), transparent 21%),
+    radial-gradient(circle at 86% 72%, rgba(120, 255, 178, 0.16), transparent 24%),
+    linear-gradient(145deg, #051629 0%, #061f39 46%, #10183f 100%);
 }
 
 .control-center-theme .energy-lab-layout {
-  grid-template-columns: minmax(210px, 0.72fr) minmax(430px, 1.55fr) minmax(300px, 0.85fr);
+  grid-template-columns: minmax(210px, 0.72fr) minmax(460px, 1.55fr) minmax(300px, 0.85fr);
 }
 
 .control-center-theme .energy-lab-robo-panel,
@@ -964,8 +964,8 @@
 
 .control-center-theme .reactor-core {
   position: absolute;
-  width: min(42%, 250px);
-  opacity: 0.34;
+  width: min(36%, 220px);
+  opacity: 0.2;
   filter: blur(0.2px);
 }
 
@@ -977,103 +977,161 @@
   padding: clamp(14px, 2vw, 22px);
   align-content: center;
   background:
-    radial-gradient(circle at 50% 32%, rgba(85, 246, 255, 0.2), transparent 42%),
-    rgba(3, 13, 38, 0.62);
-  border-radius: 28px;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)),
+    radial-gradient(circle at 50% 38%, rgba(45, 232, 255, 0.2), transparent 48%),
+    rgba(3, 13, 34, 0.72);
+  border-radius: 18px;
   box-shadow:
-    inset 0 0 0 2px rgba(85, 246, 255, 0.2),
+    inset 0 0 0 2px rgba(85, 246, 255, 0.22),
+    inset 0 -34px 70px rgba(7, 20, 56, 0.48),
     0 0 46px rgba(85, 246, 255, 0.16);
 }
 
 .gate-tower-playfield {
   min-height: 510px;
   display: grid;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto 1fr;
   gap: 16px;
   place-items: center;
+  width: 100%;
 }
 
-.gate-operation-pill {
-  min-width: min(100%, 360px);
-  padding: 12px 20px;
-  border-radius: 999px;
+.gate-status-row {
+  width: min(100%, 560px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.gate-holo-chip {
+  min-height: 58px;
+  display: grid;
+  align-content: center;
+  padding: 10px 14px;
+  border-radius: 14px;
   color: #ffffff;
-  background: rgba(5, 18, 47, 0.86);
-  border: 2px solid rgba(85, 246, 255, 0.4);
-  box-shadow: 0 0 26px rgba(85, 246, 255, 0.22);
-  font-size: clamp(1.7rem, 4vw, 3.1rem);
-  font-weight: 1000;
-  text-align: center;
-  text-shadow: 0 0 20px rgba(85, 246, 255, 0.48);
+  background:
+    linear-gradient(90deg, rgba(45, 232, 255, 0.18), rgba(120, 255, 178, 0.08)),
+    rgba(5, 18, 47, 0.82);
+  border: 1px solid rgba(114, 240, 255, 0.28);
+  box-shadow: inset 0 0 24px rgba(85, 246, 255, 0.08), 0 0 22px rgba(85, 246, 255, 0.12);
 }
 
-.gate-step-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 16px;
-  border-radius: 18px;
-  color: #061a3d;
-  background: linear-gradient(145deg, #7effa7, #55f6ff);
-  box-shadow: 0 0 26px rgba(126, 255, 167, 0.32);
-  font-weight: 1000;
-}
-
-.gate-step-chip.restar {
-  background: linear-gradient(145deg, #ffdf55, #8f68ff);
-  color: #ffffff;
-}
-
-.gate-step-chip span {
-  font-size: 0.82rem;
+.gate-holo-chip span {
+  color: rgba(248, 252, 255, 0.68);
+  font-size: 0.68rem;
+  font-weight: 900;
   text-transform: uppercase;
 }
 
-.gate-step-chip strong {
-  font-size: clamp(1.4rem, 3vw, 2.1rem);
+.gate-holo-chip strong {
+  font-size: clamp(1.15rem, 2.4vw, 1.75rem);
+  line-height: 1;
+  text-shadow: 0 0 18px rgba(85, 246, 255, 0.54);
+}
+
+.gate-hidden-result strong {
+  color: #ffdf55;
+}
+
+.gate-hidden-result strong:not(:only-child) {
+  letter-spacing: 0;
 }
 
 .gate-reactor-panel {
   position: relative;
-  width: min(100%, 520px);
-  min-height: 350px;
+  width: min(100%, 620px);
+  min-height: 410px;
   display: grid;
   place-items: center;
+  isolation: isolate;
 }
 
 .gate-reactor-shell {
   position: relative;
-  width: min(100%, 430px);
-  min-height: 300px;
+  width: min(100%, 450px);
+  min-height: 330px;
   display: grid;
   place-items: center;
-  padding: 28px;
-  border-radius: 34px;
+  padding: 34px;
+  border-radius: 40px 40px 58px 58px;
   background:
-    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.16), transparent 26%),
-    linear-gradient(180deg, rgba(85, 246, 255, 0.18), rgba(7, 16, 51, 0.94));
-  border: 3px solid rgba(85, 246, 255, 0.42);
+    radial-gradient(circle at 50% 46%, rgba(255, 255, 255, 0.2), transparent 22%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.11), transparent 12% 88%, rgba(255, 255, 255, 0.1)),
+    linear-gradient(180deg, rgba(45, 232, 255, 0.18), rgba(6, 20, 49, 0.98));
+  border: 2px solid rgba(114, 240, 255, 0.42);
   box-shadow:
-    0 0 54px rgba(85, 246, 255, 0.3),
-    inset 0 0 44px rgba(126, 255, 167, 0.12);
+    0 24px 58px rgba(1, 8, 22, 0.36),
+    0 0 54px rgba(45, 232, 255, 0.26),
+    inset 0 0 0 8px rgba(255, 255, 255, 0.035),
+    inset 0 0 54px rgba(120, 255, 178, 0.12);
   overflow: hidden;
 }
 
+.gate-reactor-shell::before,
+.gate-reactor-shell::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  height: 18px;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent),
+    rgba(45, 232, 255, 0.15);
+  border: 1px solid rgba(114, 240, 255, 0.26);
+}
+
+.gate-reactor-shell::before { top: 18px; }
+.gate-reactor-shell::after { bottom: 18px; }
+
 .gate-reactor-glow {
   position: absolute;
-  inset: 18%;
+  inset: 16%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(126, 255, 167, 0.34), transparent 64%);
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.42) 0 8%, rgba(120, 255, 178, 0.34) 9% 30%, rgba(45, 232, 255, 0.18) 31% 58%, transparent 70%);
   animation: reactorAura 2s ease-in-out infinite;
 }
+
+.gate-shell-rib {
+  position: absolute;
+  top: 24%;
+  bottom: 24%;
+  width: 9px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(45, 232, 255, 0.12));
+  box-shadow: 0 0 18px rgba(45, 232, 255, 0.22);
+}
+
+.rib-a { left: 12%; }
+.rib-b { right: 12%; }
+.rib-c {
+  left: 50%;
+  width: 2px;
+  opacity: 0.34;
+}
+
+.gate-vapor {
+  position: absolute;
+  bottom: 34px;
+  width: 60px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.28), transparent 70%);
+  animation: gateVapor 2.2s ease-in-out infinite;
+}
+
+.vapor-a { left: 18%; }
+.vapor-b { right: 18%; animation-delay: 0.8s; }
 
 .gate-capsule-grid {
   position: relative;
   z-index: 2;
   display: grid;
   grid-template-columns: repeat(4, minmax(48px, 1fr));
-  gap: 16px;
-  width: min(100%, 310px);
+  gap: 14px;
+  width: min(100%, 324px);
   justify-items: center;
   align-items: center;
 }
@@ -1106,34 +1164,78 @@
 }
 
 .gate-capsule.entering {
-  animation: gateCapsuleEnter 0.7s cubic-bezier(0.2, 0.9, 0.2, 1.1) both;
+  animation: gateCapsuleEnter 0.78s cubic-bezier(0.2, 0.9, 0.2, 1.1) both;
   animation-delay: var(--delay);
 }
 
-.gate-capsule.leaving {
-  animation: gateCapsuleLeave 0.72s ease-in both;
+.gate-pipe {
+  position: absolute;
+  z-index: 4;
+  width: min(44%, 245px);
+  height: 58px;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.04)),
+    rgba(45, 232, 255, 0.1);
+  border: 1px solid rgba(114, 240, 255, 0.28);
+  overflow: hidden;
+  box-shadow: inset 0 0 18px rgba(45, 232, 255, 0.16), 0 0 24px rgba(45, 232, 255, 0.12);
+}
+
+.gate-pipe::before {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.24), transparent);
+  animation: pipeFlow 1.4s linear infinite;
+}
+
+.gate-pipe-in {
+  left: 0;
+  top: 40px;
+  transform: rotate(10deg);
+}
+
+.gate-pipe-out {
+  right: 0;
+  bottom: 78px;
+  transform: rotate(-10deg);
+}
+
+.gate-flow-capsule {
+  position: absolute;
+  top: 14px;
+  width: 26px;
+  height: 32px;
+  border-radius: 12px 12px 9px 9px;
+  background:
+    radial-gradient(circle at 55% 42%, rgba(255, 255, 255, 0.72) 0 13%, transparent 14%),
+    linear-gradient(180deg, #f4ffff 0 14%, #55f6ff 15% 54%, #187dff 55% 100%);
+  box-shadow: 0 0 18px rgba(85, 246, 255, 0.72);
+}
+
+.gate-flow-capsule.incoming {
+  left: -34px;
+  animation: capsuleTubeIn 0.86s cubic-bezier(0.2, 0.9, 0.24, 1) both;
+  animation-delay: var(--delay);
+}
+
+.gate-flow-capsule.outgoing {
+  right: -34px;
   background:
     radial-gradient(circle at 55% 42%, rgba(255, 255, 255, 0.64) 0 13%, transparent 14%),
     linear-gradient(180deg, #fff6d2 0 14%, #ffdf55 15% 54%, #8f68ff 55% 100%);
-}
-
-.gate-exit-stream {
-  position: absolute;
-  right: 18px;
-  top: 50%;
-  z-index: 3;
-  display: flex;
-  gap: 10px;
-  transform: translateY(-50%);
-  pointer-events: none;
+  animation: capsuleTubeOut 0.86s cubic-bezier(0.2, 0.9, 0.24, 1) both;
+  animation-delay: var(--delay);
 }
 
 .gate-energy-meter {
   position: absolute;
-  left: 8px;
-  top: 54px;
-  bottom: 54px;
-  width: 18px;
+  left: 28px;
+  top: 86px;
+  bottom: 86px;
+  width: 16px;
   border-radius: 999px;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.1);
@@ -1152,21 +1254,35 @@
   transition: height 0.42s ease;
 }
 
-.gate-count {
+.gate-reactor-console {
   position: absolute;
-  right: 0;
-  bottom: 8px;
-  min-width: 82px;
-  min-height: 82px;
-  display: grid;
-  place-items: center;
-  border-radius: 26px;
+  left: 50%;
+  bottom: 4px;
+  z-index: 5;
+  width: min(76%, 360px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 16px;
   color: #ffffff;
   background: rgba(4, 15, 43, 0.92);
-  border: 3px solid rgba(85, 246, 255, 0.58);
-  box-shadow: 0 0 30px rgba(85, 246, 255, 0.38);
-  font-size: clamp(2.2rem, 5vw, 3.5rem);
-  text-shadow: 0 0 18px rgba(85, 246, 255, 0.8);
+  border: 1px solid rgba(114, 240, 255, 0.36);
+  box-shadow: 0 0 26px rgba(85, 246, 255, 0.2);
+  transform: translateX(-50%);
+}
+
+.gate-reactor-console span {
+  color: rgba(248, 252, 255, 0.72);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.gate-reactor-console strong {
+  color: #7effa7;
+  font-size: 1rem;
+  text-transform: uppercase;
 }
 
 .control-center-theme .energy-lab-console {
@@ -1381,10 +1497,28 @@
     width: min(100%, 250px);
   }
 
-  .gate-count {
-    right: 8px;
-    min-width: 70px;
-    min-height: 70px;
+  .gate-status-row {
+    grid-template-columns: 1fr;
+  }
+
+  .gate-pipe {
+    width: 42%;
+    height: 46px;
+  }
+
+  .gate-pipe-in {
+    top: 28px;
+  }
+
+  .gate-pipe-out {
+    bottom: 68px;
+  }
+
+  .gate-reactor-console {
+    width: 88%;
+    bottom: -4px;
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .control-center-theme .energy-option {
@@ -1497,5 +1631,36 @@
   to {
     transform: translate(120px, 52px) scale(0.25) rotate(18deg);
     opacity: 0;
+  }
+}
+
+@keyframes capsuleTubeIn {
+  from {
+    transform: translateX(0) scale(0.75);
+    opacity: 0;
+  }
+  20% { opacity: 1; }
+  to {
+    transform: translateX(245px) scale(1);
+    opacity: 0.1;
+  }
+}
+
+@keyframes capsuleTubeOut {
+  from {
+    transform: translateX(0) scale(0.75);
+    opacity: 0;
+  }
+  20% { opacity: 1; }
+  to {
+    transform: translateX(-245px) scale(1);
+    opacity: 0.1;
+  }
+}
+
+@keyframes gateVapor {
+  50% {
+    transform: translateY(-16px) scale(1.28);
+    opacity: 0.28;
   }
 }

@@ -9,6 +9,7 @@ const energyLab = {
   charge: 0,
   visualValue: 0,
   animation: null,
+  gateRevealed: false,
   stepIndex: 0,
   locked: false,
   question: null,
@@ -61,6 +62,7 @@ function startEnergyLabLevel(index) {
   energyLab.charge = 0;
   energyLab.visualValue = 0;
   energyLab.animation = null;
+  energyLab.gateRevealed = false;
   energyLab.stepIndex = 0;
   energyLab.locked = false;
   energyLab.question = null;
@@ -101,12 +103,12 @@ function energyLabConfig() {
     5: {
       themeClass: "control-center-theme",
       title: "Torre de Compuertas",
-      placeholder: "5 + 3 - 2",
+      placeholder: "Sistema de capsulas",
       readyPrompt: "Abre la torre cuando Robo este listo.",
-      readyMessage: "La torre esta apagada. Vamos a cargarla viendo capsulas entrar y salir.",
-      beginMessage: "Mira las capsulas del reactor. Primero entran nuevas cargas.",
-      stepOneLabel: "1 Entran capsulas",
-      stepTwoLabel: "2 Sale energia",
+      readyMessage: "La torre esta en modo seguro. Yo activo sensores y tu estabilizas el flujo.",
+      beginMessage: "Observa el reactor: las capsulas se moveran por compuertas transparentes.",
+      stepOneLabel: "1 Entrada",
+      stepTwoLabel: "2 Salida",
       panelLeft: "ENTRAN",
       panelRight: "SALEN",
       startText: "Abrir compuertas",
@@ -194,19 +196,21 @@ function createControlCenterQuestion() {
         tipo: "sumar",
         operador: "+",
         cantidad: firstChange,
+        valorAntes: start,
         pregunta: `Primero agrega ${firstChange} capsulas. Cuanta energia hay ahora?`,
         respuestaCorrecta: core,
         opciones: makeEnergyLabOptions(core),
-        robo: `Primero cargamos ${firstChange} capsulas nuevas.`,
+        robo: `Compuerta de entrada lista: observa ${firstChange} capsulas entrando.`,
       },
       {
         tipo: "restar",
         operador: "-",
         cantidad: secondChange,
+        valorAntes: core,
         pregunta: `Ahora se usa ${secondChange} capsula${secondChange > 1 ? "s" : ""}. Cuanta energia queda?`,
         respuestaCorrecta: answer,
         opciones: makeEnergyLabOptions(answer),
-        robo: `Ahora descontamos ${secondChange} uso${secondChange > 1 ? "s" : ""} de energia.`,
+        robo: `Compuerta de salida abierta: observa ${secondChange} capsula${secondChange > 1 ? "s" : ""} salir.`,
       },
     ],
   };
@@ -275,6 +279,7 @@ function nextEnergyLabQuestion() {
   energyLab.stepIndex = 0;
   energyLab.locked = false;
   energyLab.animation = null;
+  energyLab.gateRevealed = false;
   energyLab.visualValue = energyLab.question.start;
   els.stepOne.textContent = stepBadge(1);
   els.stepTwo.textContent = stepBadge(2);
@@ -285,8 +290,9 @@ function nextEnergyLabQuestion() {
   renderMissionMachine();
   if (isGateTowerLevel()) {
     const firstStep = currentGateStep();
-    els.prompt.textContent = `Empiezas con ${energyLab.question.start} capsulas encendidas. Mira el reactor.`;
-    setEnergyLabMessage(`Primero contamos ${energyLab.question.start} capsulas dentro de la torre.`, "thinking");
+    els.operation.textContent = "Observa el flujo";
+    els.prompt.textContent = `El nucleo inicia con ${energyLab.question.start} capsulas. Preparate para contar el movimiento.`;
+    setEnergyLabMessage(`Sistema listo. Mira la compuerta: nada esta resuelto todavia.`, "thinking");
     renderEnergyLabOptions(firstStep.opciones);
     setEnergyLabOptionsDisabled(true);
     setTimeout(mostrarPasoActual, 650);
@@ -375,23 +381,47 @@ function renderGateTowerMachine() {
   const step = currentGateStep();
   const animationClass = energyLab.animation ? `is-${energyLab.animation.tipo}` : "";
   const outgoing = energyLab.animation?.tipo === "restar" ? energyLab.animation.cantidad : 0;
+  const gateMode = step?.tipo === "restar" ? "Salida" : "Entrada";
+  const gateAction = step?.tipo === "restar" ? "salen" : "entran";
+  const statusText = energyLab.gateRevealed ? step?.respuestaCorrecta : "?";
+  const ariaLabel = energyLab.gateRevealed
+    ? `Reactor estabilizado con ${step?.respuestaCorrecta} capsulas`
+    : `Reactor con capsulas visibles para contar`;
   return `
     <div class="gate-tower-playfield ${animationClass}">
-      <div class="gate-operation-pill">${question.operacionTexto}</div>
-      <div class="gate-step-chip ${step?.tipo || ""}">
-        <span>Paso ${energyLab.stepIndex + 1}</span>
-        <strong>${step?.operador || "+"}${step?.cantidad || 0}</strong>
+      <div class="gate-status-row">
+        <div class="gate-holo-chip">
+          <span>Fase ${energyLab.stepIndex + 1}</span>
+          <strong>${gateMode}</strong>
+        </div>
+        <div class="gate-holo-chip gate-hidden-result">
+          <span>Sensor</span>
+          <strong>${statusText}</strong>
+        </div>
       </div>
-      <div class="gate-reactor-panel" aria-label="${energyLab.visualValue} capsulas de energia">
+      <div class="gate-reactor-panel" aria-label="${ariaLabel}">
+        <div class="gate-pipe gate-pipe-in" aria-hidden="true">
+          ${step?.tipo === "sumar" ? renderMovingCapsules(step.cantidad, "incoming") : ""}
+        </div>
+        <div class="gate-pipe gate-pipe-out" aria-hidden="true">
+          ${outgoing ? renderMovingCapsules(outgoing, "outgoing") : ""}
+        </div>
         <div class="gate-reactor-shell">
+          <span class="gate-shell-rib rib-a"></span>
+          <span class="gate-shell-rib rib-b"></span>
+          <span class="gate-shell-rib rib-c"></span>
+          <span class="gate-vapor vapor-a"></span>
+          <span class="gate-vapor vapor-b"></span>
           <span class="gate-reactor-glow"></span>
           <div class="gate-capsule-grid">${renderEnergia(energyLab.visualValue)}</div>
-          ${outgoing ? `<div class="gate-exit-stream">${renderEnergia(outgoing, "leaving")}</div>` : ""}
         </div>
         <div class="gate-energy-meter">
           <span style="--gate-charge: ${Math.min(100, energyLab.visualValue * 8)}%"></span>
         </div>
-        <strong class="gate-count">${energyLab.visualValue}</strong>
+        <div class="gate-reactor-console">
+          <span>${step?.cantidad || 0} capsulas ${gateAction}</span>
+          <strong>${energyLab.gateRevealed ? "Estable" : "Calcula"}</strong>
+        </div>
       </div>
     </div>
   `;
@@ -406,6 +436,13 @@ function renderEnergia(cantidad, extraClass = "") {
   }).join("");
 }
 
+function renderMovingCapsules(cantidad, extraClass = "") {
+  if (!energyLab.animation) return "";
+  return Array.from({ length: Math.max(0, cantidad) }, (_, index) => (
+    `<span class="gate-flow-capsule ${extraClass}" style="--delay: ${index * 0.09}s"></span>`
+  )).join("");
+}
+
 function animarEntrada(cantidad) {
   return runGateAnimation("sumar", cantidad);
 }
@@ -415,8 +452,13 @@ function animarSalida(cantidad) {
 }
 
 function runGateAnimation(tipo, cantidad) {
+  const step = currentGateStep();
   energyLab.locked = true;
+  energyLab.gateRevealed = false;
   energyLab.animation = { tipo, cantidad };
+  if (tipo === "sumar") {
+    energyLab.visualValue = step.respuestaCorrecta;
+  }
   renderMissionMachine();
   setEnergyLabOptionsDisabled(true);
   getEnergyLabEls().screen.classList.toggle("energy-gain", tipo === "sumar");
@@ -425,6 +467,7 @@ function runGateAnimation(tipo, cantidad) {
   return new Promise((resolve) => {
     setTimeout(() => {
       energyLab.animation = null;
+      energyLab.visualValue = step.respuestaCorrecta;
       getEnergyLabEls().screen.classList.remove("energy-gain", "energy-release");
       renderMissionMachine();
       energyLab.locked = false;
@@ -438,20 +481,28 @@ function mostrarPasoActual() {
   const step = currentGateStep();
   if (!step) return;
   const els = getEnergyLabEls();
-  energyLab.visualValue = step.respuestaCorrecta;
-  els.operation.textContent = energyLab.question.operacionTexto;
-  els.prompt.textContent = step.pregunta;
+  energyLab.visualValue = step.valorAntes;
+  energyLab.gateRevealed = false;
+  els.operation.textContent = "Observa el reactor";
+  els.prompt.textContent = step.tipo === "sumar"
+    ? `${step.cantidad} capsulas entran por el tubo. Observa antes de responder.`
+    : `${step.cantidad} capsula${step.cantidad > 1 ? "s" : ""} salen por la compuerta. Observa antes de responder.`;
   setEnergyLabMessage(step.robo, "thinking");
   updateEnergyLabSteps();
   renderMissionMachine();
   renderEnergyLabOptions(step.opciones);
 
+  const askAfterMotion = () => {
+    els.prompt.textContent = step.pregunta;
+    setEnergyLabMessage("Tu turno: estabiliza el reactor con la lectura correcta.", "thinking");
+  };
+
   if (step.tipo === "sumar") {
-    animarEntrada(step.cantidad);
+    animarEntrada(step.cantidad).then(askAfterMotion);
     return;
   }
 
-  animarSalida(step.cantidad);
+  animarSalida(step.cantidad).then(askAfterMotion);
 }
 
 function energyCells(count, className) {
@@ -705,7 +756,9 @@ function actualizarHUD() {
 function mostrarFeedbackCorrecto() {
   const step = currentGateStep();
   if (isGateTowerLevel() && step) {
-    setEnergyLabMessage(`Correcto: ahora hay ${step.respuestaCorrecta} capsulas.`, "happy");
+    energyLab.gateRevealed = true;
+    renderMissionMachine();
+    setEnergyLabMessage(`Correcto: lectura estabilizada en ${step.respuestaCorrecta} capsulas.`, "happy");
     return;
   }
   setEnergyLabMessage("Respuesta correcta. El sistema se ilumina.", "happy");
@@ -713,7 +766,7 @@ function mostrarFeedbackCorrecto() {
 
 function mostrarFeedbackIncorrecto(expected) {
   if (isGateTowerLevel()) {
-    setEnergyLabMessage(`Mira las capsulas otra vez. Este paso deja ${expected}.`, "sad");
+    setEnergyLabMessage("Alerta suave: vuelve a contar las capsulas visibles del reactor.", "sad");
     return;
   }
   setEnergyLabMessage(`Alerta suave: revisa el flujo. Ese paso debe dejar ${expected} de energia.`, "sad");
