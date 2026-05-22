@@ -483,22 +483,19 @@
         <div class="factory-particles" id="factoryParticles" aria-hidden="true"></div>
       </section>
 
-      <section class="screen delivery-screen" id="deliveryScreen">
-        <div class="delivery-city-bg" aria-hidden="true">
-          <span class="city-moon"></span>
-          <span class="city-lane lane-one"></span>
-          <span class="city-lane lane-two"></span>
-          <span class="float-car car-one"></span>
-          <span class="float-car car-two"></span>
-          <span class="city-building building-one"></span>
-          <span class="city-building building-two"></span>
-          <span class="city-building building-three"></span>
+      <section class="screen delivery-screen energy-station-screen" id="deliveryScreen">
+        <div class="energy-station-bg" aria-hidden="true">
+          <span class="energy-grid"></span>
+          <span class="energy-depth depth-one"></span>
+          <span class="energy-depth depth-two"></span>
+          <span class="energy-tower tower-one"></span>
+          <span class="energy-tower tower-two"></span>
         </div>
 
         <header class="delivery-hud">
           <div>
             <p class="eyebrow">Nivel 4</p>
-            <h2>CENTRAL DELIVERY</h2>
+            <h2>Central Energetica</h2>
           </div>
           <div class="delivery-stats">
             <div><span>Estrellas</span><strong id="deliveryStarsText">0</strong></div>
@@ -512,8 +509,8 @@
         <div class="delivery-layout" id="deliveryLayout">
           <section class="delivery-robo-panel">
             <div class="delivery-robo-card">
-              <div class="delivery-backpack"></div>
-              <div class="personaje-wrap delivery-robo" id="deliveryRobo" aria-label="Central Delivery">
+              <div class="energy-robo-platform"></div>
+              <div class="personaje-wrap delivery-robo" id="deliveryRobo" aria-label="Robo guia de energia">
                 <div class="robot-wrap happy speaking">
                   <div class="antena"></div>
                   <div class="cabeza">
@@ -532,14 +529,14 @@
                   <div class="brazo-der"></div>
                 </div>
               </div>
-              <div class="delivery-flames" aria-hidden="true"><span></span><span></span></div>
+              <div class="energy-robo-glow" aria-hidden="true"></div>
             </div>
-            <p class="delivery-speech" id="deliveryMessage">Reparte los paquetes por igual.</p>
-            <button class="ghost-btn traffic-btn" id="trafficModeButton">Ruta rápida</button>
+            <p class="delivery-speech" id="deliveryMessage">Reparte la energia en partes iguales.</p>
           </section>
 
           <section class="delivery-play-zone">
             <div class="delivery-progress"><span id="deliveryProgressBar"></span></div>
+            <p class="energy-instruction">Reparte la energia en partes iguales</p>
             <div class="delivery-question">
               <span id="deliveryPackageCount">24</span>
               <strong>/</strong>
@@ -548,17 +545,17 @@
             </div>
 
             <div class="delivery-lesson">
-              <div><strong id="deliveryPackagesLabel">24 paquetes</strong><span>para entregar</span></div>
-              <div><strong id="deliveryDronesLabel">6 drones</strong><span>esperando</span></div>
-              <div><strong id="deliveryEachLabel">?</strong><span>recibe cada uno</span></div>
+              <div><strong id="deliveryPackagesLabel">24 nucleos</strong><span>disponibles</span></div>
+              <div><strong id="deliveryDronesLabel">6 reactores</strong><span>por activar</span></div>
+              <div><strong id="deliveryEachLabel">?</strong><span>por reactor</span></div>
             </div>
 
             <div class="delivery-scene">
-              <div class="conveyor-delivery" id="deliveryPackages"></div>
-              <div class="delivery-drones" id="deliveryDrones"></div>
+              <div class="energy-core-bank" id="deliveryPackages"></div>
+              <div class="energy-reactors" id="deliveryDrones"></div>
             </div>
 
-            <div class="delivery-equal-line" id="deliveryEqualLine">Selecciona una respuesta para ver el reparto.</div>
+            <div class="delivery-equal-line" id="deliveryEqualLine">Elige cuantos nucleos recibe cada reactor.</div>
 
             <div class="delivery-options" id="deliveryOptions"></div>
           </section>

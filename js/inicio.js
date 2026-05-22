@@ -46,7 +46,6 @@ els.deliveryExitButton.addEventListener("click", () => {
   renderLevels();
   showScreen("level");
 });
-els.trafficModeButton.addEventListener("click", toggleTrafficMode);
 
 els.startAdventureButton.addEventListener("click", () => startLevel(state.levelIndex));
 els.conceptMenuButton.addEventListener("click", () => {
