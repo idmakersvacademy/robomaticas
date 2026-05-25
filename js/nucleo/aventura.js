@@ -7,6 +7,7 @@ function showScreen(name) {
     screen.hidden = !isActive;
   });
   if (RM_LEVEL_SCREENS.has(name)) {
+    inicializarHUDNivel();
     mostrarLogoRoboMaticas(true);
   } else {
     ocultarHUD();

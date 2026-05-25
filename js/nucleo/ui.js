@@ -1,4 +1,5 @@
 const RM_LEVEL_SCREENS = new Set(["game", "battle", "factory", "delivery"]);
+let rmHudRendering = false;
 
 function migrarProgresoAntiguo() {
   const clavesAntiguas = [
@@ -18,7 +19,12 @@ function migrarProgresoAntiguo() {
 }
 
 function crearHUD(config = {}) {
-  let hud = document.querySelector(".rm-hud");
+  if (!document.body) {
+    document.addEventListener("DOMContentLoaded", () => crearHUD(config), { once: true });
+    return null;
+  }
+
+  let hud = obtenerHUDElemento();
   if (!hud) {
     hud = document.createElement("header");
     hud.className = "rm-hud";
@@ -27,8 +33,44 @@ function crearHUD(config = {}) {
   }
 
   actualizarHUD(config);
-  hud.hidden = false;
+  if (hud) hud.hidden = false;
   return hud;
+}
+
+function obtenerHUDElemento() {
+  const huds = [...document.querySelectorAll(".rm-hud")];
+  huds.slice(1).forEach((hud) => hud.remove());
+  return huds[0] || null;
+}
+
+function inicializarHUDNivel(config = {}) {
+  if (!document.body) {
+    document.addEventListener("DOMContentLoaded", () => inicializarHUDNivel(config), { once: true });
+    return null;
+  }
+
+  const hud = obtenerHUDElemento();
+  if (hud) {
+    hud.hidden = false;
+    return hud;
+  }
+
+  const level = levels?.[state?.levelIndex] || {};
+  return crearHUD({
+    nivel: level.title || config.nivel || "Nivel",
+    puntos: 0,
+    estrellas: "0/3",
+    vidas: 3,
+    energia: 100,
+    combo: 0,
+    progreso: "0/0",
+    mostrarEnergia: false,
+    onMenu: () => {
+      renderLevels();
+      showScreen("level");
+    },
+    ...config,
+  });
 }
 
 function crearTarjetaHUD(label, value, id) {
@@ -56,7 +98,31 @@ function actualizarHUD({
   mostrarProgreso = true,
   onMenu = null,
 } = {}) {
-  const hud = document.querySelector(".rm-hud") || crearHUD();
+  let hud = obtenerHUDElemento();
+  if (!hud) {
+    if (rmHudRendering) return null;
+    rmHudRendering = true;
+    hud = crearHUD({
+      nivel,
+      puntos,
+      estrellas,
+      vidas,
+      energia,
+      combo,
+      progreso,
+      mostrarPuntos,
+      mostrarEstrellas,
+      mostrarVidas,
+      mostrarEnergia,
+      mostrarCombo,
+      mostrarProgreso,
+      onMenu,
+    });
+    rmHudRendering = false;
+    return hud;
+  }
+
+  hud.hidden = false;
   const vidasTexto = typeof vidas === "string"
     ? vidas
     : "\u2665".repeat(Math.max(0, vidas)) + "\u2661".repeat(Math.max(0, 3 - vidas));
@@ -80,7 +146,7 @@ function actualizarHUD({
 }
 
 function ocultarHUD() {
-  const hud = document.querySelector(".rm-hud");
+  const hud = obtenerHUDElemento();
   if (hud) hud.hidden = true;
 }
 
