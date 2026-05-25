@@ -1,9 +1,14 @@
 function createFactoryAdditionQuestion() {
   const tier = factory.machineIndex + 1;
-  const operation = generarSuma(Math.min(3, tier));
-  const left = Math.min(operation.a, 12);
-  const right = Math.min(operation.b, 12);
-  const answer = left + right;
+  const operation = generarOperacionSinRepetir("suma", () => {
+    const max = Math.min(12, 4 + tier * 2);
+    const a = enteroAleatorio(2, max);
+    const b = enteroAleatorio(2, max);
+    return { a, b, texto: `${a} + ${b}`, respuesta: a + b };
+  });
+  const left = operation.a;
+  const right = operation.b;
+  const answer = operation.respuesta;
   return {
     text: `${left} + ${right} = ?`,
     brief: "Suma las dos cargas y activa la cápsula correcta.",

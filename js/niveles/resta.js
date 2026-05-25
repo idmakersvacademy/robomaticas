@@ -10,6 +10,7 @@ function startBattleLevel(index) {
   battle.score = 0;
   battle.combo = 0;
   battle.locked = false;
+  reiniciarOperacionesNivel("resta");
   setupBattleEnemy();
   setBattleRoboMood("happy");
   updateBattleHud();
@@ -48,7 +49,7 @@ function nextBattleQuestion() {
 }
 
 function createBattleQuestion() {
-  const question = generarResta(Math.min(3, battle.round));
+  const question = generarOperacionSinRepetir("resta", () => generarResta(Math.min(3, battle.round)));
   return {
     text: `${question.texto} = ?`,
     answer: question.respuesta,
@@ -84,14 +85,14 @@ function battleCorrect() {
 
   setBattleMessage(`${mensajeAleatorio("correcto")} Combo x${battle.combo}.`);
   playSound("attack");
-  setBattleRoboMood("happy");
+  setBattleRoboMood("atacando");
   els.battleRobo.classList.add("attacking");
   animateLaser();
   popParticles("hit");
-  els.battleEnemy.classList.add("hit");
+  daniarEnemigoVisual(els.battleEnemy, battle.enemyHp <= 0);
   setTimeout(() => {
     els.battleRobo.classList.remove("attacking");
-    els.battleEnemy.classList.remove("hit");
+    setBattleRoboMood("happy");
   }, 520);
   updateBattleHud();
 
@@ -124,6 +125,7 @@ function battleWrong() {
     battle.lives -= 1;
     state.lives = battle.lives;
     battle.roboHp = battle.lives > 0 ? 100 : 0;
+    setBattleRoboMood(battle.lives > 0 ? "herido" : "derrotado");
   }
 
   updateBattleHud();
@@ -145,6 +147,7 @@ function defeatBattleEnemy() {
   setBattleMessage("Enemigo derrotado!");
   playSound("explosion");
   setBattleRoboMood("celebrating");
+  els.battleEnemy.classList.add("defeated");
   popParticles("burst");
   updateBattleHud();
 
@@ -198,15 +201,38 @@ function updateBattleHud() {
 function setBattleRoboMood(mood) {
   const robo = els.battleRobo.querySelector(".robot-wrap");
   if (!robo) return;
+  const moodClass = {
+    normal: "happy",
+    feliz: "happy",
+    concentrado: "thinking",
+    atacando: "happy",
+    enojado: "sad",
+    herido: "sad",
+    derrotado: "sad",
+    celebrando: "celebrating",
+  }[mood] || mood;
   robo.classList.remove("happy", "thinking", "sad", "speaking", "celebrating");
-  robo.classList.add(mood, "speaking");
+  robo.classList.add(moodClass, "speaking");
+  if (typeof cambiarEstadoRobo === "function") cambiarEstadoRobo(mood, robo);
   clearTimeout(robo.moodTimer);
   robo.moodTimer = setTimeout(() => {
-    if (mood !== "thinking") {
+    if (moodClass !== "thinking") {
       robo.classList.remove("speaking", "celebrating");
       robo.classList.add("thinking");
+      if (typeof cambiarEstadoRobo === "function") cambiarEstadoRobo("concentrado", robo);
     }
   }, 850);
+}
+
+function daniarEnemigoVisual(enemigo, derrotado = false) {
+  if (!enemigo) return;
+  enemigo.classList.remove("hit", "enemy-damage", "defeated");
+  void enemigo.offsetWidth;
+  enemigo.classList.add("hit", "enemy-damage");
+  setTimeout(() => enemigo.classList.remove("hit", "enemy-damage"), 700);
+  if (derrotado) {
+    setTimeout(() => enemigo.classList.add("defeated"), 420);
+  }
 }
 
 function setBattleMessage(message) {

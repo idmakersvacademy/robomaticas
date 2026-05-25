@@ -979,6 +979,85 @@ button:disabled {
   box-shadow: 0 0 12px rgba(255, 79, 97, 0.32);
 }
 
+.robot-wrap.robo-normal .boca {
+  width: 20px;
+  height: 6px;
+  border-radius: 999px;
+}
+
+.robot-wrap.robo-feliz .ojo,
+.robot-wrap.robo-celebrando .ojo {
+  height: 29px;
+  transform: scaleY(0.92);
+}
+
+.robot-wrap.robo-feliz .boca,
+.robot-wrap.robo-celebrando .boca {
+  width: 22px;
+  height: 11px;
+  border-radius: 0 0 18px 18px;
+}
+
+.robot-wrap.robo-concentrado .ojo {
+  height: 8px;
+  top: 42px;
+  border-radius: 999px;
+}
+
+.robot-wrap.robo-concentrado .ceja {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+.robot-wrap.robo-atacando .ojo {
+  height: 21px;
+  background: linear-gradient(180deg, #ffffff, #7effa7);
+}
+
+.robot-wrap.robo-atacando .brazo-der {
+  animation: roboArmShoot 520ms ease-out;
+}
+
+.robot-wrap.robo-atacando .luz::before {
+  background: linear-gradient(145deg, #ffffff, #7effa7);
+  box-shadow: 0 0 16px rgba(126, 255, 167, 0.62);
+}
+
+.robot-wrap.robo-enojado .ceja,
+.robot-wrap.robo-herido .ceja,
+.robot-wrap.robo-derrotado .ceja {
+  opacity: 1;
+}
+
+.robot-wrap.robo-enojado .ceja.izq,
+.robot-wrap.robo-herido .ceja.izq,
+.robot-wrap.robo-derrotado .ceja.izq {
+  transform: rotate(16deg);
+}
+
+.robot-wrap.robo-enojado .ceja.der,
+.robot-wrap.robo-herido .ceja.der,
+.robot-wrap.robo-derrotado .ceja.der {
+  transform: rotate(-16deg);
+}
+
+.robot-wrap.robo-herido,
+.robot-wrap.robo-derrotado {
+  filter: saturate(0.78);
+}
+
+.robot-wrap.robo-derrotado .ojo {
+  height: 5px;
+  top: 43px;
+  transform: rotate(8deg);
+}
+
+.robot-wrap.robo-derrotado .boca {
+  background: transparent;
+  border-top: 4px solid #172063;
+  border-radius: 18px 18px 0 0;
+}
+
 .robot-wrap.small {
   --robo-scale: 0.66;
   transform: scale(var(--robo-scale));

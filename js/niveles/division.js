@@ -13,6 +13,7 @@ function startDeliveryLevel(index) {
   delivery.progress = 0;
   delivery.locked = false;
   delivery.question = null;
+  reiniciarOperacionesNivel("division");
   els.deliveryLayout?.classList.remove("energy-success", "energy-error", "energy-distributing", "energy-imbalanced");
   setDeliveryMessage("Central Energetica lista para estabilizar reactores.", "happy");
   updateDeliveryHud();
@@ -28,7 +29,7 @@ function nextEnergyRound() {
 }
 
 function createDeliveryQuestion() {
-  const operation = generarDivision(Math.min(3, delivery.round));
+  const operation = generarOperacionSinRepetir("division", () => generarDivision(Math.min(3, delivery.round)));
   const reactors = operation.b;
   const answer = operation.respuesta;
   return {
@@ -100,6 +101,7 @@ function makeDeliveryOptions(answer) {
 function validateDeliveryAnswer(button, option) {
   if (delivery.locked || !delivery.question) return;
   const correct = option === delivery.question.answer;
+  delivery.selectedAnswer = option;
   delivery.locked = true;
   els.deliveryEachLabel.textContent = option;
   els.deliveryLayout.classList.add("energy-distributing");
@@ -150,9 +152,10 @@ function failEnergyRound() {
   delivery.combo = 0;
   delivery.lives -= 1;
   delivery.energy = Math.max(0, delivery.energy - 18);
-  setDeliveryMessage(mensajeAleatorio("incorrecto"), "sad");
+  const error = explicarErrorDivision(delivery.question.cores, delivery.question.reactors, delivery.selectedAnswer);
+  setDeliveryMessage(error.mensaje, "sad");
   els.deliveryLayout.classList.remove("energy-distributing");
-  els.deliveryLayout.classList.add("energy-error", "energy-imbalanced");
+  els.deliveryLayout.classList.add("energy-error", "energy-imbalanced", `energy-${error.tipo}`);
   popDeliveryParticles("error");
   playSound("delivery-wrong");
   updateDeliveryHud();
@@ -165,7 +168,7 @@ function failEnergyRound() {
 
   setTimeout(() => {
     delivery.locked = false;
-    els.deliveryLayout.classList.remove("energy-error", "energy-imbalanced");
+    els.deliveryLayout.classList.remove("energy-error", "energy-imbalanced", "energy-faltan", "energy-sobran");
     renderDeliveryQuestion();
     setDeliveryMessage("Mira los reactores: cada uno necesita la misma cantidad.", "thinking");
   }, 1100);
@@ -179,23 +182,11 @@ function makeEnergyDistribution(selected) {
     return counts.map(() => answer);
   }
 
-  if (selected > answer) {
-    let remaining = cores;
-    for (let i = 0; i < reactors; i += 1) {
-      const amount = Math.min(selected, remaining);
-      counts[i] = amount;
-      remaining -= amount;
-    }
-    return counts;
-  }
-
-  counts.fill(selected);
-  let remaining = cores - selected * reactors;
-  let index = 0;
-  while (remaining > 0) {
-    counts[index % reactors] += 1;
-    remaining -= 1;
-    index += 1;
+  let remaining = cores;
+  for (let index = 0; index < reactors; index += 1) {
+    const amount = Math.min(selected, remaining);
+    counts[index] = amount;
+    remaining -= amount;
   }
   return counts;
 }
@@ -234,7 +225,7 @@ function animateEnergyDistribution(selected, correct) {
         return;
       }
 
-      finishDistributionVisual(counts, correct);
+      finishDistributionVisual(counts, correct, selected);
       setTimeout(resolve, reduceEnergyMotion() ? 80 : 360);
     }
 
@@ -243,7 +234,7 @@ function animateEnergyDistribution(selected, correct) {
 }
 
 function addCoreToReactor(reactor, targetCount) {
-  const sourceCore = els.deliveryPackages.querySelector(".energy-core");
+  const sourceCore = els.deliveryPackages.querySelector(".energy-core:not(.core-out)");
   if (sourceCore) {
     flyCoreToReactor(sourceCore, reactor);
     sourceCore.classList.add("core-out");
@@ -289,20 +280,51 @@ function flyCoreToReactor(sourceCore, reactor) {
   setTimeout(() => flying.remove(), 360);
 }
 
-function finishDistributionVisual(counts, correct) {
+function finishDistributionVisual(counts, correct, selected) {
   const reactors = [...els.deliveryDrones.querySelectorAll(".energy-reactor")];
   const line = counts.join(" + ");
+  const error = explicarErrorDivision(delivery.question.cores, delivery.question.reactors, selected);
   els.deliveryEqualLine.textContent = correct
     ? `${line} = ${delivery.question.cores}. Cada reactor recibe ${delivery.question.answer}.`
-    : `${line} = ${delivery.question.cores}. Los reactores necesitan cantidades iguales.`;
+    : error.mensaje;
 
   reactors.forEach((reactor, index) => {
-    reactor.classList.remove("receiving");
+    reactor.classList.remove("receiving", "shortage", "leftover");
     reactor.classList.add(correct ? "active" : "dim");
+    if (!correct && counts[index] !== selected) {
+      reactor.classList.add("shortage");
+    }
+    if (!correct && selected < delivery.question.answer) {
+      reactor.classList.add("leftover");
+    }
     if (!correct && counts[index] !== delivery.question.answer) {
       reactor.classList.add("error");
     }
   });
+}
+
+function explicarErrorDivision(total, grupos, respuestaUsuario) {
+  const necesarios = grupos * respuestaUsuario;
+  const diferencia = necesarios - total;
+
+  if (diferencia > 0) {
+    return {
+      tipo: "faltan",
+      mensaje: `Casi. Para poner ${respuestaUsuario} en cada contenedor necesitamos ${necesarios} nucleos, pero solo tenemos ${total}. Faltan ${diferencia}.`,
+    };
+  }
+
+  if (diferencia < 0) {
+    return {
+      tipo: "sobran",
+      mensaje: `Casi. Poner ${respuestaUsuario} en cada contenedor usa ${necesarios} nucleos. Sobran ${Math.abs(diferencia)}.`,
+    };
+  }
+
+  return {
+    tipo: "correcto",
+    mensaje: "Correcto. Los nucleos quedaron repartidos exactamente.",
+  };
 }
 
 function completeDeliveryLevel() {
@@ -341,6 +363,14 @@ function setDeliveryMessage(message, mood) {
   if (!robo) return;
   robo.classList.remove("happy", "thinking", "sad", "speaking");
   robo.classList.add(mood, "speaking");
+  if (typeof cambiarEstadoRobo === "function") {
+    const estado = {
+      happy: "feliz",
+      thinking: "concentrado",
+      sad: "herido",
+    }[mood] || "normal";
+    cambiarEstadoRobo(estado, robo);
+  }
   clearTimeout(robo.speakingTimer);
   robo.speakingTimer = setTimeout(() => robo.classList.remove("speaking"), 900);
 }

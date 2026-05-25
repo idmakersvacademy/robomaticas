@@ -6,6 +6,34 @@ function mezclarOpciones(items) {
   return [...items].sort(() => Math.random() - 0.5);
 }
 
+const operacionesUsadasPorNivel = new Map();
+
+function reiniciarOperacionesNivel(claveNivel = "global") {
+  operacionesUsadasPorNivel.set(claveNivel, new Set());
+}
+
+function claveOperacion(op) {
+  return `${op.texto}|${op.respuesta}`;
+}
+
+function generarOperacionSinRepetir(claveNivel, generador, maxIntentos = 30) {
+  const usadas = operacionesUsadasPorNivel.get(claveNivel) || new Set();
+  operacionesUsadasPorNivel.set(claveNivel, usadas);
+
+  for (let intento = 0; intento < maxIntentos; intento += 1) {
+    const op = generador();
+    const clave = claveOperacion(op);
+    if (!usadas.has(clave)) {
+      usadas.add(clave);
+      return op;
+    }
+  }
+
+  const op = generador();
+  usadas.add(claveOperacion(op));
+  return op;
+}
+
 function generarSuma(dificultad = 1) {
   const max = dificultad === 1 ? 20 : dificultad === 2 ? 50 : 100;
   const a = enteroAleatorio(1, max);

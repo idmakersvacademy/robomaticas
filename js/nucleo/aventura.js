@@ -166,6 +166,7 @@ function startLevel(index) {
   state.score = 0;
   state.pending = null;
   state.question = null;
+  reiniciarOperacionesNivel(`aventura-${levels[index].type}`);
   state.map = maps[index].map((row) => row.split(""));
   findPlayer();
   updateHud();
@@ -290,12 +291,13 @@ function createQuestion() {
   const level = levels[state.levelIndex];
   const type = level.type;
   const dificultad = Math.min(3, Math.max(1, level.id));
-  const operation = {
+  const generators = {
     add: generarSuma,
     subtract: generarResta,
     multiply: generarMultiplicacion,
     divide: generarDivision,
-  }[type](dificultad);
+  };
+  const operation = generarOperacionSinRepetir(`aventura-${type}`, () => generators[type](dificultad));
 
   return {
     text: operation.texto,

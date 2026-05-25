@@ -78,6 +78,26 @@ function mensajeAleatorio(tipo) {
   return lista[Math.floor(Math.random() * lista.length)];
 }
 
+function cambiarEstadoRobo(estado, objetivo = null) {
+  const robo = objetivo?.querySelector?.(".robot-wrap") || objetivo || document.querySelector(".robot-wrap");
+  if (!robo) return;
+
+  const estados = [
+    "normal",
+    "feliz",
+    "concentrado",
+    "atacando",
+    "enojado",
+    "herido",
+    "derrotado",
+    "celebrando",
+  ];
+
+  robo.dataset.estado = estado;
+  robo.classList.remove(...estados.map((item) => `robo-${item}`));
+  robo.classList.add(`robo-${estado}`);
+}
+
 function irAlMenuPrincipal() {
   const path = window.location.pathname.replace(/\\/g, "/");
   const rutas = path.includes("/niveles/") || path.includes("/levels/")

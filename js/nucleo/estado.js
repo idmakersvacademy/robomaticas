@@ -87,10 +87,12 @@ const battle = {
 };
 
 const battleEnemies = [
-  { name: "Chispa Digital", className: "virus", hp: 70, damage: 22 },
-  { name: "Gota Electrica", className: "slime", hp: 90, damage: 24 },
-  { name: "Dron Calculador", className: "drone", hp: 115, damage: 26 },
-  { name: "Cubo Travieso", className: "cube", hp: 145, damage: 28 },
+  { name: "Slime Electrico", className: "slime electrico", hp: 70, damage: 22 },
+  { name: "Dron Danado", className: "drone danado", hp: 90, damage: 24 },
+  { name: "Robot Oxidado", className: "robot-oxidado", hp: 110, damage: 25 },
+  { name: "Esfera Corrupta", className: "esfera-corrupta", hp: 125, damage: 26 },
+  { name: "Sombra Digital", className: "sombra-digital", hp: 138, damage: 27 },
+  { name: "Mini Tanque Defectuoso", className: "mini-tanque", hp: 150, damage: 28 },
 ];
 
 const factoryMachines = [

@@ -19,6 +19,9 @@ function completeLevel() {
 
 function defeat() {
   closeQuestion();
+  document.querySelectorAll(".robot-wrap").forEach((robo) => {
+    if (typeof cambiarEstadoRobo === "function") cambiarEstadoRobo("derrotado", robo);
+  });
   playSound("lose");
   showScreen("defeat");
 }
@@ -49,6 +52,14 @@ function setRobo(message, mood) {
   els.roboDialog.textContent = message;
   els.guideRobo.classList.remove("happy", "thinking", "sad", "speaking");
   els.guideRobo.classList.add(mood, "speaking");
+  if (typeof cambiarEstadoRobo === "function") {
+    const estado = {
+      happy: "feliz",
+      thinking: "concentrado",
+      sad: "enojado",
+    }[mood] || "normal";
+    cambiarEstadoRobo(estado, els.guideRobo);
+  }
   clearTimeout(els.guideRobo.speakingTimer);
   els.guideRobo.speakingTimer = setTimeout(() => {
     els.guideRobo.classList.remove("speaking");

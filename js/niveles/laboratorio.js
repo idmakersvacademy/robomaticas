@@ -21,6 +21,7 @@ function startFactoryLevel(index) {
   factory.locked = false;
   factory.medals = 0;
   factory.lives = 3;
+  reiniciarOperacionesNivel(mode === "add" ? "suma" : "multiplicacion");
   els.factoryScreen.classList.toggle("sum-arcade-screen", mode === "add");
   els.factoryScreen.classList.toggle("multiply-factory-screen", mode === "multiply");
   els.factoryScreen.classList.toggle("planet-clonix-screen", mode === "multiply");
@@ -267,6 +268,15 @@ function setFactoryRoboMood(mood) {
   if (!robo) return;
   robo.classList.remove("happy", "thinking", "sad", "speaking", "celebrating");
   robo.classList.add(mood, "speaking");
+  if (typeof cambiarEstadoRobo === "function") {
+    const estado = {
+      happy: "feliz",
+      thinking: "concentrado",
+      sad: "enojado",
+      celebrating: "celebrando",
+    }[mood] || "normal";
+    cambiarEstadoRobo(estado, robo);
+  }
 }
 
 function renderCloneGroups(groups, items, groupLabel = "Capsula") {

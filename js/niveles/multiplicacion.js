@@ -1,6 +1,6 @@
 function createFactoryMultiplicationQuestion() {
   const tier = factory.machineIndex + 1;
-  const operation = generarMultiplicacion(Math.min(3, tier));
+  const operation = generarOperacionSinRepetir("multiplicacion", () => generarMultiplicacion(Math.min(3, tier)));
   const groups = operation.a;
   const clones = operation.b;
   const answer = operation.respuesta;

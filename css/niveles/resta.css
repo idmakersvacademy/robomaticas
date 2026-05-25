@@ -453,6 +453,15 @@
   animation: enemyHit 520ms ease;
 }
 
+.math-enemy.enemy-damage {
+  animation: enemyDamage 350ms ease;
+  filter: brightness(1.8) saturate(1.5) drop-shadow(0 0 34px rgba(255, 223, 85, 0.6));
+}
+
+.math-enemy.defeated {
+  animation: enemyDefeated 600ms ease forwards;
+}
+
 .math-enemy.spawn {
   animation: enemySpawn 520ms ease-out;
 }
@@ -563,6 +572,84 @@
     radial-gradient(circle at 70% 45%, #071034 0 11%, transparent 12%),
     linear-gradient(rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.08));
   animation: cubeFace 1.8s ease-in-out infinite;
+}
+
+.math-enemy.robot-oxidado {
+  border-radius: 32px 32px 24px 24px;
+  background:
+    radial-gradient(circle at 34% 36%, #ffffff 0 7%, #071034 8% 14%, transparent 15%),
+    radial-gradient(circle at 64% 36%, #ffdf55 0 7%, #071034 8% 14%, transparent 15%),
+    linear-gradient(145deg, #b98d5b, #657087 48%, #2d365b);
+}
+
+.math-enemy.robot-oxidado::before {
+  left: 36px;
+  right: 36px;
+  bottom: 42px;
+  height: 12px;
+  border-radius: 999px;
+  background: repeating-linear-gradient(90deg, #071034 0 8px, #ffdf55 9px 12px);
+}
+
+.math-enemy.esfera-corrupta {
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.86), transparent 14%),
+    radial-gradient(circle at 50% 50%, #ff5da8 0 9%, transparent 10%),
+    conic-gradient(from 40deg, #20d8ee, #8f68ff, #ff5da8, #20d8ee);
+}
+
+.math-enemy.esfera-corrupta::before {
+  inset: 34px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.42);
+}
+
+.math-enemy.sombra-digital {
+  border-radius: 48% 52% 42% 58%;
+  background:
+    radial-gradient(circle at 38% 38%, #66fff1 0 6%, #05071d 7% 13%, transparent 14%),
+    radial-gradient(circle at 62% 38%, #66fff1 0 6%, #05071d 7% 13%, transparent 14%),
+    linear-gradient(145deg, rgba(12, 16, 44, 0.98), rgba(80, 44, 150, 0.92));
+  filter: drop-shadow(0 0 34px rgba(143, 104, 255, 0.52));
+}
+
+.math-enemy.sombra-digital::before {
+  left: 46px;
+  right: 46px;
+  bottom: 48px;
+  height: 8px;
+  border-radius: 999px;
+  background: #66fff1;
+}
+
+.math-enemy.mini-tanque {
+  width: 210px;
+  height: 150px;
+  margin-top: 38px;
+  border-radius: 28px 28px 40px 40px;
+  background:
+    radial-gradient(circle at 34% 38%, #ffffff 0 7%, #071034 8% 13%, transparent 14%),
+    radial-gradient(circle at 62% 38%, #ffffff 0 7%, #071034 8% 13%, transparent 14%),
+    linear-gradient(145deg, #7effa7, #2476ff 58%, #1c276f);
+}
+
+.math-enemy.mini-tanque::before {
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  height: 36px;
+  border-radius: 999px;
+  background: repeating-linear-gradient(90deg, #071034 0 18px, #52607e 19px 32px);
+}
+
+.math-enemy.electrico span,
+.math-enemy.danado span,
+.math-enemy.robot-oxidado span,
+.math-enemy.esfera-corrupta span,
+.math-enemy.sombra-digital span,
+.math-enemy.mini-tanque span {
+  display: none;
 }
 
 .battle-particles {
@@ -690,6 +777,21 @@
   35% { transform: translateX(18px) scale(1.12); filter: brightness(1.9) saturate(1.4); }
   70% { transform: translateX(-8px) scale(0.96); }
   100% { transform: translateX(0) scale(1); }
+}
+
+@keyframes enemyDamage {
+  0%, 100% { transform: translateX(0) scale(1); }
+  25% { transform: translateX(-6px) scale(1.04); }
+  50% { transform: translateX(6px) scale(0.98); }
+  75% { transform: translateX(-3px) scale(1.02); }
+}
+
+@keyframes enemyDefeated {
+  to {
+    opacity: 0;
+    transform: translateY(20px) scale(0.75) rotate(8deg);
+    filter: brightness(2);
+  }
 }
 
 @keyframes enemyAttack {
