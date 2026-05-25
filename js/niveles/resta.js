@@ -35,6 +35,7 @@ function nextBattleQuestion() {
   setBattleRoboMood("thinking");
   els.battleOperation.textContent = battle.question.text;
   els.battleOptions.innerHTML = "";
+  if (typeof animarCambioPregunta === "function") animarCambioPregunta(".operation-card");
 
   battle.question.options.forEach((option) => {
     const button = document.createElement("button");
@@ -65,11 +66,13 @@ function answerBattleQuestion(button, value) {
 
   if (value === battle.question.answer) {
     button.classList.add("correct");
+    if (typeof animarCorrecto === "function") animarCorrecto(button);
     battleCorrect();
     return;
   }
 
   button.classList.add("wrong");
+  if (typeof animarIncorrecto === "function") animarIncorrecto(button);
   battleWrong();
 }
 
@@ -79,7 +82,7 @@ function battleCorrect() {
   battle.score += 90 + battle.combo * 20;
   battle.enemyHp = Math.max(0, battle.enemyHp - damage);
 
-  setBattleMessage(`Correcto! Combo x${battle.combo}. Robo dispara un laser.`);
+  setBattleMessage(`${mensajeAleatorio("correcto")} Combo x${battle.combo}.`);
   playSound("attack");
   setBattleRoboMood("happy");
   els.battleRobo.classList.add("attacking");
@@ -104,7 +107,7 @@ function battleWrong() {
   battle.combo = 0;
   battle.roboHp = Math.max(0, battle.roboHp - battleEnemies[battle.enemyIndex].damage);
 
-  setBattleMessage("Intenta otra vez! El enemigo contraataca.");
+  setBattleMessage(mensajeAleatorio("incorrecto"));
   playSound("wrong");
   setBattleRoboMood("sad");
   popParticles("damage");

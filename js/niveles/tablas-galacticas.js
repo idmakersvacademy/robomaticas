@@ -162,6 +162,7 @@ function renderTableChallenge() {
     answers.appendChild(button);
   });
   if (feedback) feedback.textContent = "Cuenta las criaturas y toca el total.";
+  if (typeof animarCambioPregunta === "function") animarCambioPregunta(".table-play-card");
   updateTableCompleteButton();
 }
 
@@ -201,7 +202,8 @@ function validateTableAnswer(option, button) {
   const answer = galacticTables.current * galacticTables.factor;
   if (option !== answer) {
     button.classList.add("wrong");
-    document.querySelector("#tablePracticeFeedback").textContent = "Casi, cuenta los grupos otra vez.";
+    if (typeof animarIncorrecto === "function") animarIncorrecto(button);
+    document.querySelector("#tablePracticeFeedback").textContent = mensajeAleatorio("incorrecto");
     playGalacticTone(260, 0.07);
     setTimeout(() => button.classList.remove("wrong"), 520);
     return;
@@ -209,7 +211,8 @@ function validateTableAnswer(option, button) {
 
   galacticTables.locked = true;
   button.classList.add("correct");
-  document.querySelector("#tablePracticeFeedback").textContent = "¡Genial! Portal completado.";
+  if (typeof animarCorrecto === "function") animarCorrecto(button);
+  document.querySelector("#tablePracticeFeedback").textContent = mensajeAleatorio("correcto");
   completeTableOperation(galacticTables.current, galacticTables.factor);
 }
 

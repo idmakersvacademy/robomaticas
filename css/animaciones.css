@@ -1,0 +1,258 @@
+.rm-enter {
+  animation: rmEnter 0.45s ease both;
+}
+
+.rm-question-pop {
+  animation: rmQuestionPop 0.38s ease both;
+}
+
+.rm-correct {
+  animation: rmCorrect 0.45s ease both;
+}
+
+.rm-wrong {
+  animation: rmWrong 0.38s ease both;
+}
+
+.rm-level-start {
+  animation: rmLevelStart 0.7s ease both;
+}
+
+.rm-transition-out {
+  animation: rmFadeOut 0.25s ease both;
+}
+
+.rm-transition-in {
+  animation: rmFadeIn 0.35s ease both;
+}
+
+.rm-btn,
+.primary-btn,
+.ghost-btn,
+.option-btn,
+.battle-option,
+.factory-option,
+.delivery-option,
+.table-answer-btn,
+.rm-menu-btn {
+  transition: transform 0.18s ease, filter 0.18s ease, box-shadow 0.18s ease;
+  will-change: transform;
+}
+
+.rm-btn:hover,
+.primary-btn:hover,
+.ghost-btn:hover,
+.option-btn:hover,
+.battle-option:hover,
+.factory-option:hover,
+.delivery-option:hover,
+.table-answer-btn:hover,
+.rm-menu-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+.rm-btn:active,
+.primary-btn:active,
+.ghost-btn:active,
+.option-btn:active,
+.battle-option:active,
+.factory-option:active,
+.delivery-option:active,
+.table-answer-btn:active,
+.rm-menu-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.rm-btn:focus-visible,
+.primary-btn:focus-visible,
+.ghost-btn:focus-visible,
+.option-btn:focus-visible,
+.battle-option:focus-visible,
+.factory-option:focus-visible,
+.delivery-option:focus-visible,
+.table-answer-btn:focus-visible,
+.rm-menu-btn:focus-visible {
+  outline: 3px solid rgba(102, 255, 241, 0.75);
+  outline-offset: 3px;
+}
+
+.rm-hud-card {
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.rm-hud-card:has(.rm-correct),
+.rm-hud-card:has(.rm-wrong) {
+  border-color: rgba(102, 255, 241, 0.55);
+}
+
+.concept-card .demo-group,
+.concept-card .demo-total {
+  animation: rmDemoFloat 4.8s ease-in-out infinite;
+}
+
+.concept-card .demo-group:nth-child(3),
+.concept-card .demo-total {
+  animation-delay: -1.2s;
+}
+
+.sum-demo[data-type="subtract"] .battle-energy {
+  border-color: rgba(255, 122, 122, 0.55);
+}
+
+.sum-demo[data-type="subtract"] .battle-energy span.spent {
+  animation: rmBatteryUsed 1.4s ease-in-out infinite;
+}
+
+.sum-demo[data-type="multiply"] .demo-total {
+  background:
+    radial-gradient(circle at 50% 30%, rgba(120, 255, 206, 0.48), transparent 28%),
+    linear-gradient(145deg, #17327a, #6d5df6 54%, #20d8ee);
+}
+
+.sum-demo[data-type="divide"] .demo-total {
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.44), transparent 26%),
+    linear-gradient(145deg, #123368, #11adc4 55%, #65d46e);
+}
+
+.operation-card,
+.cloneEquation,
+.delivery-question,
+.question-box,
+.table-play-card {
+  transform-origin: center;
+}
+
+@keyframes rmEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes rmQuestionPop {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.02);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes rmCorrect {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.12);
+    filter: brightness(1.25);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes rmWrong {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-3px);
+  }
+}
+
+@keyframes rmLevelStart {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes rmFadeOut {
+  to {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+}
+
+@keyframes rmFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes rmDemoFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes rmBatteryUsed {
+  0%,
+  100% {
+    opacity: 0.28;
+    transform: scale(0.82);
+  }
+  50% {
+    opacity: 0.48;
+    transform: scale(0.88) translateY(2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rm-enter,
+  .rm-question-pop,
+  .rm-correct,
+  .rm-wrong,
+  .rm-level-start,
+  .rm-transition-out,
+  .rm-transition-in,
+  .concept-card .demo-group,
+  .concept-card .demo-total {
+    animation: none !important;
+  }
+
+  .rm-btn,
+  .primary-btn,
+  .ghost-btn,
+  .option-btn,
+  .battle-option,
+  .factory-option,
+  .delivery-option,
+  .table-answer-btn,
+  .rm-menu-btn {
+    transition: none !important;
+    will-change: auto;
+  }
+}

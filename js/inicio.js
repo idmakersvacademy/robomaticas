@@ -55,10 +55,7 @@ els.deliveryExitButton.addEventListener("click", () => {
 
 els.startAdventureButton.addEventListener("click", () => startLevel(state.levelIndex));
 els.conceptMenuButton.addEventListener("click", () => {
-  abrirModalMenu(() => {
-    renderLevels();
-    showScreen("level");
-  });
+  irAlMenuPrincipal();
 });
 els.backStartButton.addEventListener("click", () => showScreen("start"));
 els.victoryLevelsButton.addEventListener("click", () => {

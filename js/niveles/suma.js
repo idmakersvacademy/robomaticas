@@ -43,7 +43,7 @@ function animarRespuestaCorrecta(button) {
   factory.score += 1;
   factory.progress = Math.min(100, ((factory.machineIndex + 1) / getFactoryMachines().length) * 100);
   setFactoryRoboMood("celebrating");
-  setFactoryMessage(randomFrom(["Carga exacta.", "Bahía encendida.", "Energía estable."]));
+  setFactoryMessage(randomFrom(["Carga exacta.", "Bahia encendida.", mensajeAleatorio("correcto")]));
   playSound("clone-success");
   els.factoryLayout.classList.add("machine-on");
   button?.classList.add("chosen");
@@ -68,7 +68,7 @@ function animarRespuestaIncorrecta(button) {
   factory.lives = Math.max(0, factory.lives - 1);
   state.lives = factory.lives;
   setFactoryRoboMood("thinking");
-  setFactoryMessage("Casi, intenta otra vez");
+  setFactoryMessage(mensajeAleatorio("incorrecto"));
   playSound("clone-error");
   button?.classList.add("wrong");
   els.factoryLayout.classList.add("factory-error");

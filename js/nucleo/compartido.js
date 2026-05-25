@@ -6,11 +6,15 @@ function completeLevel() {
   saveProgress();
 
   els.victoryStars.textContent = "\u2605".repeat(stars) + "\u2606".repeat(3 - stars);
-  els.victoryText.textContent = `${level.title} completado con ${state.score} puntos.`;
+  els.victoryText.textContent = `${mensajeAleatorio("victoria")} ${level.title} completo ${state.score} puntos.`;
   els.nextLevelButton.style.display = level.id < levels.length ? "inline-block" : "none";
   fireConfetti();
   playSound("win");
   showScreen("victory");
+  if (typeof animarCorrecto === "function") {
+    animarCorrecto(els.victoryStars);
+    animarEntradaElemento(document.querySelector(".result-card"), "rm-level-start");
+  }
 }
 
 function defeat() {

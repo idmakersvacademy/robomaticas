@@ -123,6 +123,13 @@ function actualizarHUD({
   }
 
   hud.hidden = false;
+  const estadoAnterior = {
+    puntos: hud.dataset.puntos,
+    estrellas: hud.dataset.estrellas,
+    vidas: hud.dataset.vidas,
+    combo: hud.dataset.combo,
+    progreso: hud.dataset.progreso,
+  };
   const vidasTexto = typeof vidas === "string"
     ? vidas
     : "\u2665".repeat(Math.max(0, vidas)) + "\u2661".repeat(Math.max(0, 3 - vidas));
@@ -141,6 +148,36 @@ function actualizarHUD({
   hud.querySelector("#btnMenuHUD")?.addEventListener("click", () => {
     abrirModalMenu(typeof onMenu === "function" ? onMenu : null);
   });
+
+  hud.dataset.puntos = String(puntos);
+  hud.dataset.estrellas = String(estrellas);
+  hud.dataset.vidas = String(vidasTexto);
+  hud.dataset.combo = String(combo);
+  hud.dataset.progreso = String(progreso ?? "0/0");
+
+  if (typeof animarEntradaElemento === "function" && !hud.dataset.ready) {
+    animarEntradaElemento(hud, "rm-enter");
+    hud.dataset.ready = "true";
+  }
+
+  if (typeof animarCorrecto === "function") {
+    if (estadoAnterior.puntos && estadoAnterior.puntos !== hud.dataset.puntos) {
+      animarCorrecto(hud.querySelector("#hudPuntos"));
+    }
+    if (estadoAnterior.estrellas && estadoAnterior.estrellas !== hud.dataset.estrellas) {
+      animarGanarEstrella();
+    }
+    if (estadoAnterior.combo && estadoAnterior.combo !== hud.dataset.combo) {
+      animarCombo();
+    }
+    if (estadoAnterior.progreso && estadoAnterior.progreso !== hud.dataset.progreso) {
+      animarEntradaElemento(hud.querySelector("#hudProgreso"), "rm-question-pop");
+    }
+  }
+
+  if (typeof animarIncorrecto === "function" && estadoAnterior.vidas && estadoAnterior.vidas !== hud.dataset.vidas) {
+    animarPerderVida();
+  }
 
   return hud;
 }

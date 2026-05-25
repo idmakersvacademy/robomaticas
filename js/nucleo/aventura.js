@@ -6,12 +6,18 @@ function showScreen(name) {
     screen.classList.toggle("active", isActive);
     screen.hidden = !isActive;
   });
+  document.body.classList.remove("rm-transition-in", "rm-transition-out");
+  void document.body.offsetWidth;
+  document.body.classList.add("rm-transition-in");
+  setTimeout(() => document.body.classList.remove("rm-transition-in"), 360);
   if (RM_LEVEL_SCREENS.has(name)) {
     inicializarHUDNivel();
     mostrarLogoRoboMaticas(true);
+    if (typeof animarInicioNivel === "function") animarInicioNivel(document.querySelector(`#${name}Screen`));
   } else {
     ocultarHUD();
     mostrarLogoRoboMaticas(false);
+    if (typeof animarEntradaElemento === "function") animarEntradaElemento(document.querySelector(`#${name}Screen`), "rm-enter");
   }
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 }
@@ -95,12 +101,15 @@ function showConcept(index) {
   const concept = level.concept || conceptByType[level.type];
   els.conceptEyebrow.textContent = `Nivel ${level.id}: ${level.title}`;
   els.conceptDemo.className = "sum-demo";
+  els.conceptDemo.dataset.type = level.type;
   els.conceptTitle.textContent = concept.title;
   els.conceptIntro.textContent = concept.intro;
   els.conceptNote.textContent = concept.note;
   els.conceptDemo.innerHTML = concept.demo.map(renderConceptPart).join("");
-  els.startAdventureButton.textContent = `Iniciar ${level.title}`;
+  els.startAdventureButton.textContent = `Comenzar ${level.title}`;
+  els.conceptMenuButton.textContent = "Volver al menu";
   showScreen("concept");
+  if (typeof animarCambioPregunta === "function") animarCambioPregunta("#conceptDemo");
 }
 
 function renderConceptPart(part) {
@@ -274,6 +283,7 @@ function openQuestion(tile) {
 
   setRobo(reasons[tile], "thinking");
   els.questionModal.classList.remove("hidden");
+  if (typeof animarCambioPregunta === "function") animarCambioPregunta(".question-box");
 }
 
 function createQuestion() {
@@ -310,18 +320,22 @@ function answerQuestion(button, value) {
   button.classList.add(correct ? "correct" : "wrong");
 
   if (correct) {
+    if (typeof animarCorrecto === "function") animarCorrecto(button);
     playSound("correct");
     state.score += pointsForPending();
     resolvePending();
-    els.questionFeedback.textContent = "Excelente calculo!";
-    setRobo("Excelente calculo!", "happy");
+    const message = mensajeAleatorio("correcto");
+    els.questionFeedback.textContent = message;
+    setRobo(message, "happy");
     setTimeout(closeQuestion, 550);
   } else {
+    if (typeof animarIncorrecto === "function") animarIncorrecto(button);
     playSound("wrong");
     state.lives -= 1;
     updateHud();
-    els.questionFeedback.textContent = "Intenta otra vez, tu puedes.";
-    setRobo("Intenta otra vez, tu puedes.", "sad");
+    const message = mensajeAleatorio("incorrecto");
+    els.questionFeedback.textContent = message;
+    setRobo(message, "sad");
 
     if (state.lives <= 0) {
       setTimeout(defeat, 650);

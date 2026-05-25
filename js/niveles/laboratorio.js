@@ -72,6 +72,7 @@ function nextFactoryQuestion() {
     renderCloneGroups(factory.question.groups, factory.question.items, factory.question.groupLabel);
   }
   renderOpciones(factory.question.options);
+  if (typeof animarCambioPregunta === "function") animarCambioPregunta(".clone-equation");
 }
 
 function renderOpciones(options) {
@@ -112,11 +113,13 @@ function validarRespuestaFactory(button, value) {
 
   if (value === factory.question.answer) {
     button.classList.add("correct");
+    if (typeof animarCorrecto === "function") animarCorrecto(button);
     factoryCorrect(button);
     return;
   }
 
   button.classList.add("wrong");
+  if (typeof animarIncorrecto === "function") animarIncorrecto(button);
   factoryWrong(button);
 }
 
@@ -134,7 +137,7 @@ function factoryCorrect(button) {
     animateAdditionFusion();
   }
   setFactoryRoboMood("celebrating");
-  setFactoryMessage(`Correcto! Robo ${machines[factory.machineIndex].verb} el sistema.`);
+  setFactoryMessage(`${mensajeAleatorio("correcto")} Robo ${machines[factory.machineIndex].verb} el sistema.`);
   playSound("clone-success");
   els.factoryLayout.classList.add("machine-on");
   els.cloneGroups.classList.add("success");
@@ -164,7 +167,7 @@ function factoryWrong(button) {
   factory.combo = 0;
   factory.progress = Math.max(0, factory.progress - 10);
   setFactoryRoboMood("sad");
-  setFactoryMessage(factoryMode() === "add" ? "Casi, intenta otra vez" : "Glitch digital! Un clon salio inestable. Intenta otra multiplicacion.");
+  setFactoryMessage(mensajeAleatorio("incorrecto"));
   playSound("clone-error");
   els.factoryLayout.classList.add("factory-error");
   els.cloneGroups.classList.add("glitch");

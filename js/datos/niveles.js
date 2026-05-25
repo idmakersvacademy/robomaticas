@@ -23,9 +23,9 @@ const levels = [
     label: "Mision de sumas",
     task: "Junta cantidades",
     concept: {
-      title: "Sumar es cargar el nucleo",
-      intro: "En Bahia de Sumas, Robo conecta dos grupos de baterias. Al juntarlas, el nucleo recibe una sola carga total.",
-      note: "Ejemplo: 2 baterias + 3 baterias = 5 baterias conectadas al nucleo.",
+      title: "Mision: cargar el nucleo",
+      intro: "Robo necesita unir dos paquetes de energia para encender la bahia.",
+      note: "Tiene 2 baterias azules y recibe 3 mas. 2 + 3 = 5 baterias para el nucleo.",
       demo: [
         ["batteries", 2],
         ["symbol", "+"],
@@ -44,15 +44,15 @@ const levels = [
     label: "Mision de restas",
     task: "Derrota con restas",
     concept: {
-      title: "Restar es quitar energia",
-      intro: "En la arena, Robo empieza con una cantidad de carga y gasta una parte al atacar.",
-      note: "Ejemplo: Robo tenia 9 cargas. Uso 4 en un laser. Le quedaron 5 cargas.",
+      title: "Mision: energia que queda",
+      intro: "Robo tiene 18 baterias para reparar la estacion. Uso 7 baterias en los drones.",
+      note: "Operacion real: 18 - 7 = 11. Quedan 11 baterias para seguir la mision.",
       demo: [
-        ["battleDots", 9, 4, "9"],
+        ["battleDots", 18, 7, "18"],
         ["symbol", "-"],
-        ["used", 4, "4"],
+        ["used", 7, "7"],
         ["symbol", "="],
-        ["battleDots", 5, 0, "5"],
+        ["battleDots", 11, 0, "11"],
       ],
     },
   },
@@ -65,9 +65,9 @@ const levels = [
     label: "Mision de multiplicacion",
     task: "Crea clones",
     concept: {
-      title: "Multiplicar es crear grupos iguales",
-      intro: "En Planeta Clonix, cada portal crea la misma cantidad de criaturas. Multiplicar cuenta todos los clones juntos.",
-      note: "Ejemplo: 3 portales crean 4 clones cada uno. 3 x 4 = 12 clones.",
+      title: "Mision: duplicar criaturas",
+      intro: "Cada portal de Clonix crea el mismo grupo de criaturas. Robo calcula el total antes de activar la maquina.",
+      note: "3 portales crean 4 clones cada uno. 3 x 4 = 12 clones.",
       demo: [
         ["total", "3"],
         ["symbol", "x"],
@@ -86,9 +86,9 @@ const levels = [
     label: "Mision de division",
     task: "Activa reactores",
     concept: {
-      title: "Dividir es repartir energia",
-      intro: "La Central Energetica toma un grupo de nucleos y los reparte por igual entre reactores.",
-      note: "Ejemplo: 24 nucleos / 6 reactores = 4 nucleos para cada reactor.",
+      title: "Mision: equilibrar reactores",
+      intro: "La central solo funciona si todos los reactores reciben la misma cantidad de nucleos.",
+      note: "24 nucleos / 6 reactores = 4 nucleos para cada reactor.",
       demo: [
         ["total", "24"],
         ["symbol", "/"],
@@ -114,15 +114,15 @@ const conceptByType = {
     ],
   },
   subtract: {
-    title: "Restar es quitar y contar lo que queda",
-    intro: "Cuando restamos, empezamos con una cantidad. Luego quitamos, usamos o perdemos una parte. El resultado nos dice cuanto queda.",
-    note: "Ejemplo: Robo tenia 9 cargas. Uso 4 cargas en su ataque. Le quedaron 5 cargas.",
+    title: "Mision: energia que queda",
+    intro: "Robo tiene 18 baterias para reparar la estacion. Uso 7 baterias en los drones.",
+    note: "Operacion real: 18 - 7 = 11. Quedan 11 baterias para seguir la mision.",
     demo: [
-      ["battleDots", 9, 4, "9"],
+      ["battleDots", 18, 7, "18"],
       ["symbol", "-"],
-      ["used", 4, "4"],
+      ["used", 7, "7"],
       ["symbol", "="],
-      ["battleDots", 5, 0, "5"],
+      ["battleDots", 11, 0, "11"],
     ],
   },
   multiply: {

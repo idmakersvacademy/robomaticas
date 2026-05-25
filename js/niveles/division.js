@@ -65,6 +65,7 @@ function renderDeliveryQuestion() {
     button.addEventListener("click", () => validateDeliveryAnswer(button, option));
     els.deliveryOptions.appendChild(button);
   });
+  if (typeof animarCambioPregunta === "function") animarCambioPregunta(".delivery-question");
 }
 
 function energyCoresMarkup(count) {
@@ -106,6 +107,8 @@ function validateDeliveryAnswer(button, option) {
     item.disabled = true;
   });
   button.classList.add(correct ? "correct" : "wrong");
+  if (correct && typeof animarCorrecto === "function") animarCorrecto(button);
+  if (!correct && typeof animarIncorrecto === "function") animarIncorrecto(button);
 
   animateEnergyDistribution(option, correct).then(() => {
     if (correct) {
@@ -123,7 +126,7 @@ function completeEnergyRound() {
   delivery.stars = Math.min(3, Math.floor(delivery.score / 300));
   delivery.energy = Math.min(100, delivery.energy + 8);
   delivery.progress = Math.min(100, delivery.progress + 20);
-  setDeliveryMessage(randomFrom(["Reactores estables", "Energia balanceada", "Central activada"]), "happy");
+  setDeliveryMessage(randomFrom(["Reactores estables", "Energia balanceada", mensajeAleatorio("correcto")]), "happy");
   els.deliveryLayout.classList.remove("energy-distributing");
   els.deliveryLayout.classList.add("energy-success");
   popDeliveryParticles("success");
@@ -147,7 +150,7 @@ function failEnergyRound() {
   delivery.combo = 0;
   delivery.lives -= 1;
   delivery.energy = Math.max(0, delivery.energy - 18);
-  setDeliveryMessage("Aun no estan iguales. Prueba otra cantidad.", "sad");
+  setDeliveryMessage(mensajeAleatorio("incorrecto"), "sad");
   els.deliveryLayout.classList.remove("energy-distributing");
   els.deliveryLayout.classList.add("energy-error", "energy-imbalanced");
   popDeliveryParticles("error");
