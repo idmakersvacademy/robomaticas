@@ -1,8 +1,8 @@
 function createFactoryAdditionQuestion() {
   const tier = factory.machineIndex + 1;
-  const max = Math.min(8, 4 + tier);
-  const left = rand(2, max);
-  const right = rand(2, max);
+  const operation = generarSuma(Math.min(3, tier));
+  const left = Math.min(operation.a, 12);
+  const right = Math.min(operation.b, 12);
   const answer = left + right;
   return {
     text: `${left} + ${right} = ?`,
@@ -36,13 +36,7 @@ function generarPregunta() {
 }
 
 function makeAdditionOptions(answer) {
-  const options = new Set([answer]);
-  while (options.size < 3) {
-    const offset = rand(-2, 2);
-    const value = Math.max(2, answer + (offset || 1));
-    options.add(value);
-  }
-  return shuffle([...options]);
+  return generarOpciones(answer, 3);
 }
 
 function animarRespuestaCorrecta(button) {

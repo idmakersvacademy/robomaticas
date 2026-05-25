@@ -230,6 +230,20 @@ function updateFactoryHud() {
   els.factoryMedals.querySelectorAll("span").forEach((medal, index) => {
     medal.classList.toggle("earned", index < factory.medals);
   });
+  actualizarHUD({
+    nivel: mode === "add" ? "Bahia de Sumas" : "Planeta Clonix",
+    puntos: factory.score,
+    estrellas: mode === "add" ? `${factory.score}/5` : `${factory.medals}/3`,
+    vidas: factory.lives,
+    combo: factory.combo,
+    progreso: `${factory.machineIndex + 1}/${machines.length}`,
+    mostrarCombo: mode !== "add",
+    onMenu: () => {
+      factory.active = false;
+      renderLevels();
+      showScreen("level");
+    },
+  });
 }
 
 function updateFactoryMachines() {

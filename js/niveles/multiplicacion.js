@@ -1,10 +1,9 @@
 function createFactoryMultiplicationQuestion() {
   const tier = factory.machineIndex + 1;
-  const low = tier <= 2 ? 2 : 4;
-  const high = Math.min(12, 4 + tier * 2);
-  const groups = rand(low, high);
-  const clones = rand(2, high);
-  const answer = groups * clones;
+  const operation = generarMultiplicacion(Math.min(3, tier));
+  const groups = operation.a;
+  const clones = operation.b;
+  const answer = operation.respuesta;
   const scenarios = [
     `${groups} portales crean ${clones} criaturas cada uno.`,
     `${groups} orbitas despiertan ${clones} clones cada una.`,
@@ -27,6 +26,6 @@ function createFactoryMultiplicationQuestion() {
     items: clones,
     groupLabel: "Portal",
     answer,
-    options: makeOptions(answer),
+    options: generarOpciones(answer, 4),
   };
 }

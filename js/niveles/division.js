@@ -28,12 +28,11 @@ function nextEnergyRound() {
 }
 
 function createDeliveryQuestion() {
-  const level = levels[state.levelIndex];
-  const maxEach = Math.min(10, 3 + level.id);
-  const reactors = randomFrom(energyReactorCounts);
-  const answer = rand(2, maxEach);
+  const operation = generarDivision(Math.min(3, delivery.round));
+  const reactors = operation.b;
+  const answer = operation.respuesta;
   return {
-    cores: reactors * answer,
+    cores: operation.a,
     reactors,
     answer,
   };
@@ -89,12 +88,12 @@ function energyReactorsMarkup(count) {
 }
 
 function makeDeliveryOptions(answer) {
-  const options = new Set([answer]);
+  const options = new Set(generarOpciones(answer, 3).filter((option) => option > 0));
   while (options.size < 3) {
-    const offset = rand(-3, 3) || 2;
-    options.add(Math.max(1, answer + offset));
+    const value = answer + (enteroAleatorio(-4, 4) || 1);
+    options.add(Math.max(1, value));
   }
-  return shuffle([...options]);
+  return mezclarOpciones([...options]).slice(0, 3);
 }
 
 function validateDeliveryAnswer(button, option) {
@@ -316,6 +315,21 @@ function updateDeliveryHud() {
   els.deliveryEnergyText.textContent = `${delivery.energy}%`;
   els.deliveryComboText.textContent = `x${delivery.combo}`;
   els.deliveryProgressBar.style.width = `${delivery.progress}%`;
+  actualizarHUD({
+    nivel: "Central Energetica",
+    puntos: delivery.score,
+    estrellas: `${delivery.stars}/3`,
+    vidas: delivery.lives,
+    energia: delivery.energy,
+    combo: delivery.combo,
+    progreso: `${Math.min(100, delivery.progress)}%`,
+    mostrarEnergia: true,
+    onMenu: () => {
+      delivery.active = false;
+      renderLevels();
+      showScreen("level");
+    },
+  });
 }
 
 function setDeliveryMessage(message, mood) {

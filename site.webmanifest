@@ -1,6 +1,6 @@
 {
-  "name": "ROBOMÁTICAS",
-  "short_name": "ROBOMÁTICAS",
+  "name": "RoboMaticas",
+  "short_name": "RoboMaticas",
   "description": "Juego educativo de misiones matemáticas con robots, energía y reparto visual.",
   "start_url": "./index.html",
   "display": "standalone",

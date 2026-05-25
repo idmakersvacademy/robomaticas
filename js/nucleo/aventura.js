@@ -6,6 +6,12 @@ function showScreen(name) {
     screen.classList.toggle("active", isActive);
     screen.hidden = !isActive;
   });
+  if (RM_LEVEL_SCREENS.has(name)) {
+    mostrarLogoRoboMaticas(true);
+  } else {
+    ocultarHUD();
+    mostrarLogoRoboMaticas(false);
+  }
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 }
 
@@ -272,52 +278,23 @@ function openQuestion(tile) {
 function createQuestion() {
   const level = levels[state.levelIndex];
   const type = level.type;
-  const max = Math.min(20, 5 + level.id * 2);
-  let a = rand(1, max);
-  let b = rand(1, max);
-  let answer = 0;
-  let symbol = "+";
-
-  if (type === "add") {
-    answer = a + b;
-    symbol = "+";
-  }
-
-  if (type === "subtract") {
-    if (b > a) [a, b] = [b, a];
-    answer = a - b;
-    symbol = "-";
-  }
-
-  if (type === "multiply") {
-    a = rand(2, Math.min(10, max));
-    b = rand(2, Math.min(10, max));
-    answer = a * b;
-    symbol = "x";
-  }
-
-  if (type === "divide") {
-    b = rand(2, Math.min(10, max));
-    answer = rand(2, Math.min(10, max));
-    a = b * answer;
-    symbol = "/";
-  }
+  const dificultad = Math.min(3, Math.max(1, level.id));
+  const operation = {
+    add: generarSuma,
+    subtract: generarResta,
+    multiply: generarMultiplicacion,
+    divide: generarDivision,
+  }[type](dificultad);
 
   return {
-    text: `${a} ${symbol} ${b}`,
-    answer,
-    options: makeOptions(answer),
+    text: operation.texto,
+    answer: operation.respuesta,
+    options: makeOptions(operation.respuesta),
   };
 }
 
 function makeOptions(answer) {
-  const options = new Set([answer]);
-  while (options.size < 4) {
-    const spread = Math.max(4, Math.ceil(answer / 3));
-    const guess = answer + rand(-spread, spread);
-    options.add(Math.max(0, guess === answer ? answer + 1 : guess));
-  }
-  return shuffle([...options]);
+  return generarOpciones(answer, 4);
 }
 
 function answerQuestion(button, value) {

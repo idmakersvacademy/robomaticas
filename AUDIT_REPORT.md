@@ -1,4 +1,4 @@
-# Auditoria de ROBOMÁTICAS
+# Auditoria de RoboMaticas
 
 ## Alcance
 

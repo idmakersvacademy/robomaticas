@@ -188,13 +188,12 @@ function createTableOperation(table, factor) {
 }
 
 function makeTableOptions(answer) {
-  const options = new Set([answer]);
+  const options = new Set(generarOpciones(answer, 3).map((option) => Math.max(1, option)));
   while (options.size < 3) {
-    const offset = Math.floor(Math.random() * 7) - 3;
-    const value = Math.max(1, answer + (offset || 2));
-    options.add(value);
+    const value = answer + (enteroAleatorio(-5, 5) || 2);
+    options.add(Math.max(1, value));
   }
-  return [...options].sort(() => Math.random() - 0.5);
+  return mezclarOpciones([...options]).slice(0, 3);
 }
 
 function validateTableAnswer(option, button) {

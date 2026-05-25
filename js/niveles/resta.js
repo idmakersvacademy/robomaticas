@@ -47,16 +47,11 @@ function nextBattleQuestion() {
 }
 
 function createBattleQuestion() {
-  const tier = Math.min(5, battle.round);
-  const max = 8 + tier * 5;
-  let a = rand(5 + tier, max);
-  let b = rand(1, Math.max(2, Math.floor(max * 0.55)));
-  if (b > a) [a, b] = [b, a];
-  const answer = a - b;
+  const question = generarResta(Math.min(3, battle.round));
   return {
-    text: `${a} - ${b} = ?`,
-    answer,
-    options: makeOptions(answer),
+    text: `${question.texto} = ?`,
+    answer: question.respuesta,
+    options: generarOpciones(question.respuesta, 4),
   };
 }
 
@@ -182,6 +177,19 @@ function updateBattleHud() {
   els.roboHpBar.style.width = `${battle.roboHp}%`;
   els.enemyHpText.textContent = `${enemyPercent}%`;
   els.enemyHpBar.style.width = `${enemyPercent}%`;
+  actualizarHUD({
+    nivel: "Operacion Resta",
+    puntos: battle.score,
+    estrellas: `${state.storage.stars[levels[state.levelIndex].id] || 0}/3`,
+    vidas: battle.lives,
+    combo: battle.combo,
+    progreso: `${battle.enemyIndex + 1}/${battleEnemies.length}`,
+    onMenu: () => {
+      battle.active = false;
+      renderLevels();
+      showScreen("level");
+    },
+  });
 }
 
 function setBattleRoboMood(mood) {

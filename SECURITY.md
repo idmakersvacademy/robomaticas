@@ -1,8 +1,8 @@
-# Seguridad de ROBOMÁTICAS
+# Seguridad de RoboMaticas
 
 ## Estado actual
 
-ROBOMÁTICAS es un juego frontend estatico hecho con HTML, CSS y JavaScript puro. No guarda datos sensibles, no usa autenticacion y no se conecta a APIs externas. El riesgo principal esta en manipulacion del cliente, corrupcion de `localStorage`, abuso de clicks/sonidos y uso accidental de HTML dinamico inseguro.
+RoboMaticas es un juego frontend estatico hecho con HTML, CSS y JavaScript puro. No guarda datos sensibles, no usa autenticacion y no se conecta a APIs externas. El riesgo principal esta en manipulacion del cliente, corrupcion de `localStorage`, abuso de clicks/sonidos y uso accidental de HTML dinamico inseguro.
 
 ## Cambios aplicados
 

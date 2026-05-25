@@ -1,5 +1,9 @@
 const DEFAULT_UNLOCKED_LEVELS = 4;
 
+if (typeof migrarProgresoAntiguo === "function") {
+  migrarProgresoAntiguo();
+}
+
 function clampNumber(value, min, max, fallback = min) {
   const number = Number(value);
   if (!Number.isFinite(number)) return fallback;

@@ -26,6 +26,19 @@ function updateHud() {
   els.mapTaskText.textContent = level.task;
   els.scoreText.textContent = state.score;
   els.livesText.textContent = "\u2665".repeat(Math.max(0, state.lives)) + "\u2661".repeat(Math.max(0, 3 - state.lives));
+  actualizarHUD({
+    nivel: level.title,
+    puntos: state.score,
+    vidas: state.lives,
+    estrellas: `${state.storage.stars[level.id] || 0}/3`,
+    combo: 0,
+    progreso: level.task,
+    mostrarCombo: false,
+    onMenu: () => {
+      renderLevels();
+      showScreen("level");
+    },
+  });
 }
 
 function setRobo(message, mood) {
