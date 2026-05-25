@@ -1,6 +1,9 @@
 const particleCanvas = document.querySelector("#gameParticles");
 const particleContext = particleCanvas?.getContext("2d");
 const gameParticles = [];
+const reduceGameFeelMotion = () => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+let particleFrame = null;
+let lastPointerMove = 0;
 
 function resizeParticleCanvas() {
   if (!particleCanvas || !particleContext) return;
@@ -15,15 +18,16 @@ function resizeParticleCanvas() {
 function seedGameParticles() {
   if (!particleCanvas) return;
   gameParticles.length = 0;
-  const count = Math.min(70, Math.max(34, Math.floor(window.innerWidth / 26)));
+  if (reduceGameFeelMotion() || window.matchMedia?.("(max-width: 900px)").matches) return;
+  const count = Math.min(46, Math.max(24, Math.floor(window.innerWidth / 38)));
   for (let index = 0; index < count; index += 1) {
     gameParticles.push({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
-      radius: Math.random() * 2.2 + 0.8,
-      speed: Math.random() * 0.34 + 0.12,
-      drift: Math.random() * 0.28 - 0.14,
-      alpha: Math.random() * 0.42 + 0.16,
+      radius: Math.random() * 1.8 + 0.7,
+      speed: Math.random() * 0.24 + 0.08,
+      drift: Math.random() * 0.18 - 0.09,
+      alpha: Math.random() * 0.34 + 0.12,
       hue: Math.random() > 0.5 ? "85, 246, 255" : "143, 104, 255",
     });
   }
@@ -31,6 +35,10 @@ function seedGameParticles() {
 
 function drawGameParticles() {
   if (!particleCanvas || !particleContext) return;
+  if (document.hidden || reduceGameFeelMotion()) {
+    particleFrame = null;
+    return;
+  }
   particleContext.clearRect(0, 0, window.innerWidth, window.innerHeight);
   gameParticles.forEach((particle) => {
     particle.y -= particle.speed;
@@ -45,17 +53,17 @@ function drawGameParticles() {
     particleContext.beginPath();
     particleContext.fillStyle = `rgba(${particle.hue}, ${particle.alpha})`;
     particleContext.shadowColor = `rgba(${particle.hue}, 0.7)`;
-    particleContext.shadowBlur = 12;
+    particleContext.shadowBlur = 8;
     particleContext.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
     particleContext.fill();
   });
-  requestAnimationFrame(drawGameParticles);
+  particleFrame = requestAnimationFrame(drawGameParticles);
 }
 
 function bootGameFeel() {
   resizeParticleCanvas();
   seedGameParticles();
-  drawGameParticles();
+  if (!particleFrame) drawGameParticles();
 }
 
 window.addEventListener("resize", () => {
@@ -64,8 +72,24 @@ window.addEventListener("resize", () => {
 });
 
 document.addEventListener("pointermove", (event) => {
+  const now = performance.now();
+  if (now - lastPointerMove < 80) return;
+  lastPointerMove = now;
+  const driftX = ((event.clientX / window.innerWidth) - 0.5) * 12;
+  const driftY = ((event.clientY / window.innerHeight) - 0.5) * 10;
   document.documentElement.style.setProperty("--pointer-x", `${(event.clientX / window.innerWidth) * 100}%`);
   document.documentElement.style.setProperty("--pointer-y", `${(event.clientY / window.innerHeight) * 100}%`);
+  document.documentElement.style.setProperty("--ambient-drift-x", `${driftX.toFixed(1)}px`);
+  document.documentElement.style.setProperty("--ambient-drift-y", `${driftY.toFixed(1)}px`);
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    if (particleFrame) cancelAnimationFrame(particleFrame);
+    particleFrame = null;
+    return;
+  }
+  if (!particleFrame) drawGameParticles();
 });
 
 bootGameFeel();

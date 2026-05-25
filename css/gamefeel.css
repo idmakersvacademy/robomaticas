@@ -47,11 +47,15 @@ body::before {
 .game-ambient {
   z-index: -3;
   overflow: hidden;
+  transform: translateZ(0);
 }
 
 .ambient-glow,
 .ambient-lane,
-.ambient-grid {
+.ambient-grid,
+.ambient-depth,
+.ambient-starfield,
+.ambient-particle {
   position: absolute;
   pointer-events: none;
 }
@@ -89,6 +93,61 @@ body::before {
 
 .lane-a { top: 24%; }
 .lane-b { top: 66%; animation-duration: 7s; animation-delay: -2.2s; }
+
+.ambient-depth {
+  width: clamp(360px, 48vw, 760px);
+  aspect-ratio: 1.8;
+  border-radius: 999px;
+  opacity: 0.22;
+  transform: translate3d(var(--ambient-drift-x, 0px), var(--ambient-drift-y, 0px), 0);
+  animation: ambientDepthDrift 22s ease-in-out infinite;
+}
+
+.depth-a {
+  left: 8%;
+  top: 9%;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(85, 246, 255, 0.28), transparent 54%),
+    linear-gradient(90deg, transparent, rgba(85, 246, 255, 0.14), transparent);
+}
+
+.depth-b {
+  right: 4%;
+  bottom: 8%;
+  background:
+    radial-gradient(ellipse at 72% 42%, rgba(126, 255, 167, 0.2), transparent 56%),
+    linear-gradient(90deg, transparent, rgba(143, 104, 255, 0.13), transparent);
+  animation-delay: -8s;
+}
+
+.ambient-starfield {
+  inset: 0;
+  opacity: 0.34;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.7) 0 1px, transparent 1.6px),
+    radial-gradient(circle, rgba(102, 255, 241, 0.62) 0 1px, transparent 1.8px),
+    radial-gradient(circle, rgba(143, 104, 255, 0.5) 0 1px, transparent 1.7px);
+  background-size: 180px 160px, 260px 220px, 340px 280px;
+  background-position: 0 0, 60px 40px, 120px 90px;
+  transform: translate3d(calc(var(--ambient-drift-x, 0px) * -0.45), calc(var(--ambient-drift-y, 0px) * -0.45), 0);
+  animation: ambientStarDrift 46s linear infinite;
+}
+
+.ambient-particle {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(102, 255, 241, 0.75);
+  box-shadow: 0 0 12px rgba(102, 255, 241, 0.35);
+  opacity: 0;
+  animation: rmFloatParticle linear infinite;
+  will-change: transform, opacity;
+}
+
+.particle-a { left: 18%; bottom: 8%; animation-duration: 12s; }
+.particle-b { left: 48%; bottom: 14%; animation-duration: 16s; animation-delay: -5s; }
+.particle-c { right: 22%; bottom: 20%; animation-duration: 14s; animation-delay: -9s; }
+.particle-d { right: 8%; bottom: 5%; animation-duration: 18s; animation-delay: -2s; }
 
 .app {
   position: relative;
@@ -393,6 +452,36 @@ body::before {
 
 @keyframes worldGridDrift {
   to { background-position: 90px 90px; }
+}
+
+@keyframes ambientDepthDrift {
+  0%,
+  100% {
+    transform: translate3d(var(--ambient-drift-x, 0px), var(--ambient-drift-y, 0px), 0) scale(1);
+  }
+  50% {
+    transform: translate3d(calc(var(--ambient-drift-x, 0px) + 18px), calc(var(--ambient-drift-y, 0px) - 10px), 0) scale(1.04);
+  }
+}
+
+@keyframes ambientStarDrift {
+  to {
+    background-position: 180px -160px, 320px -180px, 460px -190px;
+  }
+}
+
+@keyframes rmFloatParticle {
+  from {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate3d(0, -120px, 0);
+    opacity: 0;
+  }
 }
 
 @keyframes nodeFloat {
