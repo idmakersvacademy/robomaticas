@@ -27,11 +27,9 @@ els.levelsButton.addEventListener("click", () => {
 });
 
 els.battleExitButton.addEventListener("click", () => {
-  abrirModalMenu(() => {
-    battle.active = false;
-    renderLevels();
-    showScreen("level");
-  });
+  battle.active = false;
+  renderLevels();
+  showScreen("level");
 });
 
 els.factoryStartButton.addEventListener("click", beginFactoryRun);
@@ -39,36 +37,29 @@ els.labHelpButton.addEventListener("click", () => {
   els.cloneGroups.classList.toggle("help");
 });
 els.factoryExitButton.addEventListener("click", () => {
-  abrirModalMenu(() => {
-    factory.active = false;
-    renderLevels();
-    showScreen("level");
-  });
+  factory.active = false;
+  renderLevels();
+  showScreen("level");
 });
 els.deliveryExitButton.addEventListener("click", () => {
-  abrirModalMenu(() => {
-    delivery.active = false;
-    renderLevels();
-    showScreen("level");
-  });
+  delivery.active = false;
+  renderLevels();
+  showScreen("level");
 });
 
 els.startAdventureButton.addEventListener("click", () => startLevel(state.levelIndex));
 els.conceptMenuButton.addEventListener("click", () => {
-  irAlMenuPrincipal();
+  renderLevels();
+  showScreen("level");
 });
 els.backStartButton.addEventListener("click", () => showScreen("start"));
 els.victoryLevelsButton.addEventListener("click", () => {
-  abrirModalMenu(() => {
-    renderLevels();
-    showScreen("level");
-  });
+  renderLevels();
+  showScreen("level");
 });
 els.defeatLevelsButton.addEventListener("click", () => {
-  abrirModalMenu(() => {
-    renderLevels();
-    showScreen("level");
-  });
+  renderLevels();
+  showScreen("level");
 });
 els.retryButton.addEventListener("click", () => startLevel(state.levelIndex));
 els.nextLevelButton.addEventListener("click", () => {
@@ -89,3 +80,4 @@ els.mobileControls.forEach((button) => {
 document.addEventListener("keydown", handleKey);
 updateHomeProgress();
 renderLevels();
+
